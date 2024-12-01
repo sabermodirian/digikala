@@ -1,1 +1,18 @@
 Django==4.2.1
+
+**********************************************
+step by step:
+python -m venv venv
+pip install django==4.2.1
+django-admin startproject digikala .
+git init
+git add
+create .gitignor file 
+git commit 
+create requirements.txt file 
+write needing data pakage and steps structures in requirements.txt
+git add requirements.txt
+git commit -m requirements.txt
+git add .
+git commit -m 'init project' on branch main
+
