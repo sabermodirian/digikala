@@ -18,12 +18,17 @@ class Product(models.Model):
 class Category(models.Model):
     #Product Category
     name = models.CharField(_("Name"), max_length=50)
-    description = models.TextField(_("Description"))
+    description = models.TextField(_("Description"),
+                                   null=True, blank=True)
+    
     slug = models.SlugField(_("Slug_Cat"))
-    icon = models.ImageField(_("Icon"),upload_to='category_images')
-    image = models.ImageField(_("Image"),upload_to='category_images')
-    parent = models.ForeignKey("self"
-                               ,verbose_name=_("Parent Category")
+    icon = models.ImageField(_("Icon"),upload_to='category_images',
+                             null=True, blank=True)
+    
+    image = models.ImageField(_("Image"),upload_to='category_images',
+                              null=True, blank=True)
+    
+    parent = models.ForeignKey("self",verbose_name=_("Parent Category")
                                ,on_delete=models.SET_NULL
                                ,blank=True,null=True)
     
@@ -31,7 +36,7 @@ class Category(models.Model):
         verbose_name = _("Category")
         verbose_name_plural = _("Categories")
     def __str__(self):
-        return f'{self.id}:of the Current_Category is :{self.name }'
+        return f'{self.slug} ::: of Category ::: {self.name }'
     
 class Comment(models.Model):
     #Product Comment
@@ -41,6 +46,7 @@ class Comment(models.Model):
                                 ,verbose_name=_("Product")
                                 ,on_delete=models.CASCADE       
                                 )
+    
     rate = models.PositiveSmallIntegerField(_("Rate"))
     user_email = models.EmailField(_("Email"), max_length=254)
     
@@ -147,5 +153,8 @@ class Product_Price(models.Model):
         
     def __str__(self):
         return f'{self.product.name}:{self.price}'
+    
+
+ 
     
     
