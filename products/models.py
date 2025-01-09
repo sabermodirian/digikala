@@ -21,7 +21,9 @@ class Category(models.Model):
     description = models.TextField(_("Description"),
                                    null=True, blank=True)
     
-    slug = models.SlugField(_("Slug_Cat"))
+    slug = models.SlugField(_("Slug_Cat"),
+                            unique=True ,db_index=True)
+    
     icon = models.ImageField(_("Icon"),upload_to='category_images',
                              null=True, blank=True)
     
@@ -30,7 +32,8 @@ class Category(models.Model):
     
     parent = models.ForeignKey("self",verbose_name=_("Parent Category")
                                ,on_delete=models.SET_NULL
-                               ,blank=True,null=True)
+                               ,blank=True,null=True 
+                               )
     
     class Meta:
         verbose_name = _("Category")
