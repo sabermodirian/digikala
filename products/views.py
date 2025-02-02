@@ -34,9 +34,9 @@ def product_view(request,product_id):
        # try:
             #p = Product.objects.get(id=product_id)
             p=get_object_or_404(Product,id=product_id)
-            #template = get_template('products/product.html')
+          # template = get_template('products/product.html')
             context = {'product':p}                       
-           # return HttpResponse(template.render(context={'product':p}))
+          # return HttpResponse(template.render(context={'product':p}))
             return render(request,'products/product.html',context)
         
         #except Product.DoesNotExist:

@@ -3,12 +3,24 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
+    <title>فروشگاه اینترنتی دیجیکالا {{product.name}}</title>
 </head>
 <body>
-  <h1>{p.name}</h1>
-  <h5>{p.en_name}</h5>
-  <p>{p.description}</p> 
+{{categories_navbr}}
+
+  <h1>Home</h1>
+  <h1>Welcome to our website!</h1>
+
+    
+    {% for catgr in categories_navbr %}
+    <li>{{ catgr.name }}</li>
+    {% endfor %}
+
+  <h1>Products</h1>
+  
+  <h1>{{product.name}}</h1>
+  <h5>{{product.en_name}}</h5>
+  <p>{{product.description}}</p> 
 </body> 
   
 </html>

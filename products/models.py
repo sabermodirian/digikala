@@ -134,7 +134,7 @@ class ProductOptions(models.Model):
         verbose_name_plural = _("Product Options")
         
     def __str__(self):
-        return f'{self.product.name}:{self.name}:{self.value}'
+        return f'{self.product_id.name}:{self.name}:{self.value}'
     
     
 class Product_Price(models.Model):
@@ -155,7 +155,7 @@ class Product_Price(models.Model):
         verbose_name_plural = _("Product Prices")
         
     def __str__(self):
-        return f'{self.product.name}:{self.price}'
+        return f'{self.product_id.name}:{self.price}'
     
 
  
