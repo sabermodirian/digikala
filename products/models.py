@@ -3,7 +3,6 @@ from django.utils.translation import gettext as _
 
 class Product(models.Model):   
     
-    
     #Product details
     name = models.CharField(_("Persian Name"),max_length=200)
     en_name = models.CharField(_("English Name"),max_length=200)#Enhlish Name of products
@@ -121,9 +120,10 @@ class Answer(models.Model):
 class ProductOptions(models.Model):
     #Product Option
     
-    product_id = models.ForeignKey("Product"
+    product = models.ForeignKey("Product"
                                 ,verbose_name=_("Product")    
                                 ,on_delete=models.CASCADE
+                                ,related_name="prdct_options"  # اضافه کردن related_name
                                 )
     
     name = models.CharField(_("Attribute"), max_length=200)         
@@ -134,7 +134,7 @@ class ProductOptions(models.Model):
         verbose_name_plural = _("Product Options")
         
     def __str__(self):
-        return f'{self.product_id.name}:{self.name}:{self.value}'
+        return f'{self.product.name}:{self.name}:{self.value}'
     
     
 class Product_Price(models.Model):

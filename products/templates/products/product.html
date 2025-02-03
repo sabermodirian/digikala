@@ -1,28 +1,44 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" dir="rtl">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>فروشگاه اینترنتی دیجیکالا {{product.name}}</title>
 </head>
 <body>
-{{categories_navbr}}
-
-  <h1>Home</h1>
-  <h1>Welcome to our website!</h1>
-
-    
+  <!-- حذف ساختار تکراری HTML -->
+  <h1>خوش آمدید!</h1>
+  
+  <!-- نمایش دسته‌بندی‌ها -->
+  <ul>
     {% for catgr in categories_navbr %}
     <li>{{ catgr.name }}</li>
     {% endfor %}
+  </ul>
 
-  <h1>Products</h1>
-  
+  <!-- نمایش اطلاعات محصول -->
   <h1>{{product.name}}</h1>
   <h5>{{product.en_name}}</h5>
-  <p>{{product.description}}</p> 
-</body> 
-  
+  <p>{{product.description}}</p>
+  <hr>
+
+  <!-- نمایش گزینه‌های محصول -->
+  <div>
+    <h3>ویژگی‌های محصول:</h3>
+    <ul>
+      {% for option in product.prdct_options.all %} 
+                {% comment %}
+                {# reverse relation from Product by ProductOptions and set the name of 
+                related_name='options' #} 
+                {% endcomment %}
+            <li>
+              <strong>{{ option.name }}:</strong> 
+              {{ option.value }}
+            </li>
+      {% empty %}
+             <li>هنوز ویژگی‌ای برای این محصول تعریف نشده است</li>
+      {% endfor %}
+    </ul>
+  </div>
+</body>
 </html>
-
-
