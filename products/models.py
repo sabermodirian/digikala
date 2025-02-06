@@ -68,7 +68,7 @@ class Image(models.Model):
     product_id = models.ForeignKey("Product"
                                 ,verbose_name=_("Product")
                                 ,on_delete=models.CASCADE       
-                                )
+                                ,related_name="prdct_images" ) # اضافه کردن related_name)
     
     image = models.ImageField(_("Image"),upload_to='product_images')    
     is_default = models.BooleanField(_("is default image"),default=False)
@@ -78,7 +78,7 @@ class Image(models.Model):
         verbose_name_plural = _("Images")
         
     def __str__(self):
-        return f'Image of {self.product.name}'
+        return f'Image of {self.product_id.name}'
     
     
 class Question(models.Model):

@@ -1,9 +1,11 @@
+{% load static %}
 <!DOCTYPE html>
 <html lang="en" dir="rtl">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>فروشگاه اینترنتی دیجیکالا {{product.name}}</title>
+    <link rel="stylesheet" href="{% static 'styles/style.css' %}">
 </head>
 <body>
   <!-- حذف ساختار تکراری HTML -->
@@ -33,10 +35,20 @@
                 {% endcomment %}
             <li>
               <strong>{{ option.name }}:</strong> 
-              {{ option.value }}
+                     {{ option.value }}
             </li>
       {% empty %}
              <li>هنوز ویژگی‌ای برای این محصول تعریف نشده است</li>
+      {% endfor %}
+    </ul>
+  </div>
+  <div>
+    <h3>تصاویر محصول:</h3>
+    <ul>
+      {% for img in product.prdct_images.all %}
+      <li><img src="{{ img.image.url }}" alt="{{ img.alt }}"></li>
+      {% empty %}
+      <li>هنوز تصویری برای این محصول ثبت نشده است</li>
       {% endfor %}
     </ul>
   </div>
