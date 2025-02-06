@@ -1,0 +1,53 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="fa" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% block title %}
+          فروشگاه اینترنتی دیجیکالا
+          {% endblock title %} </title>
+   
+    <link rel="stylesheet" href="{% static 'styles/style.css' %}">
+    {% block extra_head %}{% endblock extra_head %}
+    <script src="{% static 'js/script.js' %}"></script>
+</head>
+<body>
+  <!-- حذف ساختار تکراری HTML -->
+  <h1>خوش آمدید!</h1>
+  
+  <!-- نمایش دسته‌بندی‌ها -->
+  <div>{% block breadcrumbs %}{% endblock %}
+            <nav>
+                    <ul>
+                    {% for catgr in categories_navbr %}
+
+                    <li><a href="{% url 'product_list' catgr.pk %}">{{ catgr.name }}</a></li>
+      {% comment %} <li><a href="/categories_navbr/{{ catgr.slug}}>{{ catgr.name }}</a></li> {% endcomment %}
+                    
+                    {% endfor %}
+                    </ul>
+        
+            </nav>
+  </div>
+ 
+
+  <!-- نمایش محصولات -->
+  <h2>محصولات</h2>
+  <ul>
+    {% for product in products %}
+    <li><a href="{% url 'product_single' product.pk %}">{{ product.name }}</a></li>
+    {% endfor %}
+  </ul>
+
+  <!-- نمایش فیلترها -->
+  <h2>فیلترها</h2>
+  <ul>
+    {% for catgr in categories_navbr %}
+    <li>{{ catgr.name }}</li>
+    {% endfor %}
+  </ul>
+
+  {% block main %}{% endblock main %}  
+</body>
+</html>

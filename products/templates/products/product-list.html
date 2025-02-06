@@ -1,22 +1,4 @@
-{% load static %}
-<!DOCTYPE html>
-<html lang="en" dir="rtl">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>فروشگاه اینترنتی دیجیکالا {{product.name}}</title>
-    <link rel="stylesheet" href="{% static 'styles/style.css' %}">
-</head>
-<body>
-  <!-- حذف ساختار تکراری HTML -->
-  <h1>خوش آمدید!</h1>
-  
-  <!-- نمایش دسته‌بندی‌ها -->
-  <ul>
-    {% for catgr in categories_navbr %}
-    <li>{{ catgr.name }}</li>
-    {% endfor %}
-  </ul>
+
 
   <!-- نمایش اطلاعات محصول -->
   <h1>{{product.name}}</h1>
@@ -52,5 +34,4 @@
       {% endfor %}
     </ul>
   </div>
-</body>
-</html>
+

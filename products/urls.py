@@ -1,14 +1,14 @@
 from django.urls import path
-from . import views
-
+#from . import views
+from .views import product_list_view, product_single_view
 app_name = 'products'
 
 
 
 urlpatterns = [
     
-    path('', views.index, name='index_view'),
-    path('<int:product_id>/', views.product_view, name='product_view'),
+    path('', product_list_view, name='product_list_view'),
+    path('<int:product_id>/',product_single_view, name='product_single_view'),
 ]
 
 
