@@ -1,4 +1,11 @@
+{% extends "base/base.html" %}
 
+
+{% block title %} 
+  **محصولات دیجیکالا** {{product.name}}
+{% endblock title %}
+
+{% block main %}
 
   <!-- نمایش اطلاعات محصول -->
   <h1>{{product.name}}</h1>
@@ -35,3 +42,4 @@
     </ul>
   </div>
 
+{% endblock main %}

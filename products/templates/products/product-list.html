@@ -1,37 +1,23 @@
+{% extends "base/base.html" %}
+
+{% block title %}لیست کالاها{% endblock %}
 
 
-  <!-- نمایش اطلاعات محصول -->
-  <h1>{{product.name}}</h1>
-  <h5>{{product.en_name}}</h5>
-  <p>{{product.description}}</p>
-  <hr>
 
-  <!-- نمایش گزینه‌های محصول -->
-  <div>
-    <h3>ویژگی‌های محصول:</h3>
+{% block main %}
+ 
+    <h1>لیست کالاها</h1>
     <ul>
-      {% for option in product.prdct_options.all %} 
-                {% comment %}
-                {# reverse relation from Product by ProductOptions and set the name of 
-                related_name='options' #} 
-                {% endcomment %}
-            <li>
-              <strong>{{ option.name }}:</strong> 
-                     {{ option.value }}
-            </li>
-      {% empty %}
-             <li>هنوز ویژگی‌ای برای این محصول تعریف نشده است</li>
+      {% for prdct in products %}
+        <li><a  href="/products/{{ prdct.id }}">
+          <div>
+                 <h2>
+                       {{ prdct.name }}
+                 </h2>
+
+          </div>
+
       {% endfor %}
     </ul>
-  </div>
-  <div>
-    <h3>تصاویر محصول:</h3>
-    <ul>
-      {% for img in product.prdct_images.all %}
-      <li><img src="{{ img.image.url }}" alt="{{ img.alt }}"></li>
-      {% empty %}
-      <li>هنوز تصویری برای این محصول ثبت نشده است</li>
-      {% endfor %}
-    </ul>
-  </div>
 
+{% endblock main %}
