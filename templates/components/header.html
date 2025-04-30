@@ -1,0 +1,105 @@
+{% load static %}
+<header>
+    <nav id="sidemenu" class="sidebar">
+        <div class="dismiss">
+            <i class="fas fa-arrow-right"></i>
+        </div>
+        <div class="sidebar-header">
+            <h3>
+                <a class="navbar-brand p-0 m-0" href="#">
+                    <img src="{% static 'images/fookala-farsi.svg' %}" width="115" height="36">
+                </a>
+            </h3>
+        </div>
+        <ul class="p-0 components">
+            <p>سوپر مارکت سریع</p>
+            <li class="active">
+                <a href={% url 'products:product_single_view' product_id=product.id %}>صفحه اصلی</a>
+            </li>
+            <li>
+                <a href="#pageSubmenu" data-toggle="collapse" aria-expanded="false">انواع آشامیدنی</a>
+                <ul class="collapse p-0" id="pageSubmenu">
+                    <li>
+                        <a href="#">نوشیدنی گرم</a>
+                    </li>
+                    <li>
+                        <a href="#">نوشیدنی سرد</a>
+                    </li>
+                </ul>
+            </li>
+            <li>
+                <a href="#">درباره فوکالا</a>
+            </li>
+            <li>
+                <a href="#">تماس با فوکالا</a>
+            </li>
+        </ul>
+    </nav>
+    <nav class="navbar navbar-light bg-light fixed-top rtl px-2">
+        <div class="container px-0 px-lg-1">
+            <button id="sidemenuCollapse"
+                    class="navbar-toggler"
+                    type="button"
+                    title="مشاهده منو">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <a class="navbar-brand p-0 m-0" href={% url 'products:product_single_view' product_id=product.id %}>
+                <img src="{% static 'images/fookala-farsi.svg' %}"
+                     alt='logo'
+                     width="115"
+                     height="36">
+            </a>
+            <div class="searchform mx-auto w-50 w-60-lg px-0 px-lg-1">
+                <form action="/search"
+                      data-action=""
+                      id="frmSearch"
+                      autocomplete="off"
+                      class="search-box">
+                    <div class="input-group">
+                        <input autocomplete="off"
+                               name="keyword"
+                               type="text"
+                               id="search-field"
+                               class="form-control"
+                               placeholder="برند، کالا و یا دسته بندی مورد نظر">
+                        <div class="input-group-append">
+                            <button class="btn btn-gradient-primary" type="submit">
+                                <i class="fas fa-search"></i>
+                            </button>
+                        </div>
+                    </div>
+                    <div class="search-result search-box-dropdown mt-8"></div>
+                </form>
+            </div>
+            <div class="nav-btn">
+                <button id="location"
+                        class="navbar-toggler location-btn"
+                        type="button"
+                        title="تعیین موقعیت">
+                    <span class="cart-toggler-icon">
+                        <i class="fas fa-map-marker-alt"></i>
+                    </span>
+                </button>
+                {% comment %} <a id="account"
+                   class="navbar-toggler account-btn"
+                   type="button"
+                   href="{% if user.is_authenticated %}{% url 'accounts:user_info_view' %}{% else %}{% url 'accounts:login_view' %}{% endif %}"
+                   title="محیط">
+                    <span class="cart-toggler-icon">
+                        <i class="fas fa-user"></i>
+                    </span>
+                </a> {% endcomment %}
+                <button id="minicartCollapse"
+                        class="navbar-toggler mini-cart"
+                        type="button"
+                        title="مشاهده سبد خرید">
+                    <span class="cart-toggler-icon">
+                        <i class="fas fa-shopping-cart"></i>
+                    </span>
+                    <span class="cart-total">14</span>
+                </button>
+            </div>
+        </div>
+    </nav>
+    {% comment %} {% include 'components/mini-card.html' %} {% endcomment %}
+</header>
