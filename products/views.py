@@ -40,7 +40,14 @@ def product_single_view(request,product_id):
             #p = Product.objects.get(id=product_id)
             p=get_object_or_404(Product,id=product_id)
           # template = get_template('products/product.html')
-            context = {'product':p}                       
+            context = {'product':p} 
+            
+            # با توجه به @property در مدل، product.default_image آماده استفاده است
+            context = {
+                'product':p,
+                # اگر می‌خواهید جداگانه توی کانتکست داشته باشید:
+                'default_img':p.default_image,
+            }                      
           # return HttpResponse(template.render(context={'product':p}))
             return render(request,'products/product-single.html',context)
         

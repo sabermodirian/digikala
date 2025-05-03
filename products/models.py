@@ -11,6 +11,20 @@ class Product(models.Model):
                                  ,verbose_name=_("Category")
                                  ,on_delete=models.RESTRICT       # RESTRICT = PROTECT
                                  )
+    @property
+    def default_image(self):
+        """
+        اگر چندتا تصویر با is_default=True داشتیم،
+        اولی را برمی‌گرداند. اگر هیچ‌کدام نبود،
+        می‌توانید یک تصویر پیش‌فرض (placeholder) هم برگردانید.
+        """
+        img = self.prdct_images.filter(is_default=True).first()
+        if img:
+            return img
+        # اگر می‌خواهید وقتی هیچ پیش‌فرضی نبود اولین تصویر را هم برگردانید:
+        return self.prdct_images.first()
+            
+            
     def __str__(self):
         return f'{self.id}:{self.name }'  
     
