@@ -4,7 +4,10 @@ pillow==11.1.0
 
 **********************************************
 step by step:
-python -m venv venv
+sudo apt update
+sudo apt install python3 python3-pip
+
+python3 -m venv venv
 pip install django==4.2.1
 django-admin startproject digikala .
 git init
