@@ -12,33 +12,12 @@ def product_list_view(request):
                   template_name='products/product-list.html'
                   ,context=context)
     
-    # category_response = ''
+   
     
-    # for c in categories:
-    #     category_response += f'<li>{c.name}</li><br>'
-    # category_response = f'<ul>{category_response}</ul>'
-    
-    # products_response = ''
-    # for p in products:
-    #     products_response += f'<li><a href="/products/{p.id}">{p.name}</a></li><br>'
-        
-    # return HttpResponse(f"""
-    # <html>
-    # <head>
-    # <title>DigiKala</title></head>
-    # <body>
-    # <h1>The Best Shopping Site in Iran</h1>
-    # {category_response}
-    # <h1>Products</h1>
-    # {products_response}
-    # </body>
-    # </html>
-    # """)
-    
-def product_single_view(request,product_id):
+def  product_detail_view(request,pk):
        # try:
             #p = Product.objects.get(id=product_id)
-            p=get_object_or_404(Product,id=product_id)
+            p=get_object_or_404(Product,id=pk)
           # template = get_template('products/product.html')
             context = {'product':p} 
             
@@ -49,7 +28,7 @@ def product_single_view(request,product_id):
                 'default_img':p.default_image,
             }                      
           # return HttpResponse(template.render(context={'product':p}))
-            return render(request,'products/product-single.html',context)
+            return render(request,'products/product-detail.html',context)
         
         #except Product.DoesNotExist:
              #return HttpResponse('404! Product Not Found!!!')

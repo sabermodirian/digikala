@@ -9,21 +9,46 @@
 
   <!-- نمایش اطلاعات محصول -->
 
-  <div class="container">
+ <div class="container">
     <div class="row">
       <div id="page-content" class="col-12">
-        <div id="breadcrump" class="row px-3">
-          <ul>
-            <li>
-              <a href='{% url 'products:product_single_view' product_id=product.id %}'>فوکالا</a>
-            </li>
-            {% for category in product.categories_list %}
-              <li>
-                <a href="{% url 'products:product_list' slug=category.slug %}">{{ category.name }}</a>
-              </li>
-            {% endfor %}
-          </ul>
+  {% comment %} <div id="breadcrump" class="row px-3"> {% endcomment %}
+     <div id="breadcrump" class="row px-3">
+    <div class="row px-3">
+    <ul>
+      <li>
+        <a href="/">فوکالا</a>
+      </li>
+      {% for category in product.categories_list %}
+        <li>
+          <a href="/products/category/{{ category.slug }}">{{ category.name }}</a>
+        </li>
+      {% endfor %}
+    </ul>
+  </div> 
+
+{% comment %}
+   <div class="container">
+
+      <div class="row">
+        <div class="col-12 px-3">
+          <nav aria-label="breadcrumb" id="breadcrump">
+            <ol class="breadcrumb">
+              <li class="breadcrumb-item"><a href="/">فوکالا</a></li>
+              {% for c in product.categories_list %}
+                <li class="breadcrumb-item">
+                  <a href="/products/category/{{ c.slug }}">{{ c.name }}</a>
+                </li>
+              {% endfor %}
+            </ol>
+          </nav>
         </div>
+      </div>
+
+
+   </div> {% endcomment %}
+
+
         <div id="product-single" class="row">
           <div class="product-image col-12 col-md-6 col-lg-4 p-0">
             

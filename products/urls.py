@@ -1,6 +1,8 @@
 from django.urls import path
 #from . import views
-from .views import product_list_view, product_single_view
+from .views import product_list_view, product_detail_view
+
+
 app_name = 'products'
 
 
@@ -32,7 +34,7 @@ urlpatterns = [
     # مسیر جزئیات یک محصول خاص
     # Route for details of a specific product
 
-    path('<int:product_id>/', product_single_view, name='product_single_view'),
+    path('<int:product_id>/', product_detail_view, name='product_detail_view'),
 ]
 #  حالا به انگلیسی:
 """
@@ -54,7 +56,7 @@ Each route is associated with a specific view function, and route names are used
 
 
 """  
-( نسخه اصلاح شده ی  این مدل آدرسدهی در بالا تنظیم شده است ه)
+( نسخه اصلاح شده ی  این مدل آدرسدهی در بالا تنظیم شده استه)
 # products/urls.py
 from django.urls import path
 from . import views
