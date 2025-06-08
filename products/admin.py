@@ -1,5 +1,5 @@
 from django.contrib import admin
-from .models import Product,Category,Product_Price,ProductOptions,Image,Comment,Question,Answer  # noqa: F401
+from .models import Product,Category,SellerProductPrice,ProductOptions,Image,Comment,Question,Answer  # noqa: F401
 
 """
 Inline Admin:
@@ -17,7 +17,7 @@ Table Format:
 
 """
 class ProductPriceInline(admin.TabularInline):
-    model = Product_Price
+    model = SellerProductPrice
     extra = 1
     
 class ProductOptionInline(admin.TabularInline):

@@ -10,7 +10,7 @@ class Seller(models.Model):
     name = models.CharField(max_length=50)
     # email = models.EmailField()
     # password = models.CharField(max_length=50)
-    slug = models.SlugField(_("slug"))
+    slug = models.SlugField(_("slug"),unique=True ,db_index=True)
 
     class Meta:
         verbose_name = _("Seller")
