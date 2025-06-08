@@ -14,21 +14,23 @@ def product_list_view(request):
     
    
     
-def  product_detail_view(request,pk):
+def  product_detail_view(request,product_id):
        # try:
             #p = Product.objects.get(id=product_id)
-            p=get_object_or_404(Product,id=pk)
+            p=get_object_or_404(Product,id=product_id)
           # template = get_template('products/product.html')
             context = {'product':p} 
             
             # با توجه به @property در مدل، product.default_image آماده استفاده است
+            return render(request, 'products/product-detail.html', context)
             context = {
                 'product':p,
                 # اگر می‌خواهید جداگانه توی کانتکست داشته باشید:
                 'default_img':p.default_image,
             }                      
           # return HttpResponse(template.render(context={'product':p}))
-            return render(request,'products/product-detail.html',context)
+            return render(request, 'products/product-detail.html',context)
+
         
         #except Product.DoesNotExist:
              #return HttpResponse('404! Product Not Found!!!')

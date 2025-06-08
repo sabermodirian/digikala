@@ -33,9 +33,10 @@ urlpatterns = [
 
     # مسیر جزئیات یک محصول خاص
     # Route for details of a specific product
+    path('<int:product_id>/',product_detail_view, name='product_single_view'),
 
-    path('<int:product_id>/', product_detail_view, name='product_detail_view'),
-]
+    # path(, product_detail_view, name='product_detail_view'),
+]   
 #  حالا به انگلیسی:
 """
 
