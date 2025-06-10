@@ -1,5 +1,5 @@
 from django.shortcuts import render,get_object_or_404 #,httpResponse
-from.models import Product # ,Category
+from.models import Product  # ,Category
 #from django.template.loader import get_template 
 
 # Create your views here.
@@ -14,25 +14,24 @@ def product_list_view(request):
     
    
     
-def  product_detail_view(request,product_id):
-       # try:
-            #p = Product.objects.get(id=product_id)
-            p=get_object_or_404(Product,id=product_id)
-          # template = get_template('products/product.html')
-            context = {'product':p} 
-            
-            # با توجه به @property در مدل، product.default_image آماده استفاده است
-            return render(request, 'products/product-detail.html', context)
-            context = {
-                'product':p,
-                # اگر می‌خواهید جداگانه توی کانتکست داشته باشید:
-                'default_img':p.default_image,
-            }                      
-          # return HttpResponse(template.render(context={'product':p}))
-            return render(request, 'products/product-detail.html',context)
+def product_detail_view(request, product_id):
+    p = get_object_or_404(Product, id=product_id)
 
-        
-        #except Product.DoesNotExist:
-             #return HttpResponse('404! Product Not Found!!!')
+    # همه‌ی seller_prices مربوط به این محصول
+    seller_prices = p.seller_prices.all()
+
+    # فروشنده‌ی پیش‌فرض (مثلاً اولین آیتم یا براساس منطق خودت)
+    default_product_seller = seller_prices.first()
+
+    context = {
+        'product': p,
+        'seller_prices': seller_prices,
+        'default_product_seller': default_product_seller,
+        # اگر نیاز داری شمارش کامنت هم تو تمپلیت استفاده کنی:
+        'comment_counts': p.comments.count() if hasattr(p, 'comments') else 0,
+    }
+
+    return render(request, 'products/product-detail.html', context)
+
        
       

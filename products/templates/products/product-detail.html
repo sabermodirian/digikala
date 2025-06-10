@@ -100,22 +100,31 @@
       </div>
     </div>
     <div id="product-sellers" class="col-12">
-      {% for s in product_sellers %}
+
+      {% for s in seller_prices %}
         <div class="row">
           <div class="col-4">
             <div class="product-seller">
               <div>{{ s.seller.name }}</div>
+
               <span>رضایت خرید: 98 درصد</span>
             </div>
           </div>
           <div class="col-4">
             <div class="product-price">
               <div class="product-price">
+
+{% comment %} 
                 {% if s.discount %}
                   قیمت: <del>{{ s.price }}</del> <span>{{ s.discounted_price }} تومان</span>
                 {% else %}
                   <span>{{ s.discounted_price }} تومان</span>
                 {% endif %}
+ {% endcomment %}
+ <div>{{ s.price }} | {{ s.discounted_price }} | {{ s.discount }}</div>
+
+
+
               </div>
             </div>
           </div>
