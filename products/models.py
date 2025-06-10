@@ -8,10 +8,11 @@ from django.urls import reverse  # noqa: F401
 class Brand(models.Model):
     name = models.CharField(_("Name"),max_length=150)
     en_name = models.CharField(_("En Name"),max_length=150)
+    slug = models.SlugField(_("slug"),blank=True,null=True )
     verbose_name = _("Brand")
     verbose_name_plural = _("Brands")
     def __str__(self):
-        return f'{self.id}:{self.name }'
+        return f'{self.id}:{self.name } {self.en_name} {self.slug}'
 
 class Product(models.Model):   
     

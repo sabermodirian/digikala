@@ -1,5 +1,6 @@
 from django.contrib import admin
-from .models import Product,Category,SellerProductPrice,ProductOptions,Image,Comment,Question,Answer  # noqa: F401
+from .models import Product,Category,SellerProductPrice,\
+Image,Comment,Question,Answer,ProductOptions,Brand  # noqa: F401
 
 """
 Inline Admin:
@@ -76,3 +77,11 @@ class CategoryAdmin(admin.ModelAdmin):
         
     )
     
+@admin.register(Brand)
+class BrandAdmin(admin.ModelAdmin):
+    list_display = ('name', 'en_name','slug')
+
+
+# @admin.register(Image)
+# class ImageAdmin(admin.ModelAdmin):
+#     pass
