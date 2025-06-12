@@ -86,14 +86,17 @@
 
                 <div>قیمت: {{ default_product_seller.price }} تومان</div>
                 
-                {#  {% if default_product_seller.discount %}
+               <!-- {% if default_product_seller.discount %}
                   قیمت: <del>{{ default_product_seller.price }}</del> 
                   <span>
                     {{ default_product_seller.discounted_price }}
                 تومان</span>
               {% else %}
                 <span>{{ default_product_seller.discounted_price }} تومان</span>
-              {% endif %}  #}
+              {% endif %}  
+              
+              --> 
+
             </div>
             <button href="#"
                     class="btn btn-cart"
@@ -117,18 +120,17 @@
           </div>
           <div class="col-4">
             <div class="product-price">
-              <div class="product-price">
-
-{#  {% comment %} 
+              <div class="product-price"> 
+             <!-- {% comment %} 
                 {% if s.discount %}
                   قیمت: <del>{{ s.price }}</del> <span>{{ s.discounted_price }} تومان</span>
                 {% else %}
                   <span>{{ s.discounted_price }} تومان</span>
                 {% endif %}
- {% endcomment %}  #}
-
+ {% endcomment %}  -->
+            
+            
  <div>{{ s.price }} | {{ s.discounted_price }} | {{ s.discount }}</div>
-
 
 
               </div>
@@ -143,25 +145,40 @@
         </div>
       {% endfor %}
     </div>
-    {#  {% comment %} <div id="product-comments" class="col-12">
-      <div class="row card">
-        {% if request.user.is_authenticated %}
-          <div class="col-12 card-body">
-            <form id="comment_form" method="post">
-              {% include "components/forms.html" with form=comment_form %}
-              {% csrf_token %}
-              <input type="submit" value="ثبت نظر" class="btn btn-primary">
-            </form>
+
+    <div id="product-comments" class="col-12">
+          <div class="row card">
+              {% for comment in prdct_comments %}
+
+                <div class="col-12">  
+                  <h5> {{comment.title}} </h5>
+                  <span>{{comment.user_email}}</span>
+                  <p> {{comment.text}}</p>
+                </div>
+              {% endfor %}
+           </div>  
+
+                <!--   {% comment %}
+              {% if request.user.is_authenticated %}
+              <div class="col-12 card-body">
+                <form id="comment_form" method="post">
+                  {% include "components/forms.html" with form=comment_form %}
+                  {% csrf_token %}
+                  <input type="submit" value="ثبت نظر" class="btn btn-primary">
+                </form>
           </div>
-        {% endif %} {% endcomment %}  #}
-        <div id='comment-list' class="row card"></div>
+          {% endif %}
+          {% endcomment %}
+          -->
+
+         <div id='comment-list' class="row card"></div>
         <!-- {% for comment in comments %}
           <div class="col-12">
             <h5>{{ comment.title }}</h5>
             <span>{{ comment.user.email }}</span>
             <p>{{ comment.text }}</p>
           </div>
-        {% endfor %} -->
+         {% endfor %} -->
       </div>
     </div>
   </div>

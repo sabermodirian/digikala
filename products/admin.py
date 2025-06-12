@@ -82,6 +82,13 @@ class BrandAdmin(admin.ModelAdmin):
     list_display = ('name', 'en_name','slug')
 
 
+@admin.register(Comment)
+class CommentAdmin(admin.ModelAdmin):
+    list_display = ('user_email', 'text', 'rate')
+    
+    search_fields = ('product_id', 'user', 'text')
+
+
 # @admin.register(Image)
 # class ImageAdmin(admin.ModelAdmin):
 #     pass

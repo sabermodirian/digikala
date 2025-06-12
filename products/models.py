@@ -141,7 +141,8 @@ class Comment(models.Model):
     text = models.TextField(_("Text"))
     product_id = models.ForeignKey("Product"
                                 ,verbose_name=_("Product")
-                                ,on_delete=models.CASCADE       
+                                ,on_delete=models.CASCADE   
+                                ,related_name="prdct_comments"    
                                 )
     
     rate = models.PositiveSmallIntegerField(_("Rate"))
@@ -152,7 +153,7 @@ class Comment(models.Model):
         verbose_name_plural = _("Comments")
     
     def __str__(self):
-        return f'comment on {self.product.name}'
+        return f'comment on {self.product_id.name}'
     
     
 class Image(models.Model): 

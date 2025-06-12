@@ -23,10 +23,15 @@ def product_detail_view(request, product_id):
     # فروشنده‌ی پیش‌فرض (مثلاً اولین آیتم یا براساس منطق خودت)
     default_product_seller = seller_prices.first()
 
+    # اضافه کردن کامنت‌ها
+    prdct_comments = p.prdct_comments.all()
+
     context = {
         'product': p,
         'seller_prices': seller_prices,
         'default_product_seller': default_product_seller,
+        'prdct_comments':prdct_comments
+        
         # اگر نیاز داری شمارش کامنت هم تو تمپلیت استفاده کنی:
         #'comment_counts': p.comments.count() if hasattr(p, 'comments') else 0,
     }
