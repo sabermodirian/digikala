@@ -30,10 +30,10 @@ def product_detail_view(request, product_id):
         'product': p,
         'seller_prices': seller_prices,
         'default_product_seller': default_product_seller,
-        'prdct_comments':prdct_comments
+        'prdct_comments':prdct_comments,
         
         # اگر نیاز داری شمارش کامنت هم تو تمپلیت استفاده کنی:
-        #'comment_counts': p.comments.count() if hasattr(p, 'comments') else 0,
+        'comment_counts': prdct_comments.all().count(), #if hasattr(p, 'comments') else 0,
     }
 
     return render(request, 'products/product-detail.html', context)
