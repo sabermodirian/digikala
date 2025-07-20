@@ -43,11 +43,7 @@ def product_detail_view(request, product_id):
     نتیجه‌گیری
     در نهایت، این کد اطلاعات مربوط به قیمت‌های فروشندگان برای محصول خاصی را که شناسه آن در {p.id} قرار داده شده، بازیابی می‌کند و تنها قیمت‌های مرتبط با جدیدترین تاریخ به‌روزرسانی که برای هر فروشنده وجود دارد را برمی‌گرداند. این کد به شما کمک می‌کند تا فقط اطلاعات قیمت‌های جدیدترین فروشندگان محصول خاص را دریافت نمایید، که در انجام تحلیل‌ها یا نمایش قیمت‌ها در سایت بسیار مفید است.
     """
-    seller_prices =SellerProductPrice.objects.raw(
-        f""" SELECT * FROM products_sellerproductprice
-         WHERE product_id = {p.id}
-         group by seller_id
-         having Max(update_at) """)
+    seller_prices = get_product_last_price(p.id)
 
     # همه‌ی seller_prices مربوط به این محصول
     seller_prices = p.seller_prices.all()
@@ -70,5 +66,14 @@ def product_detail_view(request, product_id):
 
     return render(request, 'products/product-detail.html', context)
 
+def get_product_last_price(product_id):
+    return SellerProductPrice.objects.raw(
+        """ SELECT * FROM products_sellerproductprice
+         WHERE product_id = %(id)s
+         group by seller_id
+         having Max(update_at) 
+         """,
+        {'id': product_id}
+    )
        
       
