@@ -150,7 +150,7 @@
           <div class="row card">
 
            <div class="col-12">
-            <form id="comment_form" action="" method="post">
+            <form method="post" action="{% url 'products:create_comment' product_id=product.id %}">
               {% csrf_token %}
              <div>
                <label for="email_input">:ایمیل</label>
@@ -172,7 +172,12 @@
               <textarea id="comment_text"  name="text"  cols="30" rows="10"></textarea>
              </div>
 
-              <input type="submit" value="ثبت نظر" class="btn btn-primary">
+              <div>
+              
+               <input type="hidden" name="product_id" value="{{ product.id }}">
+             </div>
+
+              <button type="submit" class="btn btn-primary" >ارسال کامنت</button>
 
             </form>
 
