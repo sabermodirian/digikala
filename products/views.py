@@ -16,7 +16,13 @@ def product_list_view(request):
    
     
 def product_detail_view(request, product_id):
-    p = get_object_or_404(Product, id=product_id)
+    
+    p = get_object_or_404(Product.objects.select_related(
+        'category').prefetch_related('prdct_comments') , id=product_id)
+    """نکته: select_related برای فارین کی ها (FK) و
+    prefetch_related برای manytomany ها یا fkهای که reverse هستن 
+    و روی table ما قرار دارند.
+    """
 
     if request.method == 'POST':
         # اینجا می‌توانید کامنت‌ها را در مدل Comment ذخیره کنید   
