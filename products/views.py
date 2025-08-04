@@ -1,8 +1,8 @@
 from django.shortcuts import render,get_object_or_404 , redirect#,httpResponse
  # Http404 رو import کن
-from.models import Product ,Comment
+from.models import Product ,Comment  # noqa: F401
 from products.utils import get_product_last_price_list_orm
-
+from products.forms import ProductCommentForm
 # Create your views here.
 
 def product_list_view(request):
@@ -36,6 +36,14 @@ def product_detail_view(request, product_id):
     # اضافه کردن کامنت‌ها
     prdct_comments = p.prdct_comments.all()
 
+    if request.method == "GET":
+        comment_form = ProductCommentForm()
+    elif request.method == "POST":
+        comment_form = ProductCommentForm(request.POST)
+        if comment_form.is_valid():
+            Comment.objects.create(**comment_form.cleaned_data)
+            return redirect('products:product_single_view', product_id)       
+
     context = {
         'product': p,
         'seller_prices': seller_prices,
@@ -44,25 +52,27 @@ def product_detail_view(request, product_id):
         
         # اگر نیاز داری شمارش کامنت هم تو تمپلیت استفاده کنی:
         'comment_counts': prdct_comments.count() ,#if hasattr(p, 'comments') else 0,
+        'comment_form': comment_form
     }
 
     return render(request, 'products/product-detail.html', context)
 
 
-def create_comment(request, product_id):
-    if request.method == 'POST':
-        # اول محصول رو پیدا کن
-        product = get_object_or_404(Product, id=product_id)
+#def create_comment(request, product_id):
+    
+    # if request.method == 'POST':
+    #     # اول محصول رو پیدا کن
+    #     product = get_object_or_404(Product, id=product_id)
         
-        # بعد کامنت رو ایجاد کن
-        Comment.objects.create(
-            title=request.POST.get('title', ''),
-            text=request.POST.get('text', ''),
-            rate=int(request.POST.get('rate', 0)),
-            user_email=request.POST.get('user_email', ''),
-            product_id=product  # خود instance محصول رو پاس بده
-        )
-    return redirect('products:product_single_view', product_id=product_id)
+    #     # بعد کامنت رو ایجاد کن
+    #     Comment.objects.create(
+    #         title=request.POST.get('title', ''),
+    #         text=request.POST.get('text', ''),
+    #         rate=int(request.POST.get('rate', 0)),
+    #         user_email=request.POST.get('user_email', ''),
+    #         product_id=product  # خود instance محصول رو پاس بده
+    #     )
+    # return redirect('products:product_single_view', product_id=product_id)
 
 
  

@@ -139,10 +139,12 @@ class Comment(models.Model):
     #Product Comment
     title = models.CharField(_("Title"),max_length=150)
     text = models.TextField(_("Text"))
-    product_id = models.ForeignKey("Product"
+    product = models.ForeignKey("products.Product"
                                 ,verbose_name=_("Product")
                                 ,on_delete=models.CASCADE   
-                                ,related_name="prdct_comments"    
+                                ,related_name="prdct_comments",
+                                null=False,
+                                blank=False
                                 )
     
     rate = models.PositiveSmallIntegerField(_("Rate"))
@@ -153,7 +155,11 @@ class Comment(models.Model):
         verbose_name_plural = _("Comments")
     
     def __str__(self):
-        return f'comment on {self.product_id.name}'
+        # این خط رو تغییر بده:
+        if self.product: # بررسی میکنیم که آیا product وجود داره یا None نیست
+            return f'comment on {self.product.name}'
+        else:
+            return f'Comment (Product not found) - ID: {self.pk}' # اگر product نبود، یک پیام دیگه نشون بده
     
     
 class Image(models.Model): 
@@ -161,7 +167,7 @@ class Image(models.Model):
     #Product Image
     name = models.CharField(_("Name"), max_length=50)
     alt = models.CharField(_("Altenative Text"), max_length=100)
-    product_id = models.ForeignKey("Product"
+    product = models.ForeignKey("Product"
                                 ,verbose_name=_("Product")
                                 ,on_delete=models.CASCADE       
                                 ,related_name="prdct_images" ) # اضافه کردن related_name)
@@ -174,7 +180,7 @@ class Image(models.Model):
         verbose_name_plural = _("Images")
         
     def __str__(self):
-        return f'Image of {self.product_id.name}'
+        return f'Image of {self.product.name}'
     
     
 class Question(models.Model):
@@ -236,7 +242,7 @@ class ProductOptions(models.Model):
 class SellerProductPrice(models.Model):
     #Product Price
     
-    product_id = models.ForeignKey("Product"
+    product = models.ForeignKey("Product"
                                 ,verbose_name=_("Product"),
                                 related_name="seller_prices"    
                                 ,on_delete=models.CASCADE
@@ -259,7 +265,7 @@ class SellerProductPrice(models.Model):
         verbose_name_plural = _("SellerProductPrices")
         
     def __str__(self):
-        return f'{self.product_id.name}:{self.price}'
+        return f'{self.product.name}:{self.price}'
     
 
  

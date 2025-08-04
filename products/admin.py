@@ -84,7 +84,7 @@ class BrandAdmin(admin.ModelAdmin):
 
 @admin.register(Comment)
 class CommentAdmin(admin.ModelAdmin):
-    list_display = ('id','user_email','Product' ,'title', 'rate')
+    list_display = ('id','user_email','product_id' ,'title', 'rate')
     
     search_fields = ('product_id', 'user', 'text')
 
