@@ -2,7 +2,7 @@ from django.shortcuts import render,get_object_or_404 , redirect#,httpResponse
  # Http404 رو import کن
 from.models import Product ,Comment  # noqa: F401
 from products.utils import get_product_last_price_list_orm
-from products.forms import ProductCommentForm
+from products.forms import ProductCommentModelForm
 # Create your views here.
 
 def product_list_view(request):
@@ -37,12 +37,15 @@ def product_detail_view(request, product_id):
     prdct_comments = p.prdct_comments.all()
 
     if request.method == "GET":
-        comment_form = ProductCommentForm(initial={'product_id':product_id})
+        comment_form = ProductCommentModelForm(initial={'product':p})
     elif request.method == "POST":
-        comment_form = ProductCommentForm(request.POST)
+        comment_form = ProductCommentModelForm(request.POST)
         if comment_form.is_valid():
-            Comment.objects.create(**comment_form.cleaned_data)
-            return redirect('products:product_single_view', product_id)       
+           comment_form.save(commit=True)
+           
+            # Comment.objects.create(**comment_form.cleaned_data,product=p)
+           
+        return redirect('products:product_single_view', product_id)       
 
     context = {
         'product': p,
