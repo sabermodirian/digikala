@@ -37,7 +37,7 @@ def product_detail_view(request, product_id):
     prdct_comments = p.prdct_comments.all()
 
     if request.method == "GET":
-        comment_form = ProductCommentForm()
+        comment_form = ProductCommentForm(initial={'product_id':product_id})
     elif request.method == "POST":
         comment_form = ProductCommentForm(request.POST)
         if comment_form.is_valid():
