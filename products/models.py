@@ -53,6 +53,19 @@ class Product(models.Model):
     class Meta:
         verbose_name = _("Product")
         verbose_name_plural = _("Products")
+
+    @property
+    def sellers_last_price(self):
+        return SellerProductPrice.raw(
+
+            """ SELECT * FROM products_sellerproductprice
+             WHERE product_id = %(id)s
+             group by seller_id
+             having Max(update_at) 
+             """,
+            {'id': self.id}
+        )
+    
     
     
     @property

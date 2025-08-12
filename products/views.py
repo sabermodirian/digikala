@@ -45,11 +45,11 @@ def product_detail_view(request, product_id):
            
             # Comment.objects.create(**comment_form.cleaned_data,product=p)
            
-        return redirect('products:product_single_view', product_id)       
+        return redirect('products:product_single_view', product_id=product_id)       
 
     context = {
         'product': p,
-        'seller_prices': seller_prices,
+        'seller_prices': seller_prices, # p.seller_last_prices
         'default_product_seller': default_product_seller,
         'prdct_comments':prdct_comments,
         
