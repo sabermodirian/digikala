@@ -1,9 +1,14 @@
 from django.db import models
 from django.utils.translation import gettext as _
 from django.urls import reverse  # noqa: F401
-
+from django.conf import settings
+# from django.contrib.auth import get_user_model
+# User = get_user_model()
 
 # Create your models here.
+
+
+
 
 class Brand(models.Model):
     name = models.CharField(_("Name"),max_length=150)
@@ -162,7 +167,12 @@ class Comment(models.Model):
     
     rate = models.PositiveSmallIntegerField(_("Rate"))
     user_email = models.EmailField(_("Email"), max_length=254)
-    
+    user = models.ForeignKey(
+        settings.AUTH_USER_MODEL,
+        verbose_name=_("User"),
+        on_delete=models.CASCADE
+    )
+
     class Meta:
         verbose_name = _("Comment")
         verbose_name_plural = _("Comments")
