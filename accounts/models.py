@@ -66,9 +66,10 @@ class User(AbstractBaseUser, PermissionsMixin):  # noqa: F811
     first_name = models.CharField(_("first name"), max_length=150, blank=True)
     last_name = models.CharField(_("last name"), max_length=150, blank=True)
     email = models.EmailField(_("email address"), unique=True , blank=True)
-    mobile = models.CharField(_("mobile_number"), max_length=11,
-    unique=True , blank=True, null=True
-    )
+    mobile = models.CharField(
+        _("mobile_number"), max_length=11,
+         unique=True , blank=True, null=True
+     )
 
     is_staff = models.BooleanField(
         _("staff status"),
