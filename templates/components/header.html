@@ -5,16 +5,16 @@
             <i class="fas fa-arrow-right"></i>
         </div>
         <div class="sidebar-header">
-            <h3>
-                <a class="navbar-brand p-0 m-0" href="#">
-                    <img src="{% static 'images/fookala-farsi.svg' %}" width="115" height="36">
-                </a>
-            </h3>
+            {# لوگو در هدر سایدبار، همیشه به صفحه لیست محصولات لینک داده می‌شود #}
+            <a class="navbar-brand p-0 m-0" href="{% url 'products:product_list' %}">
+                <img src="{% static 'images/fookala-farsi.svg' %}" width="115" height="36" alt="Fookala Logo">
+            </a>
         </div>
         <ul class="p-0 components">
             <p>سوپر مارکت سریع</p>
             <li class="active">
-                <a href={% url 'products:product_single_view' product_id=product.id %}>صفحه اصلی</a>
+                {# لینک صفحه اصلی در سایدبار: به صفحه لیست محصولات لینک می‌دهد #}
+                <a href="{% url 'products:product_list' %}">صفحه اصلی</a>
             </li>
             <li>
                 <a href="#pageSubmenu" data-toggle="collapse" aria-expanded="false">انواع آشامیدنی</a>
@@ -43,9 +43,10 @@
                     title="مشاهده منو">
                 <span class="navbar-toggler-icon"></span>
             </button>
-            <a class="navbar-brand p-0 m-0" href={% url 'products:product_single_view' product_id=product.id %}>
+            {# لینک لوگو در نَـویگِـیشن اصلی: همیشه به صفحه لیست محصولات لینک می‌دهد #}
+            <a class="navbar-brand p-0 m-0" href="{% url 'products:product_list' %}">
                 <img src="{% static 'images/fookala-farsi.svg' %}"
-                     alt='logo'
+                     alt='Fookala Logo'
                      width="115"
                      height="36">
             </a>
@@ -80,15 +81,10 @@
                         <i class="fas fa-map-marker-alt"></i>
                     </span>
                 </button>
-                {% comment %} <a id="account"
-                   class="navbar-toggler account-btn"
-                   type="button"
-                   href="{% if user.is_authenticated %}{% url 'accounts:user_info_view' %}{% else %}{% url 'accounts:login_view' %}{% endif %}"
-                   title="محیط">
-                    <span class="cart-toggler-icon">
-                        <i class="fas fa-user"></i>
-                    </span>
-                </a> {% endcomment %}
+                {# لینک ورود / حساب کاربری #}
+                <a id="account" class="navbar-toggler account-btn" href="{% url 'accounts:login_view' %}" title="ورود / حساب کاربری">
+                    <span class="cart-toggler-icon"><i class="fas fa-user"></i></span>
+                </a>
                 <button id="minicartCollapse"
                         class="navbar-toggler mini-cart"
                         type="button"
@@ -96,10 +92,9 @@
                     <span class="cart-toggler-icon">
                         <i class="fas fa-shopping-cart"></i>
                     </span>
-                    <span class="cart-total">14</span>
+                    <span class="cart-total">14</span> {# این مقدار باید پویا شود #}
                 </button>
             </div>
         </div>
     </nav>
-    {% comment %} {% include 'components/mini-card.html' %} {% endcomment %}
 </header>
