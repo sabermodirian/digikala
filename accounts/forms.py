@@ -1,9 +1,10 @@
 from typing import Any, Dict
 from django import forms
 from django.contrib.auth import authenticate, login  # noqa: F401
-from django.contrib.auth import get_user_model # برای اطمینان از دسترسی به مدل User
+from django.contrib.auth import get_user_model # برای اطمینان از دسترسی به مدل User  # noqa: F401
+from .models import User
 
-User = get_user_model() # برای استفاده از مدل User سفارشی‌تون
+# # برای استفاده از مدل User سفارشی‌تون
 
 class UserLoginForm(forms.Form):
     # 1. اشتباه تایپی __init__ رو درست کن (دو آندرلاین قبل و بعد)
@@ -56,4 +57,46 @@ class UserLoginForm(forms.Form):
             raise forms.ValidationError("لطفاً هم ایمیل و هم رمز عبور را وارد کنید.")
             
         return clean_data
+
+
+class UserRegisterForm(forms.ModelForm):
+    password1 = forms.CharField(
+        widget=forms.PasswordInput({"class":"form-control"}), 
+        label="کلمه عبور")
+
+    password2 =forms.CharField(
+        widget=forms.PasswordInput({"class":"form-control"}), 
+        label="کلمه عبور تکرار")
+    
+
+    class Meta:
+     model = User
+     fields = {
+        "first_name"
+        ,"last_name"
+        ,"email"
+        ,"mobile"
+        ,"password"
+     }
+
+    def clean(self)-> Dict[str,Any]:
+        cleaned_data = super().clean()
+        password1=cleaned_data.pop("password1",None)
+        password2=cleaned_data.pop("password2",None)
+        if password1 != password2 :
+            self.add_error("password2" , forms.ValidationError(
+                "در ورود پسورد کوشا باشید", code="invalid"))
+        cleaned_data.setdefault("password",password1)
+        return cleaned_data
+    
+    def save(self , commit) -> Any: 
+        user = super.save(commit)
+        user.setpassword(self.changed_data("password1"))
+        if commit:
+            user.save()
+        else:
+            return user
+
+
+
 

@@ -1,0 +1,30 @@
+{% extends "base/base.html" %}
+
+
+{% block title %} 
+ user_profile
+{% endblock title %}
+
+{% block main %}
+
+ <div class="container">
+    <div class="row">
+      <div id="page-content" class="col-12">
+                
+                    <h1></h1> 
+                    <h1></h1> 
+                    <h1>{{ request.user.full_name }}</h1> 
+                    <h1>{{ request.user.full_name }}</h1> 
+                    <h1>{{ request.user.full_name }}</h1>            
+                    <h1>{{ request.user.get_full_name }}</h1> 
+                    <h1>{{ request.user.email }}</h1>             
+                    <h1>{{ request.user.get_full_name }}</h1> 
+                    <h1>{{ request.user.email }}</h1>
+      </div>   
+    </div> 
+</div>
+          
+          
+{% endblock main %}
+  
+    
