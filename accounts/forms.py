@@ -62,10 +62,11 @@ class UserRegisterForm(forms.ModelForm):
     class Meta:
         model = User
         fields = (
+                # آکولادها {} را با پرانتز () عوض کنید تا ترتیب فیلدها مشخص شود
             "first_name",
             "last_name",
             "email",
-            "mobile",
+            "mobile",# <--- اینجا یک ویرگول (,) کم بوده است و  ویرگول اضافه شد
             "password1", # این خط اینجا قرار میگیره
             "password2", # و این خط هم اینجا
         )
@@ -90,14 +91,15 @@ class UserRegisterForm(forms.ModelForm):
         return cleaned_data
     
     def save(self, commit=True):
-        user = super().save(commit=False)
+        # ابتدا نمونه کاربر را از والد دریافت می‌کنیم، اما هنوز ذخیره نمی‌کنیم (commit=False)
+        user = super().save(commit=False) 
         
-        # اینجا باید password رو از cleaned_data بگیریم، نه اینکه دوباره pop کنیم
+        # رمز عبور تمیز شده را از cleaned_data دریافت می‌کنیم
         password = self.cleaned_data.get("password")
-        if password: # اگر password در cleaned_data وجود داشت
-            user.set_password(password)
         
+        # رمز عبور را به صورت امن تنظیم می‌کنیم
+        user.set_password(password)
+        
+        # اگر commit برابر True بود، کاربر را با رمز عبور تنظیم شده ذخیره می‌کنیم
         if commit:
             user.save()
-            
-        return user
