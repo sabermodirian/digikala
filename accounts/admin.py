@@ -30,7 +30,7 @@ class UserAdmin(BaseUserAdmin):
             "fields":('first_name' , 'last_name' )
         }),
         (_('Permissions'),{ # سومین تاپل
-            "fields":('is_staff' , 'is_active','is_superuser')
+            "fields":('is_staff' , 'is_active','is_superuser' ,'groups')
         }),
         (_('Important dates'),{ # چهارمین تاپل
             "fields":('last_login' ,'date_joined')

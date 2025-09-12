@@ -1,6 +1,6 @@
 from django.shortcuts import render, redirect # redirect رو import کن
 from accounts.forms import UserLoginForm , UserRegisterForm
-from django.contrib.auth import authenticate , login # این رو هم نگه دار  # noqa: F401
+from django.contrib.auth import  login , logout
 
 # Create your views here.
 
@@ -22,6 +22,7 @@ def login_view(request):
 
 
 def user_register_view(request):
+    stts = 200 #  status = valid request
     if request.method == 'GET': # 'Get' رو به 'GET' تغییر دادم
         form = UserRegisterForm() # حالا میتونی request رو پاس بدی
     else: # یعنی request.method == 'POST'
@@ -31,11 +32,17 @@ def user_register_view(request):
             user = form.save(commit=True) # از .get استفاده کن، امن تره
             login(request = request, user=user) # حالا user رو لاگین میکنیم
             return redirect('accounts:user_info_view')  # به یک مسیر معتبر ریدایرکت کن، مثلاً صفحه اصلی
-           
+        else:
+            stts = 400 # status = bad request   
     context = {
         "form":form
     }
-    return render(request, 'accounts/login_view.html', context)
+    return render(request, 'accounts/register_view.html', context , status=stts)
 
 def user_info_view(request):
     return render(request,'accounts/user_info.html',{})
+
+
+def logout_view(request):
+    logout(request)
+    return redirect('accounts:user_info_view')

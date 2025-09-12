@@ -82,7 +82,15 @@
                     </span>
                 </button>
                 {# لینک ورود / حساب کاربری #}
-                <a id="account" class="navbar-toggler account-btn" href="{% url 'accounts:login_view' %}" title="ورود / حساب کاربری">
+                <a id="account"
+                 class="navbar-toggler account-btn" 
+                 href="{% if user.is_authenticated %}
+                         {% url 'accounts:user_info_view' %}
+                       {% else %} 
+                         {% url 'accounts:login_view' %}
+                       {% endif %}
+                 " 
+                 title="ورود / حساب کاربری">
                     <span class="cart-toggler-icon"><i class="fas fa-user"></i></span>
                 </a>
                 <button id="minicartCollapse"

@@ -11,16 +11,22 @@
     <div class="row">
       <div id="page-content" class="col-12">
                 
-                    <h1></h1> 
-                    <h1></h1> 
-                    <h1>{{ request.user.full_name }}</h1> 
-                    <h1>{{ request.user.full_name }}</h1> 
-                    <h1>{{ request.user.full_name }}</h1>            
-                    <h1>{{ request.user.get_full_name }}</h1> 
-                    <h1>{{ request.user.email }}</h1>             
-                    <h1>{{ request.user.get_full_name }}</h1> 
-                    <h1>{{ request.user.email }}</h1>
-      </div>   
+                     
+                    <h1>-------------------------</h1> 
+                    <h1>------------------------</h1> 
+                               
+                  
+                    {% if request.user.is_authenticated %}
+                      <h1>کاربر با نام و ایمیل </h1>             
+                      <h1>{{ request.user.get_full_name }} و</h1> 
+                      <h1>{{ request.user.email }}</h1> 
+                      <h1>با موفقیت در سامانه ثبت شد</h1> 
+                    {% else %}
+                      <a href={% url "accounts:login_view"  %} > 
+                       <h1>  لطفا بازگشت کنید به صفحه لاگین</h1>
+                      </a>
+                    {% endif %}
+      </div>  
     </div> 
 </div>
           
