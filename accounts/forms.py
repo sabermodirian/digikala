@@ -27,6 +27,7 @@ class UserLoginForm(forms.Form):
         widget=forms.PasswordInput({"class": "form-control"}),
         required=True
     )
+   
 
     def clean(self) -> Dict[str, Any]:
         clean_data = super().clean()

@@ -61,22 +61,24 @@ def product_detail_view(request, product_id):
     return render(request, 'products/product-detail.html', context)
 
 
-#def create_comment(request, product_id):
-    
-    # if request.method == 'POST':
-    #     # اول محصول رو پیدا کن
-    #     product = get_object_or_404(Product, id=product_id)
-        
-    #     # بعد کامنت رو ایجاد کن
-    #     Comment.objects.create(
-    #         title=request.POST.get('title', ''),
-    #         text=request.POST.get('text', ''),
-    #         rate=int(request.POST.get('rate', 0)),
-    #         user_email=request.POST.get('user_email', ''),
-    #         product_id=product  # خود instance محصول رو پاس بده
-    #     )
-    # return redirect('products:product_single_view', product_id=product_id)
+#
+def home(request):
+    query = Product.objects.all()
+    most_off_products = query
+    most_sell = query
+    most_recent = query
+    context = {
+        "most_off_products": most_off_products,
+        "most_sell": most_sell,
+        "most_recent": most_recent,
+        "banners": [],
+    }
 
+    return render(
+        template_name='products/index.html',
+        request=request,
+        context=context
+    )
 
  
   

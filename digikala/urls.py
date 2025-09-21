@@ -18,12 +18,13 @@ from django.contrib import admin
 from django.urls import path , include
 from django.conf import settings
 from django.conf.urls.static import static
+from products.views import home
 
 # Include the products app's URLconf in the main URLconf
 
 
 urlpatterns = [
-    
+    path('', home, name='home_view'),
     path('admin/', admin.site.urls),
     path('products/', include('products.urls',namespace='products')),
     path('sellers/', include('sellers.urls',namespace='sellers')),
