@@ -36,7 +36,11 @@
   
 "python.pythonPath": "venv/bin/python"
   ,
-"python.defaultInterpreterPath": "venv/bin/python"
+"python.defaultInterpreterPath": "venv/bin/python" ,
+
+
+ 
 
 
 }
+   

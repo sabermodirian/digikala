@@ -7,29 +7,90 @@
 
 {% block main %}
 
- <div class="container">
+ <div class="container text-left" dir="ltr">
     <div class="row">
-      <div id="page-content" class="col-12">
-                
-                     
-                    <h1>-------------------------</h1> 
-                    <h1>------------------------</h1> 
-                               
-                  
+                  <div id="breadcrump" class="row px-3" > 
+                   <div id="breadcrump" class="row px-3"> 
+                    <div id="breadcrump" class="row px-3">
+                      <div id="breadcrump" class="row px-3">
+                        <div id="breadcrump" class="row px-3" > 
+                   <div id="breadcrump" class="row px-3"> 
+                    <div id="breadcrump" class="row px-3">
+                      <div id="breadcrump" class="row px-3">
+                      </div>
+        <div class="col-12 col-md-4">
+                    
+        
+          <div class="row">
+            <div class="col-12">
+             <div class="card" >
+                <div class="card-body">
+            
                     {% if request.user.is_authenticated %}
-                      <h1>کاربر با نام و ایمیل </h1>             
-                      <h1>{{ request.user.get_full_name }} و</h1> 
-                      <h1>{{ request.user.email }}</h1> 
-                      <h1>با موفقیت در سامانه ثبت شد</h1> 
-                    {% else %}
-                      <a href={% url "accounts:login_view"  %} > 
-                       <h1>  لطفا بازگشت کنید به صفحه لاگین</h1>
-                      </a>
-                    {% endif %}
-      </div>  
+                            <h5>کاربر با نام و ایمیل </h5>             
+                            <h5>{{ request.user.get_full_name }} و</h5> 
+                            <h5>{{ request.user.email }}</h5> 
+                            <h5>با موفقیت در سامانه ثبت شد</h5> 
+                          {% else %}
+                            <a href={% url "accounts:login_view"  %} > 
+                            <h1>  لطفا بازگشت کنید به صفحه لاگین</h1>
+                            </a>
+                          {% endif %}
+
+                    </div>
+                 </div>
+              </div> 
+              <div class="col-12 mt-3">
+             <div class="card" >
+                <div class="card-body">
+            
+                    {% if request.user.is_authenticated %}
+                            <h5>کاربر با نام و ایمیل </h5>             
+                            <h5>{{ request.user.get_full_name }} و</h5> 
+                            <h5>{{ request.user.email }}</h5> 
+                            <h5>با موفقیت در سامانه ثبت شد</h5> 
+                          {% else %}
+                            <a href={% url "accounts:login_view"  %} > 
+                            <h1>  لطفا بازگشت کنید به صفحه لاگین</h1>
+                            </a>
+                          {% endif %}
+
+                    </div>
+                 </div>
+              
+          </div>
+                
+        </div>  
+
+      </div>
+        <div class="col-12 col-md-8">
+          <div class="row">
+                <div class="col-12">
+                    <div class="card">
+              <div class="card-body">
+
+              <div><h5/hh56>نام: <name >{{request.user.first_name}} </name></h5></div>
+              <div><h5/hh56>نام خانوادگی: <lastname >{{request.user.last_name}} </lastname></h5></div>
+              <div><h5/hh56>ایمیل: <email >{{request.user.email}} </email></h5></div>
+              <div><h5>مبایل: <mobile >{{request.user.mobile}} </mobile></h5></div> 
+
+              </div>
+            </div>
+                </div>
+
+          </div>
+
+            
+            
+        </div>
+          
+
+        </div>
+      
+     
     </div> 
 </div>
-          
+        
           
 {% endblock main %}
   

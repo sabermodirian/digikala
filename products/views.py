@@ -12,6 +12,9 @@ def product_list_view(request):
     return render(request,
                   template_name='products/product-list.html'
                   ,context=context)
+
+
+
     
    
     
@@ -42,6 +45,8 @@ def product_detail_view(request, product_id):
         comment_form = ProductCommentModelForm(request.POST)
         if comment_form.is_valid():
            comment_form.save(commit=True)
+
+   
            
             # Comment.objects.create(**comment_form.cleaned_data,product=p)
            
@@ -59,6 +64,9 @@ def product_detail_view(request, product_id):
     }
 
     return render(request, 'products/product-detail.html', context)
+
+    #  
+
 
 
 #
