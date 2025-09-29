@@ -1,0 +1,21 @@
+{% extends "accounts/user_admin_template.html" %}
+{% block page_title %}
+    User Comments
+
+{% endblock page_title %}
+
+{% block content %}
+                <div class="row">
+                    {% for cmnt in Context_USRcmmnts %}
+                    
+
+                        <div class="col-12">  
+                            <h5> {{cmnt.title}} </h5>
+                            <span>{{cmnt.user.email}}</span>
+                            <p> {{cmnt.text}}</p>
+                        </div>
+                        
+                    {% endfor %}
+              </div>
+
+{% endblock content %}

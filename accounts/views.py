@@ -1,6 +1,7 @@
 from django.shortcuts import render, redirect # redirect رو import کن
 from accounts.forms import UserLoginForm , UserRegisterForm
 from django.contrib.auth import  login , logout
+from products.models import Comment
 
 # Create your views here.
 
@@ -46,3 +47,15 @@ def user_info_view(request):
 def logout_view(request):
     logout(request)
     return redirect('accounts:user_info_view')
+
+# from products.models import Comment
+def user_comments_view(request):
+    qr_cmmnts = Comment.objects.filter(user=request.user)
+    return render(
+        request,
+    'accounts/user_comments.html',
+    {
+        'Context_USRcmmnts' : qr_cmmnts
+    }
+    )
+
