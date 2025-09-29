@@ -12,7 +12,7 @@
       <div id="page-content" class="col-12">
            
               <div class="col-12 card-body">
-                <form action={% url 'accounts:login_view' %} method="post">
+                <form action="{% url 'accounts:login_view' %}?next={{cntxt_next}}" method="post">
                   {% include "components/forms.html" %}
                   {% csrf_token %}
                   <input type="submit" value="login" class="btn btn-primary">

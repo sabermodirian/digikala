@@ -1,4 +1,4 @@
-from django.shortcuts import render, redirect # redirect رو import کن
+from django.shortcuts import render, redirect , reverse # redirect رو import کن
 from accounts.forms import UserLoginForm , UserRegisterForm
 from django.contrib.auth import  login , logout
 from products.models import Comment
@@ -14,10 +14,12 @@ def login_view(request):
         if form.is_valid():
             user = form.cleaned_data.get('user') # از .get استفاده کن، امن تره
             login(request = request, user=user) # حالا user رو لاگین میکنیم
-            return redirect('accounts:user_info_view')  # به یک مسیر معتبر ریدایرکت کن، مثلاً صفحه اصلی
+            my_next = request.GET.get('next' , reverse("accounts:user_info_view"))
+            return redirect(my_next)  # به یک مسیر معتبر ریدایرکت کن، مثلاً صفحه اصلی
            
     context = {
-        "form":form
+        "form":form,
+        "cntxt_next":request.GET.get('next' , reverse("accounts:user_info_view"))
     }
     return render(request, 'accounts/login_view.html', context)
 
@@ -50,12 +52,17 @@ def logout_view(request):
 
 # from products.models import Comment
 def user_comments_view(request):
-    qr_cmmnts = Comment.objects.filter(user=request.user)
-    return render(
-        request,
-    'accounts/user_comments.html',
-    {
-        'Context_USRcmmnts' : qr_cmmnts
-    }
-    )
+
+    if request.user.is_authenticated:
+        qr_cmmnts = Comment.objects.filter(user=request.user)
+        return render(request,
+        
+         'accounts/user_comments.html',
+        {
+            'Context_USRcmmnts' : qr_cmmnts
+        }
+        )
+    else:
+        return redirect(reverse('accounts:login_view') + '?next=' +
+        reverse('accounts:user_comments_view'))
 
