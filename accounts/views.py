@@ -1,19 +1,25 @@
 from django.shortcuts import render, redirect , reverse # redirect رو import کن
-from accounts.forms import UserLoginForm , UserRegisterForm
+from accounts.forms import UserLoginForm , UserRegisterForm  # noqa: F401
 from django.contrib.auth import  login , logout
 from products.models import Comment
+from django.contrib.auth.decorators import login_required
+from django.contrib.auth.forms import AuthenticationForm
+# from django.contrib.auth.views import LoginView 
+
 
 # Create your views here.
 
 def login_view(request):
     if request.method == 'GET': # 'Get' رو به 'GET' تغییر دادم
-        form = UserLoginForm(request=request) # حالا میتونی request رو پاس بدی
+        # form = UserLoginForm(request=request) # حالا میتونی request رو پاس بدی
+          form = AuthenticationForm()
     else: # یعنی request.method == 'POST'
         # برای حالت POST هم باید request رو پاس بدی و داده‌های POST رو هم به فرم بدی
-        form = UserLoginForm(request.POST, request=request)
+        # form = UserLoginForm(request.POST, request=request)
+        form = AuthenticationForm(data=request.POST , request=request)         
         if form.is_valid():
-            user = form.cleaned_data.get('user') # از .get استفاده کن، امن تره
-            login(request = request, user=user) # حالا user رو لاگین میکنیم
+            # user = form.cleaned_data.get('user') # از .get استفاده کن، امن تره
+            login(request = request, user=form.get_user()) # حالا user رو لاگین میکنیم
             my_next = request.GET.get('next' , reverse("accounts:user_info_view"))
             return redirect(my_next)  # به یک مسیر معتبر ریدایرکت کن، مثلاً صفحه اصلی
            
@@ -42,6 +48,7 @@ def user_register_view(request):
     }
     return render(request, 'accounts/register_view.html', context , status=stts)
 
+@login_required()
 def user_info_view(request):
     return render(request,'accounts/user_info.html',{})
 
@@ -51,9 +58,11 @@ def logout_view(request):
     return redirect('accounts:user_info_view')
 
 # from products.models import Comment
-def user_comments_view(request):
 
-    if request.user.is_authenticated:
+# 
+
+@login_required()
+def user_comments_view(request):   
         qr_cmmnts = Comment.objects.filter(user=request.user)
         return render(request,
         
@@ -62,7 +71,5 @@ def user_comments_view(request):
             'Context_USRcmmnts' : qr_cmmnts
         }
         )
-    else:
-        return redirect(reverse('accounts:login_view') + '?next=' +
-        reverse('accounts:user_comments_view'))
+   
 

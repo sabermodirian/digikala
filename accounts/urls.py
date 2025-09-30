@@ -1,12 +1,16 @@
 from django.urls import path  # noqa: F401
 #from . import views
-from .views import login_view , user_register_view , user_info_view, logout_view, user_comments_view
+from .views import login_view , user_register_view , user_info_view, logout_view, user_comments_view  # noqa: F401
+from django.contrib.auth import views as auth_views
+
 
 app_name = 'accounts'
 
 urlpatterns = [
 
-    path('login/',login_view, name='login_view'),
+    # path('login/',login_view, name='login_view'),
+    path('login/',auth_views.LoginView.as_view(template_name='accounts/login_view.html') , name='login_view'),
+
     path('register/',user_register_view , name="register_view"),
      path('profile/',user_info_view , name="user_info_view"),
      path('profile/comments',user_comments_view , name="user_comments_view"),

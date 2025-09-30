@@ -53,6 +53,7 @@ MIDDLEWARE = [
 ]
 
 ROOT_URLCONF = 'digikala.urls'
+LOGIN_URL = '/accounts/login'
 
 AUTH_USER_MODEL = "accounts.User"
 
