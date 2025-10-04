@@ -9,7 +9,7 @@
 
  <div class="container">
     <div class="row">
-      <div id="page-content" class="col-12">
+      <div id="page-content" class="col-12 col-md-6 col-lg-6 mx-auto" >
 
          <div id="breadcrump" class="row px-3" > 
                    <div id="breadcrump" class="row px-3"> 
@@ -17,14 +17,20 @@
                       <div id="breadcrump" class="row px-3">
                         <div id="breadcrump" class="row px-3" > 
 
-           
-              <div class="col-12 card-body">
-                <form action="{% url 'accounts:login_view' %}?next={{cntxt_next}}" method="post">
-                  {% include "components/forms.html" %}
-                  {% csrf_token %}
-                  <input type="submit" value="login" class="btn btn-primary">
-                </form>
+              <div class="card">
+                  <div class="card-body">
+                     <div class="col-12 card-body">
+                      <form action="{% url 'accounts:login_view' %}?next={{cntxt_next}}" method="post">
+                        {% include "components/forms.html" %}
+                        {% csrf_token %}
+                        <input type="submit" value="login" class="btn btn-primary">
+                      </form>
+                     </div >
+
+                  </div>
+
               </div>
+            
            
       </div>   
     </div> 

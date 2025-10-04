@@ -1,13 +1,19 @@
 from django.shortcuts import render, redirect , reverse # redirect رو import کن
-from accounts.forms import UserLoginForm , UserRegisterForm  # noqa: F401
+from accounts.forms import UserLoginForm , UserRegisterForm , MyAuthenticationForm # noqa: F401
 from django.contrib.auth import  login , logout
 from products.models import Comment
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.forms import AuthenticationForm
+from django.contrib.auth.views import LoginView
 # from django.contrib.auth.views import LoginView 
 
-
 # Create your views here.
+
+class MyLogInView(LoginView):
+    template_name = 'accounts/login_view.html'
+    authentication_form = MyAuthenticationForm
+
+
 
 def login_view(request):
     if request.method == 'GET': # 'Get' رو به 'GET' تغییر دادم
@@ -58,8 +64,7 @@ def logout_view(request):
     return redirect('accounts:user_info_view')
 
 # from products.models import Comment
-
-# 
+ 
 
 @login_required()
 def user_comments_view(request):   

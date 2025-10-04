@@ -12,6 +12,36 @@ from .models import User
 # User = get_user_model()
 # یا اگر مدل سفارشی خودتون رو ساختید:
 # from .models import User # این خط باید درست باشه اگر مدل User سفارشی هست
+from django.contrib.auth.forms  import AuthenticationForm , UsernameField
+from django.utils.translation import gettext_lazy as _
+
+
+
+class MyAuthenticationForm(AuthenticationForm):
+    
+    username = UsernameField(
+        label=_("نام کاربری"),
+        widget=forms.TextInput(
+            attrs={
+                "autofocus": True,
+                "class": "form-control",
+                "placeholder": _("نام کاربری"),
+            }
+        ),
+    )
+    password = forms.CharField(
+        label=_("رمز عبور"),
+        strip=False,
+        widget=forms.PasswordInput(
+            attrs={
+                "autocomplete": "current-password",
+                "class": "form-control",
+                "placeholder": _("رمز عبور"),
+            }
+        ),
+    )
+   
+
 
 class UserLoginForm(forms.Form):
     def __init__(self, *args, **kwargs):
