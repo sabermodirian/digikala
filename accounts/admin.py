@@ -23,14 +23,20 @@ class UserAdmin(BaseUserAdmin):
             "fields": (
                 'mobile',
                 'email',
-                'password'
+                'password',
+                
+            
             ),
         }),
         (_('Personal info'),{ # دومین تاپل
             "fields":('first_name' , 'last_name' )
         }),
         (_('Permissions'),{ # سومین تاپل
-            "fields":('is_staff' , 'is_active','is_superuser' ,'groups')
+            "fields":('is_staff' , 
+            'is_active',
+            'is_superuser',
+             'groups',
+             'user_permissions')
         }),
         (_('Important dates'),{ # چهارمین تاپل
             "fields":('last_login' ,'date_joined')

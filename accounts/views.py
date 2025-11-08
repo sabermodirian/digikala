@@ -2,15 +2,17 @@ from django.shortcuts import render, redirect , reverse # redirect رو import �
 from accounts.forms import UserLoginForm , UserRegisterForm , MyAuthenticationForm # noqa: F401
 from django.contrib.auth import  login , logout
 from products.models import Comment
-from django.contrib.auth.decorators import login_required
+from .models  import User
+from django.contrib.auth.decorators import login_required , permission_required  # noqa: F401
 from django.contrib.auth.forms import AuthenticationForm
 from django.contrib.auth.views import LoginView
+from django.http import HttpResponseForbidden  # noqa: F401
 # from django.contrib.auth.views import LoginView 
 
 # Create your views here.
 
 class MyLogInView(LoginView):
-    template_name = 'accounts/login_view.html'
+    template_name = 'accounts/login_view.html' #class base view
     authentication_form = MyAuthenticationForm
 
 
@@ -76,5 +78,30 @@ def user_comments_view(request):
             'Context_USRcmmnts' : qr_cmmnts
         }
         )
-   
+
+# @permission_required('accounts.view_users', raise_exception=True)
+@login_required()
+def get_users_list(request):
+
+    """
+    This view renders a page that lists 
+    all users in the database if the currently
+    logged in user has the permission 'accounts.view_users'.
+    If the user does not have this permission, 
+    the view returns an HttpResponseForbidden 
+    with a message indicating that the user does not have
+    permission to view the page.
+    """
+
+    # if request.user.has_perm('accounts.view_users'):
+    users = User.objects.all()  
+    
+    return render(request,"accounts/view_all_users.html" ,{
+        'users_list' : users
+    })
+    # else:
+    #     return HttpResponseForbidden('You do not have permission to view this page.')
+
+
+
 

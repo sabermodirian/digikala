@@ -31,16 +31,12 @@
         "ویرایش"
     ],
 
-
   
   
 "python.pythonPath": "venv/bin/python"
   ,
 "python.defaultInterpreterPath": "venv/bin/python" ,
-
-
  
 
-
+    "codeium.enableIndexService": false
 }
-   

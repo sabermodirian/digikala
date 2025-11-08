@@ -1,7 +1,7 @@
 from django.urls import path  # noqa: F401
 #from . import views
 from .views import login_view , MyLogInView , user_register_view ,\
- user_info_view, logout_view, user_comments_view  # noqa: F401
+ user_info_view, logout_view, user_comments_view,get_users_list  # noqa: F401
 # from django.contrib.auth import views as auth_views
 
 
@@ -17,4 +17,5 @@ urlpatterns = [
      path('profile/',user_info_view , name="user_info_view"),
      path('profile/comments',user_comments_view , name="user_comments_view"),
      path('logout/',logout_view, name='user_logout_view'),
+     path('users-list/',get_users_list, name='users_list'),
 ] 

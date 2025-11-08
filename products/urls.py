@@ -1,6 +1,6 @@
 from django.urls import path
 #from . import views
-from .views import product_list_view, product_detail_view 
+from .views import product_list_view, product_detail_view , ProductClassBaseView  # noqa: F401
 
 
 app_name = 'products'
@@ -33,8 +33,10 @@ urlpatterns = [
 
     # مسیر جزئیات یک محصول خاص
     # Route for details of a specific product
-    path('<int:product_id>/',product_detail_view, name='product_single_view'),
     
+  #  path('<int:product_id>/',product_detail_view, name='product_single_view'),
+     
+    path('<int:product_id>/', ProductClassBaseView.as_view(), name='product_single_view'),    
    
     # برای یک محصول خاص مسیر اضافه کردن کامنت
     # route for adding a comment of a specific product
