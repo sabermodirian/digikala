@@ -180,10 +180,14 @@ def home(request):
         context=context
     )
 
+
+
 def category_view(request, category_slug):#ناقص است
     return render(request, 'products/category.html')
+    
 
 def brand_view(request, brand_slug):#ناقص است
+    
     return render(request, 'products/brand.html')
 
 def delete_comment(request, comment_id):#ناقص است ,urls , هم ندارد
@@ -199,3 +203,4 @@ def delete_comment(request, comment_id):#ناقص است ,urls , هم ندارد
 def product_search_view(request):#ناقص است
 
     return render(request, 'products/search.html')  
+

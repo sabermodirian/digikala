@@ -22,7 +22,8 @@
   <link href="{% static 'css/owl.carousel.min.css' %}" rel="stylesheet" />
   <link href="{% static 'css/jquery.mCustomScrollbar.min.css' %}" rel="stylesheet" />
   <link href="{% static 'css/animate.min.css' %}" rel="stylesheet" />
-  <link href="{% static 'css/style.css' %}" rel="stylesheet" />
+  <!-- ✅ این فایل استایل‌های جدید سبد خرید را هم دارد -->
+  <link href="{% static 'css/style.css' %}" rel="stylesheet" /> 
   <!-- Font Awesome JS -->
   <script defer src="{% static 'js/solid.js' %}"></script>
   <script defer src="{% static 'js/fontawesome.js' %}"></script>
@@ -31,199 +32,75 @@
 <body>
   {% include "components/header.html" %}
 
-  <!-- Page Content -->
-  {% comment %} <div id="content"> {% endcomment %}
-    {% block main %}
+  {% block main %}
+  {% endblock main %}
+  
+  {% include "components/footer.html" %}
 
-    {% endblock main %}
-    
-    {% include "components/footer.html" %}
+  <!-- ❌ تگ overlay قدیمی شما حذف شد چون در کد جدید ما تداخل ایجاد می‌کرد -->
+  <!-- <div class="overlay"></div> -->
+
+  <!-- START: Side Cart HTML (Added) -->
+  <!-- این کد ساختار سبد خرید کشویی جدید است -->
+  <div id="side-cart-overlay" class="side-cart-overlay"></div>
+  <div id="side-cart" class="side-cart">
+      <div class="side-cart-header">
+          <h5>سبد خرید شما</h5>
+          <button id="close-cart-btn" class="close-btn">&times;</button>
+      </div>
+      <div id="side-cart-body" class="side-cart-body">
+          <div id="empty-cart-message" class="text-center p-5">
+              <i class="fas fa-shopping-basket fa-3x text-muted"></i>
+              <p class="mt-3">سبد خرید شما خالی است.</p>
+          </div>
+      </div>
+      <div class="side-cart-footer">
+          <div class="total-price-section">
+              <span>جمع کل:</span>
+              <span id="cart-total-price">0 تومان</span>
+          </div>
+          {% comment %} <a href="{% url 'orders:checkout' %}" class="btn btn-success btn-block">تکمیل خرید و پرداخت</a> {% endcomment %}
+      </div>
   </div>
-  <!-- Dark Overlay element -->
-  <div class="overlay"></div>
+  <!-- END: Side Cart HTML (Added) -->
+
+
   <script src="{% static 'js/jquery-3.4.1.min.js' %}"></script>
   <script src="{% static 'js/bootstrap.bundle.min.js' %}"></script>
   <script src="{% static 'js/jquery.mCustomScrollbar.concat.min.js' %}"></script>
   <script src="{% static 'js/owl.carousel.min.js' %}"></script>
-  <script src="{% static 'js/storage.js' %}"></script>
-  <script>
-    //owl carousel script
-    $(".main-slide").owlCarousel({
-      loop: true,
-      animateOut: "fadeOut",
-      animateIn: "fadeIn",
-      margin: 0,
-      nav: true,
-      autoplay: true,
-      dots: false,
-      items: 1,
-    });
-    $(".products-carousel").owlCarousel({
-      rtl: true,
-      loop: false,
-      margin: 10,
-      nav: true,
-      dots: false,
-      responsive: {
-        0: {
-          items: 1,
-          loop: true,
-          stagePadding: 50,
-        },
-        480: {
-          items: 2,
-          stagePadding: 0,
-        },
-        768: {
-          items: 3,
-          stagePadding: 0,
-        },
-        992: {
-          items: 4,
-          stagePadding: 0,
-        },
-        1200: {
-          items: 5,
-          stagePadding: 0,
-        },
-      },
-    });
-    $(".main-page-lists").owlCarousel({
-      rtl: true,
-      stagePadding: 50,
-      loop: false,
-      margin: 10,
-      nav: false,
-      responsive: {
-        0: {
-          items: 1,
-        },
-        600: {
-          items: 3,
-        },
-        1000: {
-          items: 5,
-        },
-      },
-    });
-  </script>
-  <script>
-    //side menu script
-    $(document).ready(function () {
-      $(".sidebar").mCustomScrollbar({
-        theme: "minimal",
-      });
+  {% comment %} <script src="{% static 'js/storage.js' %}"></script> {% endcomment %}
+  
+  <!-- ✅ SCRIPT: cart.js (Added) -->
+  <!-- فایل جاوا اسکریپت جدید سبد خرید اینجا اضافه شد -->
+  <script src="{% static 'js/cart.js' %}"></script>
 
+  <script>
+    // --- این اسکریپت‌ها دست نخورده باقی می‌مانند ---
+    //owl carousel script
+    $(".main-slide").owlCarousel({ loop: true, animateOut: "fadeOut", animateIn: "fadeIn", margin: 0, nav: true, autoplay: true, dots: false, items: 1 });
+    $(".products-carousel").owlCarousel({ rtl: true, loop: false, margin: 10, nav: true, dots: false, responsive: { 0: { items: 1, loop: true, stagePadding: 50, }, 480: { items: 2, stagePadding: 0, }, 768: { items: 3, stagePadding: 0, }, 992: { items: 4, stagePadding: 0, }, 1200: { items: 5, stagePadding: 0, }, }, });
+    $(".main-page-lists").owlCarousel({ rtl: true, stagePadding: 50, loop: false, margin: 10, nav: false, responsive: { 0: { items: 1, }, 600: { items: 3, }, 1000: { items: 5, }, }, });
+    
+    //side menu script (اسکریپت منوی کناری شما)
+    $(document).ready(function () {
+      $(".sidebar").mCustomScrollbar({ theme: "minimal" });
       $(".dismiss, .overlay").on("click", function () {
-        // hide sidebar
         $(".sidebar").removeClass("active");
-        // hide overlay
         $(".overlay").removeClass("active");
       });
-
       $("#sidemenuCollapse").on("click", function () {
-        // open sidebar
         $("#sidemenu").addClass("active");
-        // fade in the overlay
         $(".overlay").addClass("active");
         $(".collapse.in").toggleClass("in");
         $(this).attr("aria-expanded", "false");
       });
-      $("#minicartCollapse").on("click", function () {
-        $("#minicart").addClass("active");
-        $(".overlay").addClass("active");
-        $(".collapse.in").toggleClass("in");
-        $(this).attr("aria-expanded", "false");
-      });
+      // ❌ اسکریپت minicartCollapse شما حذف شد چون سبد خرید جدید جایگزین آن شده است
     });
 
-    //product quantity
-    $(document).ready(function () {
-      var quantitiy = 0;
-      $(".quantity-right-plus").click(function (e) {
-        e.preventDefault();
-        var quantityInput = $(this)
-          .closest(".input-group")
-          .children(".quantity");
-        var quantity = parseInt($(quantityInput).val());
-        $(quantityInput).val(quantity + 1);
-      });
-
-      $(".quantity-left-minus").click(function (e) {
-        e.preventDefault();
-        var quantityInput = $(this)
-          .closest(".input-group")
-          .children(".quantity");
-        var quantity = parseInt($(quantityInput).val());
-        $(quantityInput).val(quantity - 1);
-      });
-      $(".product-quantity input").change(function () {
-        updateQuantity(this);
-      });
-
-      $(".product-removal button").click(function () {
-        removeItem(this);
-      });
-
-      /* Recalculate cart */
-      function recalculateCart() {
-        var subtotal = 0;
-
-        /* Sum up row totals */
-        $(".product").each(function () {
-          subtotal += parseFloat(
-            $(this).children(".product-line-price").text()
-          );
-        });
-
-        /* Calculate totals */
-        var tax = subtotal * taxRate;
-        var shipping = subtotal > 0 ? shippingRate : 0;
-        var total = subtotal + tax + shipping;
-
-        /* Update totals display */
-        $(".totals-value").fadeOut(fadeTime, function () {
-          $("#cart-subtotal").html(subtotal.toFixed(2));
-          $("#cart-tax").html(tax.toFixed(2));
-          $("#cart-shipping").html(shipping.toFixed(2));
-          $("#cart-total").html(total.toFixed(2));
-          if (total == 0) {
-            $(".checkout").fadeOut(fadeTime);
-          } else {
-            $(".checkout").fadeIn(fadeTime);
-          }
-          $(".totals-value").fadeIn(fadeTime);
-        });
-      }
-
-      /* Update quantity */
-      function updateQuantity(quantityInput) {
-        /* Calculate line price */
-        var productRow = $(quantityInput).parent().parent();
-        var price = parseFloat(productRow.children(".product-price").text());
-        var quantity = $(quantityInput).val();
-        var linePrice = price * quantity;
-
-        /* Update line price display and recalc cart totals */
-        productRow.children(".product-line-price").each(function () {
-          $(this).fadeOut(function () {
-            $(this).text(linePrice.toFixed(2));
-            recalculateCart();
-            $(this).fadeIn(fadeTime);
-          });
-        });
-      }
-
-      /* Remove item from cart */
-      function removeItem(removeButton) {
-        /* Remove row from DOM and recalc cart total */
-        var productRow = $(removeButton).closest("li");
-        productRow.slideUp(function () {
-          productRow.remove();
-          recalculateCart();
-        });
-      }
-    });
+    // ❌❌❌ تمام منطق قدیمی سبد خرید (product quantity, recalculateCart) از اینجا حذف شد
+    // چون با سیستم جدید localStorage تداخل داشت و دیگر نیازی به آن نیست.
+    
   </script>
   {% block jsscript %}
   {% endblock jsscript %}

@@ -1,3 +1,4 @@
+
 {% load static %}
 <header>
     <nav id="sidemenu" class="sidebar">
@@ -93,7 +94,9 @@
                  title="ورود / حساب کاربری">
                     <span class="cart-toggler-icon"><i class="fas fa-user"></i></span>
                 </a>
-                <button id="minicartCollapse"
+              <!--  {% comment %} <button 
+                
+                id="minicartCollapse"
                         class="navbar-toggler mini-cart"
                         type="button"
                         title="مشاهده سبد خرید">
@@ -101,7 +104,31 @@
                         <i class="fas fa-shopping-cart"></i>
                     </span>
                     <span class="cart-total">14</span> {# این مقدار باید پویا شود #}
-                </button>
+                </button> {% endcomment %} -->
+
+                
+                     <!-- این کد را در header.html جایگزین لینک/دکمه سبد خرید قبلی شود -->
+
+                   <!-- 🔹 دکمه سبد خرید برای Side Cart با badge پویا -->
+                <div id="cart-icon-container" style="position: relative; display: inline-block;" class="mr-3">
+                    <button 
+                        id="cart-icon-btn" 
+                        class="navbar-toggler mini-cart" 
+                        type="button" 
+                        title="مشاهده سبد خرید"
+                        style="background: none; border: none; cursor: pointer;">
+                        <i class="fas fa-shopping-cart" style="font-size: 24px; color: #333;"></i>
+                        <span 
+                            id="cart-badge" 
+                            style="position: absolute; top: -10px; right: -10px;
+                                background-color: #b47277ff; color: white;
+                                border-radius: 50%; padding: 2px 8px;
+                                font-size: 12px; font-weight: bold; display: none;"
+                        >0</span>
+                    </button>
+                </div>
+ 
+              
             </div>
         </div>
     </nav>

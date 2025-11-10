@@ -1,79 +1,58 @@
 {% extends "base/base.html" %}
 
-
 {% block title %} 
   **محصولات دیجیکالا** {{product.name}}
 {% endblock title %}
 
 {% block main %}
-
-  <!-- نمایش اطلاعات محصول -->
-
- <div class="container">
-    <div class="row">
-      <div id="page-content" class="col-12">
-   <div id="breadcrump" class="row px-3"> 
+<div class="container">
+  <div class="row">
+    <div id="page-content" class="col-12">
+           <div id="breadcrump" class="row px-3">
      <div id="breadcrump" class="row px-3">
-    <div class="row px-3">
-    <ul>
-      <li>
-        <a href="/">فوکالا</a>
-      </li>
-      {% for category in product.categories_list %}
-        <li>
-          <a href="/products/category/{{ category.slug }}">{{ category.name }}</a>
-        </li>
-      {% endfor %}
-    </ul>
-  </div> 
-
-{% comment %}
-   <div class="container">
-
-      <div class="row">
-        <div class="col-12 px-3">
-          <nav aria-label="breadcrumb" id="breadcrump">
-            <ol class="breadcrumb">
-              <li class="breadcrumb-item"><a href="/">فوکالا</a></li>
-              {% for c in product.categories_list %}
-                <li class="breadcrumb-item">
-                  <a href="/products/category/{{ c.slug }}">{{ c.name }}</a>
-                </li>
-              {% endfor %}
-            </ol>
-          </nav>
-        </div>
-      </div>
-
-
-   </div> {% endcomment %}
-
+            
+        <div class="row px-3">
+          <ul>
+            <li><a href="/">فوکالا</a></li>
+            {% for category in product.categories_list %}
+              <li>
+                <a href="/products/category/{{ category.slug }}">{{ category.name }}</a>
+              </li>
+            {% endfor %}
+          </ul>
+        </div> 
 
         <div id="product-single" class="row">
           <div class="product-image col-12 col-md-6 col-lg-4 p-0">
-            
             {% if product.default_image %}
-          <img
-            class="slide-item"
-            src="{{ product.default_image.image.url }}"
-            alt="{{ product.name }}"
-          />
-        {% endif %}     
-                
+              <img
+                class="slide-item"
+                src="{{ product.default_image.image.url }}"
+                alt="{{ product.name }}"
+              />
+            {% endif %}     
           </div>
+
           <div class="product-data col-12 col-md-6 col-lg-4">
             <h1 class="product-title">{{ product.name }}</h1>
             <div class="product-meta row">
-              <span class="star-rate col-6"><i class="fas fa-star"></i> امتیاز: 3.9 از 5</span>
+              <span class="star-rate col-6">
+                <i class="fas fa-star"></i> امتیاز: 3.9 از 5
+              </span>
               <span class="user-comment-count col-6">{{ comment_counts }} دیدگاه کاربران</span>
-              <span class="product-category col-6">دسته بندی:
-                <a href="#" title="دستمال کاغذی">{{ product.category.name }}</a></span>
-              <span class="product-brand col-6">برند: <a href="#" title="نانسی">{{ product.brand.name }}</a></span>
+              <span class="product-category col-6">
+                دسته بندی:
+                <a href="#" title="{{ product.category.name }}">{{ product.category.name }}</a>
+              </span>
+              <span class="product-brand col-6">
+                برند: <a href="#" title="{{ product.brand.name }}">{{ product.brand.name }}</a>
+              </span>
               <div class="product-description">
                 <p>{{ product.description }}</p>
               </div>
             </div>
           </div>
+
           <div class="product-add-cart col-12 col-lg-4">
             <div class="box-wrap">
               <div class="product-seller">
@@ -83,168 +62,85 @@
               </div>
               <div class="product-guarantee">گارانتی اصالت و سلامت فیزیکی کالا</div>
               <div class="product-price">
-
                 <div>قیمت: {{ default_product_seller.price }} تومان</div>
-                
-               <!-- {% if default_product_seller.discount %}
-                  قیمت: <del>{{ default_product_seller.price }}</del> 
-                  <span>
-                    {{ default_product_seller.discounted_price }}
-                تومان</span>
-              {% else %}
-                <span>{{ default_product_seller.discounted_price }} تومان</span>
-              {% endif %}  
-              
-              --> 
-
+              </div> 
             </div>
-            <button href="#"
-                    class="btn btn-cart"
-                    onclick="addProductToCart({{ default_product_seller.id }} , {{ default_product_seller.price }} ,{{ default_product_seller.discounted_price }})">
-              <i class="fas fa-plus"></i> افزودن به سبد
+
+            <!-- ✅ دکمه‌ی جدید افزودن به سبد خرید (نسخه بدون onclick مخصوص cart.js) -->
+            <!-- استفاده از data-* برای اتصال مستقیم به cart.js و عدم نیاز به inline JS -->
+            <button type="button"
+                    class="btn btn-lg btn-success add-to-cart-btn"
+                    data-product-id="{{ product.id }}"
+                    data-seller-id="{{ default_product_seller.id }}"
+                    data-name="{{ product.name }}"
+                    data-price="{{ default_product_seller.price }}"
+                    data-image="{{ product.default_image.image.url }}">
+              <i class="fa fa-shopping-cart"></i> افزودن به سبد خرید
             </button>
+            <!-- 🟢 این دکمه حالا مستقیماً توسط cart.js شناسایی می‌شه و Side Cart رو فعال می‌کنه -->
           </div>
         </div>
       </div>
     </div>
-    <div id="product-sellers" class="col-12">
 
+    <div id="product-sellers" class="col-12">
       {% for s in seller_prices %}
         <div class="row">
           <div class="col-4">
             <div class="product-seller">
               <div>{{ s.seller.name }}</div>
-
               <span>رضایت خرید: 98 درصد</span>
             </div>
           </div>
+
           <div class="col-4">
-            <div class="product-price">
-              <div class="product-price"> 
-             <!-- {% comment %} 
-                {% if s.discount %}
-                  قیمت: <del>{{ s.price }}</del> <span>{{ s.discounted_price }} تومان</span>
-                {% else %}
-                  <span>{{ s.discounted_price }} تومان</span>
-                {% endif %}
- {% endcomment %}  -->
-            
-            
- <div>{{ s.price }} | {{ s.discounted_price }} | {{ s.discount }}</div>
-
-
-              </div>
+            <div class="product-price"> 
+              <div>{{ s.price }} | {{ s.discounted_price }} | {{ s.discount }}</div>
             </div>
           </div>
+
           <div class="col-4">
-            <button onclick="addProductToCart({{ s.id }} , {{ s.price }} ,{{ s.discounted_price }})"
-                    class="btn btn-cart">
+            <!-- ✅ جایگزینی دکمه قدیمی onclick با نسخه جدید -->
+            <button type="button"
+                    class="btn btn-cart add-to-cart-btn"
+                    data-product-id="{{ product.id }}"
+                    data-seller-id="{{ s.id }}"
+                    data-name="{{ product.name }}"
+                    data-price="{{ s.price }}"
+                    data-image="{{ product.default_image.image.url }}">
               <i class="fas fa-plus"></i> افزودن به سبد
             </button>
+            <!-- 🔵 اکنون تمام دکمه‌های افزودن به سبد از ساختار استاندارد استفاده می‌کنند -->
           </div>
         </div>
       {% endfor %}
     </div>
 
     <div id="product-comments" class="col-12">
-          <div class="row card">
-
-           <div class="col-12">
-
-            <form method="post">
-              {% csrf_token %}
+      <div class="row card">
+        <div class="col-12">
+          <form method="post">
+            {% csrf_token %}
             {{ comment_form.as_div }}
+            <button type="submit" class="btn btn-primary">ارسال کامنت</button>
+          </form>
 
-              <button type="submit" class="btn btn-primary" >ارسال کامنت</button>
-
-            </form>
-
-              {% for comment in prdct_comments %}
-
-                <div class="col-12">  
-                  <h5> {{comment.title}} </h5>
-                  <span>{{comment.user.email}}</span>
-                  <p> {{comment.text}}</p>
-                </div>
-              {% endfor %} 
-           </div>  
-
-                <!--   {% comment %}
-            
-          {% endcomment %}
-          -->
-
-         <div id='comment-list' class="row card"></div>
-        <!-- {% for comment in comments %}
-          <div class="col-12">
-            <h5>{{ comment.title }}</h5>
-            <span>{{ comment.user.email }}</span>
-            <p>{{ comment.text }}</p>
-          </div>
-         {% endfor %} -->
+          {% for comment in prdct_comments %}
+            <div class="col-12">  
+              <h5>{{ comment.title }}</h5>
+              <span>{{ comment.user.email }}</span>
+              <p>{{ comment.text }}</p>
+            </div>
+          {% endfor %}
+        </div>  
       </div>
     </div>
   </div>
 </div>
-  
+{% endblock main %}
 
-  <!-- نمایش گزینه‌های محصول -->
-  
-  {% endblock main %}
-  {% block jsscript %}
-    <script>
-    function addProductToCart(sellerId, price, discounted_price) {
-      const product = {
-        id: {{ product.id }},
-    image: "{{product.default_image.image.url}}",
-      price,
-      discounted_price,
-      name: '{{product.name}}',
-        sellerId
-        }
-    cartStorageAddItem(product)
-      }
-  
-    </script>
-    {% comment %} <script>
-    document.addEventListener("DOMContentLoaded", async function (event) {
-      //we ready baby
-      const response  = await fetch("{% url 'products:comment_api'  pk=product.id  %}")
-      const data = await response.json()
-      const root = document.getElementById('comment-list')
-        for(item of data){
-          root.innerHTML += (`<div class="col-12">
-            <div>${item.title}</div> 
-            <div>${item.text}<div> 
-            </div>`)
-        }
-      })
-    </script> {% endcomment %}
-    {% comment %} <script>
-      const form = document.getElementById('comment_form')
-      form.addEventListener('submit',async function(event){
-        event.preventDefault()
-        const form_data = new FormData(event.target)
-        const js_data= Object.fromEntries(form_data.entries())
-        const res = await fetch("{% url 'products:comment_api'  pk=product.id  %}" , {
-          headers: {
-            "X-CSRFToken": "{{csrf_token}}",
-            'Accept': 'application/json',
-            'Content-Type': 'application/json;charset=UTF-8'
-            
-          },
-          credentials: "same-origin",
-          method:"POST",
-          body: JSON.stringify(js_data)
-        })
-        const data = await res.json()
-        const root = document.getElementById('comment-list')
-        root.innerHTML += (`<div class="col-12">
-          <div>${data.title}</div> 
-          <div>${data.text}<div> 
-          </div>`)
-      })
-        
-    </script> {% endcomment %}
-  {% endblock jsscript %}
-  
+
+{% block jsscript %}
+  <!-- ⚠️ بخش اسکریپت قدیمی مربوط به onclick را حذف کردیم -->
+  <!-- تمام منطق افزودن به سبد خرید حالا در static/js/cart.js پیاده‌سازی شده -->
+{% endblock jsscript %}
