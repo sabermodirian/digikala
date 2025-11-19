@@ -53,19 +53,24 @@
           </header>
 
           {# 🔍 فرم جست‌وجو + نگه‌داشتن sort به‌صورت hidden #}
-          <form method="get" class="mb-3">
-            <div class="input-group input-group-sm">
-              <input
-                type="text"
-                name="search"
-                class="form-control"
-                placeholder="جستجو در محصولات"
-                value="{{ search_query }}"
+          <form method="get" action="" class="category-search-form d-flex gap-2 align-items-center">
+    <label class="form-label mb-0 text-nowrap" for="category-search-input">
+        جستجو در محصولات
+    </label>
+    <input
+        id="category-search-input"
+        class="form-control flex-grow-1"
+        type="text"
+        name="search"
+        value="{{ request.GET.search }}"
+        placeholder="نام کالا یا برند"
               >
               {% if current_sort %}
                 <input type="hidden" name="sort" value="{{ current_sort }}">
               {% endif %}
-              <button class="btn btn-outline-secondary">جستجو</button>
+               <button class="btn search-submit-btn" type="submit" aria-label="جستجو">
+                                    جستجو
+              </button>
             </div>
           </form>
 

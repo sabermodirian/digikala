@@ -1,7 +1,6 @@
 from django.shortcuts import render,get_object_or_404 , redirect,HttpResponseRedirect, HttpResponse
- # Http404 رو import کن
+from django.db.models import Max, Min, Q
 from.models import Product ,Comment, Category  # noqa: F401
-from django.db.models import Q
 
 from products.utils import get_product_last_price_list_orm
 from products.forms import ProductCommentModelForm
@@ -187,50 +186,99 @@ def home(request):
 
 # products/views.py
 class CategoryListView(ListView):
+    """
+    لیست محصولات (بر اساس دسته اختیاری) با امکان جستجو و مرتب‌سازی.
+    اگر اسلاگی داده نشود، تمام محصولات فعال نمایش داده می‌شوند.
+    """
     model = Product
     template_name = "products/category_list.html"
-    context_object_name = "product_list"
-    paginate_by = 10  # در صورت نیاز
+    context_object_name = "product_list"  # قبلاً "category_products" بود
+    paginate_by = 6
+
+    def get_category(self):
+        """
+        اسلاگ را از مسیر یا پارامتر GET می‌خواند؛
+        در صورت نبود اسلاگ مقدار None وگرنه شیء دسته را برمی‌گرداند.
+        """
+        if hasattr(self, "_category_cache"):
+            return self._category_cache
+
+        slug_from_path = self.kwargs.get("category_slug")
+        slug_from_query = self.request.GET.get("category_slug")
+        resolved_slug = slug_from_path or slug_from_query
+
+        if not resolved_slug:
+            self._category_cache = None
+            return None
+
+        self._category_cache = get_object_or_404(
+            Category,
+            slug=resolved_slug,
+        )
+        return self._category_cache
 
     def get_queryset(self):
-        qs = (
-            Product.objects.with_price_bounds()
+        """
+        محصولات فعال را می‌آورد، اگر دسته‌ای انتخاب شده باشد بر همان محدود می‌کند،
+        سپس بر اساس عبارت جستجو و گزینه‌ی مرتب‌سازی نتایج را بازآرایی می‌کند.
+        """
+        category = self.get_category()
+        queryset = (
+            Product.objects.filter(is_active=True)
             .select_related("category", "brand")
-            .prefetch_related("seller_prices", "prdct_images")
+            .prefetch_related("seller_prices", "sellers")
         )
+        if category:
+            queryset = queryset.filter(category=category)
 
-        slug = self.kwargs.get("category_slug")
-        if slug:
-            qs = qs.filter(category__slug=slug)
-
-        search = self.request.GET.get("search")
-        if search:
-            qs = qs.filter(
-                Q(name__icontains=search)
-                | Q(en_name__icontains=search)
-                | Q(description__icontains=search)
+        search_query = self.request.GET.get("search", "").strip()
+        if search_query:
+            queryset = queryset.filter(
+                Q(name__icontains=search_query)
+                | Q(en_name__icontains=search_query)
+                | Q(description__icontains=search_query)
+                | Q(brand__name__icontains=search_query)
+                | Q(category__name__icontains=search_query)
             )
 
-        sort = self.request.GET.get("sort")
-        if sort == "cheapest":
-            qs = qs.order_by("min_price", "id")
-        elif sort == "expensive":
-            qs = qs.order_by("-max_price", "-id")
+        sort_option = self.request.GET.get("sort", "newest")
+        if sort_option == "cheapest":
+            queryset = queryset.annotate(
+                min_price=Min("seller_prices__price")
+            ).order_by("min_price", "-seller_prices__create_at", "-id")
+        elif sort_option == "expensive":
+            queryset = queryset.annotate(
+                max_price=Max("seller_prices__price")
+            ).order_by("-max_price", "-seller_prices__create_at", "-id")
         else:
-            qs = qs.order_by("-id")
-        return qs
+            queryset = queryset.order_by(
+                "-seller_prices__create_at",
+                "-id",
+            )
 
+        return queryset
 
     def get_context_data(self, **kwargs):
-        ctx = super().get_context_data(**kwargs)
-        slug = self.kwargs.get("category_slug")
-        ctx["categories"] = Category.objects.all()
-        ctx["category"] = (
-            get_object_or_404(Category, slug=slug) if slug else None
+        """
+        داده‌های کمکی مانند لیست دسته‌ها، عبارت جستجو و گزینه‌ی مرتب‌سازی را
+        به قالب تزریق می‌کند تا وضعیت جاری کاربر حفظ شود.
+        """
+        context = super().get_context_data(**kwargs)
+        category = self.get_category()
+        sort_option = self.request.GET.get("sort", "newest")
+        context.update(
+            {
+                "categories": Category.objects.all(),
+                "category": category,                # برای قالب فعلی
+                "selected_category": category,       # اگر جاهای دیگر هنوز از آن استفاده کنند
+                "search_query": self.request.GET.get("search", "").strip(),
+                "current_sort": sort_option,         # فرم مرتب‌سازی
+                "sort_option": sort_option,          # سازگاری با کد قبلی
+            }
         )
-        ctx["search_query"] = self.request.GET.get("search", "")
-        ctx["current_sort"] = self.request.GET.get("sort", "newest")
-        return ctx
+        return context
+
+
 
     
 def brand_view(request, brand_slug):#ناقص است

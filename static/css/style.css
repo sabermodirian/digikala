@@ -1022,17 +1022,17 @@ label.custom-control-label {
     left: 0;
     width: 100%;
     height: 100%;
-    background-color: rgba(0, 0, 0, 0.6);
+    background-color: rgba(218, 174, 135, 0.685);
     z-index: 1040;
-    opacity: 0;
+    opacity: 1;
     visibility: hidden;
-    transition: opacity 0.3s ease, visibility 0s 0.3s;
+    transition: opacity 5s ease, visibility 0ms 3ms ease;
 }
 
 .side-cart-overlay.active {
     opacity: 1;
     visibility: visible;
-    transition: opacity 0.3s ease;
+    transition: opacity 3s ease;
 }
 
 /* بدنه اصلی سبد خرید کشویی */
@@ -1042,12 +1042,12 @@ label.custom-control-label {
     left: -380px; /* شروع از بیرون صفحه در سمت چپ */
     width: 380px;
     height: 100%;
-    background-color: #fff;
-    box-shadow: 2px 0 15px rgba(0, 0, 0, 0.2);
+    background-color: #dac1ac;
+    box-shadow: 20px 0 150px #dac1ac;
     z-index: 1050;
     display: flex;
     flex-direction: column;
-    transition: left 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+    transition: left 0.5s cubic-bezier(0.25, 0.46, 0.45, 0.94);
 }
 
 .side-cart.active {
@@ -1060,15 +1060,15 @@ label.custom-control-label {
     justify-content: space-between;
     align-items: center;
     padding: 1rem 1.5rem;
-    border-bottom: 1px solid #e9ecef;
-    background-color: #f8f9fa;
+    border-bottom: 3px solid #eed547;
+    background-color: #70808f;
 }
 
 .side-cart-header h5 { margin: 0; font-weight: 600; }
 
 .side-cart .close-btn {
-    background: none; border: none; font-size: 2rem; font-weight: 300;
-    line-height: 1; cursor: pointer; color: #6c757d; padding: 0;
+    background: hwb(187 36% 58%); border: none; font-size: 2rem; font-weight: 300;
+    line-height: 1; cursor: pointer; color: #f0e117; padding: 0;
 }
 
 /* بدنه و آیتم‌های سبد خرید */
@@ -1080,7 +1080,7 @@ label.custom-control-label {
 
 .cart-item {
     display: flex; align-items: center; margin-bottom: 1.5rem;
-    padding-bottom: 1.5rem; border-bottom: 1px solid #f1f1f1;
+    padding-bottom: 1.5rem; border-bottom: 1px solid #2318c4;
 }
 .cart-item:last-child { border-bottom: none; }
 
@@ -1093,34 +1093,34 @@ label.custom-control-label {
 
 .cart-item-name {
     font-weight: 600; margin-bottom: 0.25rem;
-    display: block; color: #333;
+    display: block; color: #07157b;
 }
 
-.cart-item-price { color: #888; font-size: 0.9rem; }
+.cart-item-price { color: #9e0808; font-size: 0.9rem; }
 
 .cart-item-actions { display: flex; align-items: center; margin-top: 0.75rem; }
 
 .quantity-control {
-    display: flex; align-items: center; border: 1px solid #ddd;
+    display: flex; align-items: center; border: 2px solid #dbd713;
     border-radius: 5px; margin-left: auto;
 }
 
 .quantity-btn {
-    background: none; border: none; padding: 0.3rem 0.7rem;
-    cursor: pointer; font-weight: bold; color: #555;
+    background: #a1e6ef; border: 2px solid #28fb03; padding: 0.3rem 0.7rem;
+    cursor: pointer; font-size: medium; font-weight: bold; color: #1a0fedec;
 }
 
 .item-quantity { padding: 0 0.5rem; font-weight: 500; }
 
 .remove-item-btn {
-    background: none; border: none; color: #e74c3c;
+    background: none; border: none; color: #a81909;
     cursor: pointer; font-size: 1.2rem; margin-right: 15px;
 }
 
 /* فوتر سبد خرید */
 .side-cart-footer {
-    padding: 1rem 1.5rem; border-top: 1px solid #e9ecef;
-    background-color: #fff; box-shadow: 0 -2px 10px rgba(0,0,0,0.05);
+    padding: 1rem 1.5rem; border-top: 3px solid #1a0fedec;
+    background-color: #3bcbd6; box-shadow: 0 -2px 10px rgba(209, 25, 25, 0.3);
 }
 
 .total-price-section {
@@ -1133,3 +1133,26 @@ label.custom-control-label {
 #empty-cart-message { display: none; } /* در ابتدا مخفی است */
 
 /* === END: Side Shopping Cart Styles === */
+
+
+/* === START: Search Form Styles === */
+.search-form {
+    position: relative;
+    display: inline-block;
+    margin-right: 10px;
+}
+.search-submit-btn {
+    color: #fff;
+    background-color: #c62828;
+    border-color: #c62828;
+    box-shadow: none;
+    transition: background-color 0.2s ease, border-color 0.2s ease;
+}
+
+.search-submit-btn:hover,
+.search-submit-btn:focus {
+    background-color: #a71d2a;
+    border-color: #a71d2a;
+    color: #fff;
+}
+

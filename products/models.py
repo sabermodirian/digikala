@@ -37,6 +37,7 @@ class Product(models.Model):
     name = models.CharField(_("Persian Name"),max_length=200)
     en_name = models.CharField(_("English Name"),max_length=200)#Enhlish Name of products
     description = models.TextField(_("Description"))
+    is_active = models.BooleanField(_("Is Active"),default=True)
     category = models.ForeignKey("Category"
                                  ,verbose_name=_("Category")
                                  ,on_delete=models.RESTRICT       # RESTRICT = PROTECT
