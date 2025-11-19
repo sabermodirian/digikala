@@ -1,0 +1,113 @@
+{% extends "base/base.html" %}
+{% load static %}
+
+{% block title %}{% if category %}{{ category.name }}{% else %}همه محصولات{% endif %}{% endblock %}
+
+{% block main %}
+{# 🌟 کانتینر کلی صفحهٔ لیست محصولات #}
+<div class="container py-4">
+  <div class="row g-4">
+    <div class="col-lg-3">
+      {# 🌈 سایدبار مخصوص دسته‌بندی‌ها و فیلتر سریع #}
+      <div class="card shadow-sm border-0">
+        <div class="card-body">
+          <div class="d-flex align-items-center justify-content-between mb-3">
+            <span class="fw-semibold">دسته‌بندی‌ها</span>
+            <i class="bi bi-funnel text-muted"></i>
+          </div>
+          <ul class="list-unstyled small mb-0">
+            {% for c in categories %}
+              <li class="mb-2">
+                {# 🧭 لینک هر دسته با namespace صحیح و حفظ search/sort #}
+            <a
+                  href="{% url 'products:category_list_slug' c.slug %}{% if request.GET.search or request.GET.sort %}?{% if request.GET.search %}search={{ request.GET.search }}{% endif %}{% if request.GET.search and request.GET.sort %}&{% endif %}{% if request.GET.sort %}sort={{ request.GET.sort }}{% endif %}{% endif %}"
+                  class="d-block text-decoration-none {% if category and c.slug == category.slug %}fw-bold text-dark{% else %}text-secondary{% endif %}">
+                  <i class="bi bi-chevron-left small me-1"></i>{{ c.name }}
+            </a>
+              </li>
+            {% empty %}
+
+              <li class="text-muted">هیچ دسته‌ای ثبت نشده است.</li> {# 🪴 پیام خالی بودن دسته‌ها #}
+            {% endfor %}
+          </ul>
+        </div>
+      </div>
+    </div>
+
+    <div class="col-lg-9">
+      {# 💼 بخش اصلی نمایش محصولات + فرم سرچ و مرتب‌سازی #}
+      <div class="card shadow-sm border-0">
+        <div class="card-body">
+          <header class="d-flex flex-column flex-md-row align-items-md-center justify-content-between gap-2 mb-3">
+            <div>
+              <h1 class="h5 mb-1">{% if category %}{{ category.name }}{% else %}همه محصولات{% endif %}</h1>
+              <p class="text-muted small mb-0">
+                {% if category %}
+                  {{ category.description|default:"لیست محصولات این دسته." }}
+                {% else %}
+                  تمام محصولات فعال فروشگاه در این صفحه قابل مشاهده است.
+                {% endif %}
+              </p>
+            </div>
+            <span class="badge bg-light text-dark">{{ product_list|length }} محصول</span>
+          </header>
+
+          {# 🔍 فرم جست‌وجو + نگه‌داشتن sort به‌صورت hidden #}
+          <form method="get" class="mb-3">
+            <div class="input-group input-group-sm">
+              <input
+                type="text"
+                name="search"
+                class="form-control"
+                placeholder="جستجو در محصولات"
+                value="{{ search_query }}"
+              >
+              {% if current_sort %}
+                <input type="hidden" name="sort" value="{{ current_sort }}">
+              {% endif %}
+              <button class="btn btn-outline-secondary">جستجو</button>
+            </div>
+          </form>
+
+          {# 🎛️ کنترل مرتب‌سازی نتایج با حفظ انتخاب فعلی #}
+          <div class="d-flex align-items-center justify-content-end gap-2 mb-4 flex-wrap">
+            <small class="text-muted">نوع مرتب‌سازی:</small>
+            <select id="sort-select" class="form-select form-select-sm" name="sort">
+              <option value="newest" {% if current_sort == "newest" %}selected{% endif %}>جدیدترین</option>
+              <option value="cheapest" {% if current_sort == "cheapest" %}selected{% endif %}>ارزان‌ترین</option>
+              <option value="expensive" {% if current_sort == "expensive" %}selected{% endif %}>گران‌ترین</option>
+            </select>
+          </div>
+
+          {# 🛒 گرید کارت‌های محصول؛ هر کارت با partial product-card رندر می‌شود #}
+          <div class="row g-3">
+            {% for prdct in product_list %}
+              <div class="col-sm-6 col-lg-4">
+                {% include "components/product-card.html" with product=prdct %}
+              </div>
+            {% empty %}
+              <div class="col-12">
+                <p class="text-muted text-center">هیچ محصولی در این دسته وجود ندارد.</p>
+              </div>
+            {% endfor %}
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+{# ⚙️ اسکریپت کوچک برای اعمال مرتب‌سازی بدون از دست دادن search #}
+<script>
+  document.addEventListener("DOMContentLoaded", function () {
+    const select = document.getElementById("sort-select");
+    if (!select) return;
+    select.addEventListener("change", function () {
+      const params = new URLSearchParams(window.location.search);
+      params.set("sort", this.value);
+      const query = params.toString();
+      window.location = query ? `${window.location.pathname}?${query}` : window.location.pathname;
+    });
+  });
+</script>
+{% endblock main %}

@@ -1,6 +1,6 @@
 from django.urls import path
 #from . import views
-from .views import product_list_view, product_detail_view , ProductClassBaseView  # noqa: F401
+from .views import product_list_view, product_detail_view ,CategoryListView , ProductClassBaseView # noqa: F401
 
 
 app_name = 'products'
@@ -41,7 +41,8 @@ urlpatterns = [
     # برای یک محصول خاص مسیر اضافه کردن کامنت
     # route for adding a comment of a specific product
    # path('<int:product_id>/comments/',create_comment, name='create_comment'),
-
+      path("category/", CategoryListView.as_view(), name="category_list"),
+      path("category/<slug:category_slug>/", CategoryListView.as_view(), name="category_list_slug"),
 ]   
 #  حالا به انگلیسی:
 """

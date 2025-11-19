@@ -1,4 +1,6 @@
 from django.db import models
+from django.db.models import Min, Max
+from django.db.models.functions import Coalesce
 from django.utils.translation import gettext as _
 from django.urls import reverse  # noqa: F401
 from django.conf import settings
@@ -18,6 +20,16 @@ class Brand(models.Model):
     verbose_name_plural = _("Brands")
     def __str__(self):
         return f'{self.id}:{self.name } {self.en_name} {self.slug}'
+
+
+class ProductQuerySet(models.QuerySet):
+    def with_price_bounds(self):
+        """Annotate each product with min_price/max_price taken from SellerProductPrice.
+        این متد برای هر محصول، قیمت های حداقل/حداکثر را از SellerProductPrice برمیگرداند."""
+        return self.annotate(
+            min_price=Coalesce(Min("seller_prices__price"), 0),
+            max_price=Coalesce(Max("seller_prices__price"), 0),
+        )
 
 class Product(models.Model):   
     
@@ -123,7 +135,25 @@ current_category را به والد آن به‌روزرسانی می‌کنیم
         """    
             
     def __str__(self):
-        return f'{self.id}:{self.name }'  
+        return f'{self.id}:{self.name }' 
+
+
+    objects = ProductQuerySet.as_manager()
+    """Custom manager for Product model.
+    این یک مدیر کوستوم است که برای مدل Product استفاده می‌شود.
+    """
+
+    @property
+    def cheapest_price(self):
+        data = self.seller_prices.aggregate(value=Min("price"))
+        return data["value"] or 0
+        """این متد دسته‌بندی محصولات را براساس قیمت کمترین برمی‌گرداند."""
+
+    @property
+    def most_expensive_price(self):
+        data = self.seller_prices.aggregate(value=Max("price"))
+        return data["value"] or 0
+    """ این هم متد قیمت بیشترین محصول را برمی‌گرداند."""
 
     
     

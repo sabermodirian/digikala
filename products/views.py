@@ -1,9 +1,12 @@
 from django.shortcuts import render,get_object_or_404 , redirect,HttpResponseRedirect, HttpResponse
  # Http404 رو import کن
-from.models import Product ,Comment  # noqa: F401
+from.models import Product ,Comment, Category  # noqa: F401
+from django.db.models import Q
+
 from products.utils import get_product_last_price_list_orm
 from products.forms import ProductCommentModelForm
 from django.views import View
+from django.views.generic import ListView
 
 from django.contrib import messages
 # Create your views here.
@@ -182,13 +185,58 @@ def home(request):
 
 
 
-def category_view(request, category_slug):#ناقص است
-    return render(request, 'products/category.html')
-    
+# products/views.py
+class CategoryListView(ListView):
+    model = Product
+    template_name = "products/category_list.html"
+    context_object_name = "product_list"
+    paginate_by = 10  # در صورت نیاز
 
+    def get_queryset(self):
+        qs = (
+            Product.objects.with_price_bounds()
+            .select_related("category", "brand")
+            .prefetch_related("seller_prices", "prdct_images")
+        )
+
+        slug = self.kwargs.get("category_slug")
+        if slug:
+            qs = qs.filter(category__slug=slug)
+
+        search = self.request.GET.get("search")
+        if search:
+            qs = qs.filter(
+                Q(name__icontains=search)
+                | Q(en_name__icontains=search)
+                | Q(description__icontains=search)
+            )
+
+        sort = self.request.GET.get("sort")
+        if sort == "cheapest":
+            qs = qs.order_by("min_price", "id")
+        elif sort == "expensive":
+            qs = qs.order_by("-max_price", "-id")
+        else:
+            qs = qs.order_by("-id")
+        return qs
+
+
+    def get_context_data(self, **kwargs):
+        ctx = super().get_context_data(**kwargs)
+        slug = self.kwargs.get("category_slug")
+        ctx["categories"] = Category.objects.all()
+        ctx["category"] = (
+            get_object_or_404(Category, slug=slug) if slug else None
+        )
+        ctx["search_query"] = self.request.GET.get("search", "")
+        ctx["current_sort"] = self.request.GET.get("sort", "newest")
+        return ctx
+
+    
 def brand_view(request, brand_slug):#ناقص است
     
     return render(request, 'products/brand.html')
+
 
 def delete_comment(request, comment_id):#ناقص است ,urls , هم ندارد
     cmmnt_obj = get_object_or_404(Comment, id=comment_id)
