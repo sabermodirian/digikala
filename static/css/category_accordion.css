@@ -1,0 +1,64 @@
+/* ===============================================================
+   🎨 استایل گرافیکی آکاردیون دسته‌بندی‌ها
+   ===============================================================
+   ✨ توضیح فارسی:
+   این بخش ظاهر لینک‌ها، فلش کنار آنها، و افکت باز و بسته شدن 
+   زیرمنوها را مشخص می‌کند.
+
+   ✨ English Explanation:
+   Styling for accordion menu links, dropdown arrows, and
+   animated open/close transitions for subcategory lists.
+   =============================================================== */
+.category-link {
+  background: linear-gradient(to right, #48c30e, #87d2ef);
+  color: lch(83.27% 82.54 93.77 / 0.925);
+  border-radius: 8px;
+  padding: 9px 16px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  transition: background 0.3s ease, color 0.3s ease, box-shadow 0.3s ease;
+}
+
+.category-link:hover {
+  background: linear-gradient(to right, #ea6530, #05bae22d);
+  color: #3765e2;
+  box-shadow: inset 0 -1px 0 rgba(6, 177, 181, 0.25);
+}
+
+.category-link.open {
+  color: #ef5661;
+  background: #fff8f8;
+}
+
+/* فلش */
+.dropdown-arrow {
+  color: #7e148a;
+  transition: transform 0.35s ease, color 0.3s ease;
+}
+
+.category-link.open .dropdown-arrow {
+  transform: rotate(-180deg);
+  color: #ef5661;
+}
+
+/* زیرمنو با افکت نرم */
+.subcategory-list {
+  max-height: 0;
+  overflow: hidden;
+  opacity: 0;
+  padding-left: 1.2rem;
+  transition: max-height 0.6s cubic-bezier(0.33, 1, 0.68, 1), opacity 0.4s ease-in-out;
+}
+
+.subcategory-list.open {
+  max-height: 600px;
+  opacity: 1;
+}
+
+
+.subcategory-link:hover {
+  background: linear-gradient(to right, #e0f9ff, #f4fdff);
+  color: #3765e2;
+  box-shadow: inset 0 -1px 0 rgba(6, 177, 181, 0.25);
+}

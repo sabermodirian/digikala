@@ -1,14 +1,19 @@
-<!-- products/templates/products/includes/category_node.html -->
+{# =============================================================== #}
+{# 🌿 قالب بازگشتی برای نمایش گره‌های دسته‌بندی درختی #}
+{# English Note: Recursive template for rendering category tree nodes #}
+{# =============================================================== #}
+{# ⚠️ توجه: هیچ CSS یا JS در این فایل نباید load شود! #}
+{# ⚠️ نکته مهم: بین تگ <a> و <ul> هیچ تگ یا کامنت HTML نگذارید #}
 
-<li>
-    {# لینک اصلی دسته‌بندی #}
-    <a href="{{ category.get_absolute_url }}" 
+<li class="category-item">
+    <!-- 🎯 لینک دسته‌بندی اصلی (یا فرزند) -->
+    <a href="{{ category.get_absolute_url }}"
        class="category-link {% if category.slug == view.kwargs.category_slug %}active{% endif %}">
         {{ category.name }}
     </a>
-    
-    {# 🔁 اگر این دسته‌بندی فرزند داشت، یک لیست تودرتو ایجاد و این تمپلیت را بازگشتی فراخوانی کن #}
+
     {% if category.children.all %}
+        <!-- 🌱 زیرمجموعه‌ها (Subcategories) -->
         <ul class="subcategory-list">
             {% for child in category.children.all %}
                 {% include "products/includes/category_node.html" with category=child %}
