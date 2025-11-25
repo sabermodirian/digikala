@@ -1,3 +1,9 @@
+
+/* =========================================
+   ✨ Yemenah Marketplace Stylesheet
+   EN: Modern base styles + custom UI blocks
+   FA: استایل جامع یمنه برای لایه‌ها و ویجت‌ها
+   ========================================= */
 @font-face {
   font-family: iran-sans;
   src: url(../fonts/iransans.woff);
@@ -5,6 +11,23 @@
   font-style: normal;
 }
 
+:root {
+  --color-primary: #06b1b5;
+  --color-primary-strong: #24ced2;
+  --color-accent: #ef5661;
+  --color-highlight: #db531d;
+  --color-muted: #76787a;
+  --color-text: #444444;
+  --color-bg: #f5f5f5;
+  --color-surface: #ffffff;
+  --color-border: #eaeaea;
+  --color-shadow: rgba(0, 0, 0, 0.1);
+  color-scheme: light;
+}
+
+/* =========================================
+   🧬 Base Setup | تنظیمات پایه
+   ========================================= */
 html,
 body {
   font-family: "iran-sans";
@@ -12,9 +35,9 @@ body {
   font-size: 0.9rem;
   font-weight: 300;
   line-height: 1.7em;
-  color: #444;
+  color: var(--color-text);
   text-align: right;
-  background-color: #f5f5f5;
+  background-color: var(--color-bg);
 }
 
 .rtl {
@@ -24,9 +47,18 @@ body {
 .ltr {
   direction: ltr;
 }
+
 a {
-  color: #06b1b5;
+  color: var(--color-primary);
 }
+
+a,
+a:hover,
+a:focus {
+  text-decoration: none;
+  transition: all 0.3s;
+}
+
 @media (min-width: 1200px) {
   .container,
   .container-lg,
@@ -37,14 +69,9 @@ a {
   }
 }
 
-a,
-a:hover,
-a:focus {
-  text-decoration: none;
-  transition: all 0.3s;
-}
-
-/* side menu styles */
+/* =========================================
+   🧭 Navigation & Side Menu | ناوبری و منو
+   ========================================= */
 .navbar {
   padding: 15px 10px;
   background: #fff !important;
@@ -67,9 +94,26 @@ a:focus {
   margin: 40px 0;
 }
 
-/* ---------------------------------------------------
-    SIDEBAR STYLE
------------------------------------------------------ */
+.navbar-toggler {
+  padding: 0.25rem 0.5rem;
+}
+
+.nav-btn svg {
+  position: relative;
+  top: 2px;
+  color: #76787a;
+}
+
+a.navbar-brand img {
+  width: 115px;
+  height: auto;
+  position: relative;
+  top: 6px;
+}
+
+/* =========================================
+   📚 Side Menu Styles | استایل منوی کناری
+   ========================================= */
 #sidemenu,
 #minicart {
   position: fixed;
@@ -83,11 +127,6 @@ a:focus {
   text-align: right;
 }
 
-#sidemenu.active,
-#minicart.active {
-  box-shadow: 3px 3px 3px rgba(0, 0, 0, 0.2);
-}
-
 #sidemenu {
   width: 300px;
   right: -300px;
@@ -96,6 +135,11 @@ a:focus {
 #minicart {
   width: 350px;
   left: -350px;
+}
+
+#sidemenu.active,
+#minicart.active {
+  box-shadow: 3px 3px 3px rgba(0, 0, 0, 0.2);
 }
 
 #sidemenu.active {
@@ -110,8 +154,16 @@ a:focus {
   width: 28px;
 }
 
+span.cart-toggler-icon {
+  font-size: 1.6rem;
+}
+
 #sidemenuCollapse {
   margin-left: 0.5rem;
+}
+
+#minicartCollapse {
+  position: relative;
 }
 
 #minicartCollapse .cart-total {
@@ -128,10 +180,6 @@ a:focus {
   left: -0.3rem;
 }
 
-#minicartCollapse {
-  position: relative;
-}
-
 .dismiss {
   width: 35px;
   height: 35px;
@@ -142,8 +190,6 @@ a:focus {
   top: 20px;
   left: 0;
   cursor: pointer;
-  -webkit-transition: all 0.3s;
-  -o-transition: all 0.3s;
   transition: all 0.3s;
   border-radius: 0 5px 5px 0;
 }
@@ -169,6 +215,9 @@ a:focus {
   opacity: 1;
 }
 
+/* =========================================
+   🧭 Sidebar & Mini Cart | سایدبار و مینی‌کارت
+   ========================================= */
 .sidebar .sidebar-header {
   padding: 1.5rem;
   background: #f1f1f1;
@@ -245,45 +294,13 @@ ul ul a {
   top: 3px;
 }
 
-span.cart-toggler-icon {
-  font-size: 1.6rem;
-}
-
-.navbar-toggler {
-  padding: 0.25rem 0.5rem;
-}
-
-.nav-btn svg {
-  position: relative;
-  top: 2px;
-  color: #76787a;
-}
-
 .input-group-append {
   margin-left: 1px;
 }
 
-a.navbar-brand img {
-  width: 115px;
-  height: auto;
-  position: relative;
-  top: 6px;
-}
-
-/* ---------------------------------------------------
-    MINICART STYLE
------------------------------------------------------ */
-#minicart ul li img {
-  float: right;
-  margin-left: 5px;
-}
-
-#minicart .dismiss {
-  right: 0;
-  left: auto;
-  border-radius: 5px 0 0 5px;
-}
-
+/* =========================================
+   🛒 Minicart Style | سبک مینی‌کارت
+   ========================================= */
 #minicart ul li {
   list-style: none;
   width: 100%;
@@ -295,6 +312,11 @@ a.navbar-brand img {
   position: relative;
 }
 
+#minicart ul li img {
+  float: right;
+  margin-left: 5px;
+}
+
 #minicart ul li .product-title {
   font-size: 1rem;
   display: block;
@@ -303,15 +325,21 @@ a.navbar-brand img {
   white-space: nowrap;
 }
 
+#minicart ul li .product-price {
+  font-size: 1rem;
+  color: #06b1b5;
+  display: inline-block;
+}
+
 #minicart ul li .product-price del {
   color: #76787a;
   font-size: 0.8rem;
 }
 
-#minicart ul li .product-price {
-  font-size: 1rem;
-  color: #06b1b5;
-  display: inline-block;
+#minicart .dismiss {
+  right: 0;
+  left: auto;
+  border-radius: 5px 0 0 5px;
 }
 
 #minicart .fa-window-close {
@@ -419,10 +447,9 @@ button.quantity-right-plus:focus {
   color: #fafafa;
 }
 
-/* ---------------------------------------------------
-    CONTENT STYLE
------------------------------------------------------ */
-
+/* =========================================
+   🧱 Content Area | محتوای اصلی
+   ========================================= */
 #content {
   width: 100%;
   min-height: 100vh;
@@ -435,7 +462,6 @@ button.quantity-right-plus:focus {
 }
 
 /* carousel */
-
 .owl-nav {
   position: absolute;
   left: 0;
@@ -503,6 +529,29 @@ button.owl-next {
   color: #06b1b5;
 }
 
+.carousel-box .card {
+  border: none;
+  padding: 0.5rem;
+}
+
+.carousel-box .card-body {
+  padding: 0;
+}
+
+.carousel-box .owl-nav {
+  top: -50px;
+}
+
+.carousel-box .owl-prev {
+  left: 4rem;
+  right: auto;
+}
+
+.carousel-box .owl-next {
+  left: 1rem;
+  right: auto;
+}
+
 .card .card-title {
   text-align: center;
   font-size: 1rem;
@@ -548,29 +597,6 @@ button.owl-next {
   background-color: #24ced2;
 }
 
-.carousel-box .card {
-  border: none;
-  padding: 0.5rem;
-}
-
-.carousel-box .card-body {
-  padding: 0;
-}
-
-.carousel-box .owl-nav {
-  top: -50px;
-}
-
-.carousel-box .owl-prev {
-  left: 4rem;
-  right: auto;
-}
-
-.carousel-box .owl-next {
-  left: 1rem;
-  right: auto;
-}
-
 footer {
   background-color: #eceff1;
   margin-top: 3rem;
@@ -582,11 +608,6 @@ footer {
   background-color: #e6e8e8;
   height: 4rem;
   margin-bottom: 1rem;
-}
-
-.copyright {
-  line-height: 3rem;
-  background-color: #e6e8e8;
 }
 
 .footer-widget h4 {
@@ -621,6 +642,14 @@ footer {
   color: #06b1b5;
 }
 
+.copyright {
+  line-height: 3rem;
+  background-color: #e6e8e8;
+}
+
+/* =========================================
+   📱 Responsive Helpers | واکنش‌گرایی
+   ========================================= */
 @media screen and (max-width: 1199px) {
   #content {
     padding-top: 7rem;
@@ -647,14 +676,26 @@ footer {
   }
 }
 
+/* =========================================
+   🧩 Product Grid & Widgets | شبکه محصولات و ویجت‌ها
+   ========================================= */
+#products-grid {
+  margin-right: -16px;
+  margin-bottom: -16px;
+}
+
+#products-grid .card {
+  border: none;
+}
+
 #products-grid .card .product-box {
   margin-top: -1px;
   margin-left: -1px;
   border: 1px solid #eaeaea;
 }
 
-#products-grid .card {
-  border: none;
+#products-grid .card-body {
+  padding: 0.5rem;
 }
 
 #widget-sidebar,
@@ -732,42 +773,32 @@ footer {
   border: 1px solid #eaeaea;
 }
 
-
-/* #breadcrump {
-  padding: 1rem;
-  border-bottom: 1px solid #eaeaea;
-  color: #76787a;
-}
-#breadcrump ul {
-  display: flex;
-  list-style-type: none;
-  gap: 20px;
-} */
-
 #breadcrump {
   background: transparent;
   padding: 1rem 0;
   border-bottom: 1px solid #eaeaea;
 }
+
 #breadcrump .breadcrumb {
   background: none;
   margin-bottom: 0;
   padding: 0;
 }
+
 #breadcrump .breadcrumb-item + .breadcrumb-item::before {
   content: "›";
   color: #76787a;
   padding: 0 0.5rem;
 }
+
 #breadcrump .breadcrumb-item a {
   color: #76787a;
   text-decoration: none;
 }
+
 #breadcrump .breadcrumb-item a:hover {
   text-decoration: underline;
 }
-
-
 
 #product-sort {
   padding: 0 1rem;
@@ -796,15 +827,6 @@ footer {
 
 #product-sort .sort-title {
   margin: 0.5rem;
-}
-
-#products-grid {
-  margin-right: -16px;
-  margin-bottom: -16px;
-}
-
-#products-grid .card-body {
-  padding: 0.5rem;
 }
 
 #search-widget .search-box {
@@ -847,7 +869,7 @@ label.custom-control-label {
   border-color: #06b1b5;
 }
 
-.custom-control-input:focus:not(:checked) ~ .custom-control-label::before {
+custom-control-input:focus:not(:checked) ~ .custom-control-label::before {
   border-color: #06b1b5;
 }
 
@@ -855,6 +877,9 @@ label.custom-control-label {
   box-shadow: 0 0 0 0.2rem rgba(6, 177, 181, 0.25);
 }
 
+/* =========================================
+   🧑‍💼 Seller Widget | ویجت فروشنده
+   ========================================= */
 #seller-widget {
   padding: 0 !important;
 }
@@ -912,16 +937,21 @@ label.custom-control-label {
   line-height: 2rem;
 }
 
+/* =========================================
+   🛍️ Product Details | جزئیات محصول
+   ========================================= */
 #product-single h1.product-title {
   font-size: 1.5rem;
   padding: 2rem 0 1rem;
   margin-bottom: 0.5rem;
   border-bottom: 1px solid #eaeaea;
 }
+
 #product-single .product-description {
   padding-top: 2rem;
   line-height: 2.5rem;
 }
+
 #product-single .product-meta span {
   line-height: 2.5rem;
 }
@@ -942,12 +972,12 @@ label.custom-control-label {
   border-bottom: 1px solid #eaeaea;
 }
 
-#product-single .product-add-cart {
-  padding-top: 1rem;
-}
-
 #product-single .product-seller span {
   font-size: 0.9rem;
+}
+
+#product-single .product-add-cart {
+  padding-top: 1rem;
 }
 
 #product-single .product-guarantee {
@@ -977,6 +1007,9 @@ label.custom-control-label {
   background-color: #f5f5f5;
 }
 
+/* =========================================
+   🤝 Product Sellers | فروشندگان محصول
+   ========================================= */
 #product-sellers {
   margin: 2rem 0;
   background-color: #fff;
@@ -1009,150 +1042,792 @@ label.custom-control-label {
   color: #06b1b5;
   border: 2px solid #06b1b5;
 }
+
 #product-sellers .row {
   border-bottom: 1px solid #eaeaea;
 }
 
-/* === START: Side Shopping Cart Styles (Off-Canvas) === */
+/* =========================================
+   🧺 Side Shopping Cart | سبد خرید کناری
+   ========================================= */
 
 /* پس‌زمینه تیره پشت سبد خرید */
 .side-cart-overlay {
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    background-color: rgba(218, 174, 135, 0.685);
-    z-index: 1040;
-    opacity: 1;
-    visibility: hidden;
-    transition: opacity 5s ease, visibility 0ms 3ms ease;
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(218, 174, 135, 0.685);
+  z-index: 1040;
+  opacity: 1;
+  visibility: hidden;
+  transition: opacity 5s ease, visibility 0ms 3ms ease;
 }
 
 .side-cart-overlay.active {
-    opacity: 1;
-    visibility: visible;
-    transition: opacity 3s ease;
+  opacity: 1;
+  visibility: visible;
+  transition: opacity 3s ease;
 }
 
 /* بدنه اصلی سبد خرید کشویی */
 .side-cart {
-    position: fixed;
-    top: 0;
-    left: -380px; /* شروع از بیرون صفحه در سمت چپ */
-    width: 380px;
-    height: 100%;
-    background-color: #dac1ac;
-    box-shadow: 20px 0 150px #dac1ac;
-    z-index: 1050;
-    display: flex;
-    flex-direction: column;
-    transition: left 0.5s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+  position: fixed;
+  top: 0;
+  left: -380px;
+  width: 380px;
+  height: 100%;
+  background-color: #dac1ac;
+  box-shadow: 20px 0 150px #dac1ac;
+  z-index: 1050;
+  display: flex;
+  flex-direction: column;
+  transition: left 0.5s cubic-bezier(0.25, 0.46, 0.45, 0.94);
 }
 
 .side-cart.active {
-    left: 0; /* حرکت به داخل صفحه */
+  left: 0;
 }
 
 /* هدر سبد خرید */
 .side-cart-header {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    padding: 1rem 1.5rem;
-    border-bottom: 3px solid #eed547;
-    background-color: #70808f;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 1rem 1.5rem;
+  border-bottom: 3px solid #eed547;
+  background-color: #70808f;
 }
 
-.side-cart-header h5 { margin: 0; font-weight: 600; }
+.side-cart-header h5 {
+  margin: 0;
+  font-weight: 600;
+}
 
 .side-cart .close-btn {
-    background: hwb(187 36% 58%); border: none; font-size: 2rem; font-weight: 300;
-    line-height: 1; cursor: pointer; color: #f0e117; padding: 0;
+  background: hwb(187 36% 58%);
+  border: none;
+  font-size: 2rem;
+  font-weight: 300;
+  line-height: 1;
+  cursor: pointer;
+  color: #f0e117;
+  padding: 0;
 }
 
 /* بدنه و آیتم‌های سبد خرید */
 .side-cart-body {
-    flex-grow: 1;
-    overflow-y: auto;
-    padding: 1rem;
+  flex-grow: 1;
+  overflow-y: auto;
+  padding: 1rem;
 }
 
 .cart-item {
-    display: flex; align-items: center; margin-bottom: 1.5rem;
-    padding-bottom: 1.5rem; border-bottom: 1px solid #2318c4;
+  display: flex;
+  align-content: center;
+  margin-bottom: 1.5rem;
+  padding-bottom: 1.5rem;
+  border-bottom: 1px solid #2318c4;
 }
-.cart-item:last-child { border-bottom: none; }
+
+.cart-item:last-child {
+  border-bottom: none;
+}
 
 .cart-item-image {
-    width: 80px; height: 80px; object-fit: cover;
-    border-radius: 8px; margin-left: 1rem;
+  width: 80px;
+  height: 80px;
+  object-fit: cover;
+  border-radius: 8px;
+  margin-left: 1rem;
 }
 
-.cart-item-details { flex-grow: 1; }
+.cart-item-details {
+  flex-grow: 1;
+}
 
 .cart-item-name {
-    font-weight: 600; margin-bottom: 0.25rem;
-    display: block; color: #07157b;
+  font-weight: 600;
+  margin-bottom: 0.25rem;
+  display: block;
+  color: #07157b;
 }
 
-.cart-item-price { color: #9e0808; font-size: 0.9rem; }
+.cart-item-price {
+  color: #9e0808;
+  font-size: 0.9rem;
+}
 
-.cart-item-actions { display: flex; align-items: center; margin-top: 0.75rem; }
+.cart-item-actions {
+  display: flex;
+  align-items: center;
+  margin-top: 0.75rem;
+}
 
 .quantity-control {
-    display: flex; align-items: center; border: 2px solid #dbd713;
-    border-radius: 5px; margin-left: auto;
+  display: flex;
+  align-items: center;
+  border: 2px solid #dbd713;
+  border-radius: 5px;
+  margin-left: auto;
 }
 
 .quantity-btn {
-    background: #a1e6ef; border: 2px solid #28fb03; padding: 0.3rem 0.7rem;
-    cursor: pointer; font-size: medium; font-weight: bold; color: #1a0fedec;
+  background: #a1e6ef;
+  border: 2px solid #28fb03;
+  padding: 0.3rem 0.7rem;
+  cursor: pointer;
+  font-size: medium;
+  font-weight: bold;
+  color: #1a0fedec;
 }
 
-.item-quantity { padding: 0 0.5rem; font-weight: 500; }
+.item-quantity {
+  padding: 0 0.5rem;
+  font-weight: 500;
+}
 
 .remove-item-btn {
-    background: none; border: none; color: #a81909;
-    cursor: pointer; font-size: 1.2rem; margin-right: 15px;
+  background: none;
+  border: none;
+  color: #a81909;
+  cursor: pointer;
+  font-size: 1.2rem;
+  margin-right: 15px;
 }
 
 /* فوتر سبد خرید */
 .side-cart-footer {
-    padding: 1rem 1.5rem; border-top: 3px solid #1a0fedec;
-    background-color: #3bcbd6; box-shadow: 0 -2px 10px rgba(209, 25, 25, 0.3);
+  padding: 1rem 1.5rem;
+  border-top: 3px solid #1a0fedec;
+  background-color: #3bcbd6;
+  box-shadow: 0 -2px 10px rgba(209, 25, 25, 0.3);
 }
 
 .total-price-section {
-    display: flex; justify-content: space-between; font-weight: bold;
-    font-size: 1.1rem; margin-bottom: 1rem;
+  display: flex;
+  justify-content: space-between;
+  font-weight: bold;
+  font-size: 1.1rem;
+  margin-bottom: 1rem;
 }
 
-.btn-block { width: 100%; }
-
-#empty-cart-message { display: none; } /* در ابتدا مخفی است */
-
-/* === END: Side Shopping Cart Styles === */
-
-
-/* === START: Search Form Styles === */
-.search-form {
-    position: relative;
-    display: inline-block;
-    margin-right: 10px;
+.btn-block {
+  width: 100%;
 }
-.search-submit-btn {
+
+#empty-cart-message {
+  display: none;
+}
+
+/* === END: 🧺 Side Shopping Cart Styles | پایان استایل سبد خرید === */
+
+/* =========================================
+   🎨 1. استایل‌های نوار جستجو (Digikala Style)
+   ========================================= */
+.category-search-form {
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+  flex-wrap: nowrap;
+  gap: 0.8rem;
+  padding: 1rem;
+  background-color: #afafeb;
+  border-radius: 12px;
+  border: 3px solid #f1f375;
+  margin-bottom: 1.5rem;
+  overflow-x: auto;
+}
+
+/* لیبل آبی */
+.search-label {
+  background-color: #007bff;
+  color: #fff;
+  font-weight: 700;
+  font-size: 0.95rem;
+  border-radius: 8px;
+  padding: 0.5rem 1rem;
+  white-space: nowrap;
+  flex-shrink: 0;
+}
+
+/* اینپوت ورودی */
+.search-input {
+  flex: 1;
+  min-width: 200px;
+  border: 3px solid #f0e858;
+  border-radius: 8px;
+  padding: 0.5rem 1rem;
+  outline: none;
+  transition: border-color 0.3s;
+}
+
+.search-input:focus {
+  border-color: #007bff;
+}
+
+/* دکمه نارنجی */
+.search-btn {
+  background-color: #db531d;
+  color: lab(96.69% -1.01 0.72 / 0.929);
+  border: none;
+  border-radius: 8px;
+  padding: 0.5rem 1.2rem;
+  font-weight: bold;
+  white-space: nowrap;
+  transition: background-color 0.2s;
+  cursor: pointer;
+  flex-shrink: 0;
+}
+
+.search-btn:hover {
+  background-color: #28b321;
+  color: #f5f2f1;
+}
+
+/* سلکت مرتب‌سازی */
+.sort-select {
+  border-radius: 8px;
+  border: 3px solid #eeda5a;
+  padding: 0.5rem 2rem 0.5rem 1rem;
+  cursor: pointer;
+  flex-shrink: 0;
+}
+
+/* حالت ریسپانسیو فرم (موبایل) */
+@media (max-width: 768px) {
+  .category-search-form {
+    flex-wrap: wrap;
+  }
+
+  .search-label,
+  .search-btn,
+  .sort-select {
+    width: 100%;
+    justify-content: center;
+    display: flex;
+  }
+}
+
+/* =========================================
+   🌓 2. استایل سایدبار دسته‌بندی + Auto Dark Mode
+   ========================================= */
+
+/* --- استایل پایه (مشترک) --- */
+.category-sidebar {
+  border-radius: 16px;
+  padding: 1.2rem 1rem;
+  margin-bottom: 1.5rem;
+  font-family: "Vazirmatn", "IranSans", sans-serif;
+  transition: all 0.3s ease;
+}
+
+.category-title {
+  font-size: 1.1rem;
+  font-weight: 800;
+  border-right: 4px solid;
+  padding-right: 0.6rem;
+  margin-bottom: 1rem;
+}
+
+.category-list {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.category-list li {
+  margin-bottom: 0.4rem;
+}
+
+.category-list a {
+  display: block;
+  text-decoration: none;
+  padding: 0.6rem 0.8rem;
+  border-radius: 10px;
+  font-weight: 500;
+  font-size: 0.95rem;
+  transition: all 0.2s ease-in-out;
+}
+
+/* --- 🌞 حالت روشن (Light Mode - پیش‌فرض) --- */
+.category-sidebar {
+  background-color: #e8e6f1ee;
+  border: 1px solid #eedb0a;
+  box-shadow: 0 14px 70px #8383e3;
+}
+
+.category-title {
+  color: #3eb7d5ef;
+  border-right-color: #ef394e;
+}
+
+.category-list a {
+  color: #2d8cb8;
+}
+
+.category-list a:hover {
+  background-color: #007bff;
+  color: #f4f3ef;
+  padding-right: 1.2rem;
+  box-shadow: 0 8px 25px #06b1b5;
+}
+
+.category-list a.active {
+  background-color: #db531d;
+  color: #fff;
+  font-weight: 700;
+  box-shadow: 0 8px 25px rgba(51, 56, 200, 0.981);
+}
+
+/* --- 🌑 حالت تیره خودکار (Auto Dark Mode) --- */
+@media (prefers-color-scheme: dark) {
+  .category-sidebar {
+    background-color: #2a2a2a;
+    border: 1px solid #444;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+  }
+
+  .category-title {
+    color: #00b0ff;
+    border-right-color: #00b0ff;
+  }
+
+  .category-list a {
+    color: #e0e0e0;
+  }
+
+  .category-list a:hover {
+    background-color: #383838;
+    color: #ff9800;
+  }
+
+  .category-list a.active {
+    background-color: #007bff;
     color: #fff;
-    background-color: #c62828;
-    border-color: #c62828;
-    box-shadow: none;
-    transition: background-color 0.2s ease, border-color 0.2s ease;
+    box-shadow: 0 2px 10px rgba(0, 123, 255, 0.4);
+  }
+
+  /* آیکون فیلتر */
+  .category-sidebar .bi-funnel {
+    color: #aaa !important;
+  }
 }
 
-.search-submit-btn:hover,
-.search-submit-btn:focus {
-    background-color: #a71d2a;
-    border-color: #a71d2a;
-    color: #fff;
+/* =========================================
+   🌙 Manual Dark Theme | تم تاریک دستی
+   ========================================= */
+
+/* ==== Dark Mode – Comments & Forms ==== */
+body[data-theme="dark"] .comments-wrapper,
+body[data-theme="dark"] .product-comments,
+body[data-theme="dark"] .review-form,
+body[data-theme="dark"] .comment-card,
+body[data-theme="dark"] .rating-box {
+  background-color: #161b29;
+  color: #e3e7f2;
+  border-color: rgba(255, 255, 255, 0.08);
+}
+
+body[data-theme="dark"] .review-form h3,
+body[data-theme="dark"] .comments-wrapper h3,
+body[data-theme="dark"] .comments-wrapper label {
+  color: #f7f9ff;
+}
+
+/* ورودی‌ها و فیلدهای متن */
+body[data-theme="dark"] .review-form .form-control,
+body[data-theme="dark"] .comments-wrapper .form-control,
+body[data-theme="dark"] .review-form textarea,
+body[data-theme="dark"] .review-form input[type="text"],
+body[data-theme="dark"] .review-form input[type="email"] {
+  background-color: #1f2536;
+  color: #f4f6ff;
+  border-color: rgba(255, 255, 255, 0.15);
+}
+
+body[data-theme="dark"] .review-form .form-control::placeholder {
+  color: rgba(244, 246, 255, 0.55);
+}
+
+/* پیام‌های خطا / کمک‌رسان */
+body[data-theme="dark"] .review-form .invalid-feedback,
+body[data-theme="dark"] .review-form .form-text {
+  color: #ffd9a8;
+}
+
+/* دکمه‌های ارسال/ثبت */
+body[data-theme="dark"] .review-form .btn,
+body[data-theme="dark"] .comments-wrapper .btn {
+  background: linear-gradient(135deg, #1cc8d2, #0f9cff);
+  color: #0a1626;
+  border: none;
+}
+
+body[data-theme="dark"] .review-form .btn:hover {
+  opacity: 0.9;
+}
+
+/* خطوط جداکننده یا باکس‌های خالی */
+body[data-theme="dark"] .comments-wrapper hr {
+  border-color: rgba(255, 255, 255, 0.08);
+}
+
+:is(body.theme-dark, body[data-theme="dark"]) {
+  color-scheme: dark;
+  background-color: #0f1115;
+  color: #f5f5f5;
+}
+
+:is(body.theme-dark, body[data-theme="dark"]) a {
+  color: #4ed2da;
+}
+
+:is(body.theme-dark, body[data-theme="dark"]) #content {
+  background-color: transparent;
+}
+
+:is(body.theme-dark, body[data-theme="dark"]) .navbar {
+  background: #161b24 !important;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.65);
+}
+
+:is(body.theme-dark, body[data-theme="dark"]) .line {
+  border-bottom-color: rgba(255, 255, 255, 0.1);
+}
+
+:is(body.theme-dark, body[data-theme="dark"]) #sidemenu,
+:is(body.theme-dark, body[data-theme="dark"]) #minicart {
+  background: #1a1f2b;
+  color: #f5f5f5;
+  box-shadow: 0 10px 40px rgba(0, 0, 0, 0.4);
+}
+
+:is(body.theme-dark, body[data-theme="dark"]) .sidebar .sidebar-header {
+  background: #1f2533;
+  color: #f5f5f5;
+}
+
+:is(body.theme-dark, body[data-theme="dark"]) .sidebar ul.components {
+  border-bottom-color: rgba(255, 255, 255, 0.08);
+}
+
+:is(body.theme-dark, body[data-theme="dark"]) .sidebar ul li a {
+  color: #d2dcff;
+}
+
+:is(body.theme-dark, body[data-theme="dark"]) .sidebar ul li a:hover {
+  background: rgba(239, 86, 97, 0.85);
+  color: #fff;
+}
+
+:is(body.theme-dark, body[data-theme="dark"]) .sidebar ul li.active > a,
+:is(body.theme-dark, body[data-theme="dark"]) a[aria-expanded="true"] {
+  background: #ef5661;
+  color: #ffffff;
+}
+
+:is(body.theme-dark, body[data-theme="dark"]) ul ul a {
+  background: #202636;
+  color: #bcd4ff;
+}
+
+:is(body.theme-dark, body[data-theme="dark"]) .search-box .input-group-append {
+  background-color: #ef5661;
+}
+
+:is(body.theme-dark, body[data-theme="dark"]) .search-field {
+  background-color: #0f131d;
+  color: #fff;
+  border-color: #2c364c;
+}
+
+:is(body.theme-dark, body[data-theme="dark"]) #minicart ul li {
+  background-color: #1f2635;
+  border: 1px solid rgba(255, 255, 255, 0.05);
+}
+
+:is(body.theme-dark, body[data-theme="dark"]) #minicart button {
+  background-color: #283349 !important;
+  color: #f5f5f5;
+}
+
+:is(body.theme-dark, body[data-theme="dark"]) #minicart button.checkout {
+  background-color: var(--color-accent) !important;
+  color: #fff;
+}
+
+:is(body.theme-dark, body[data-theme="dark"]) #minicart .sidebar-header {
+  background: var(--color-accent);
+}
+
+:is(body.theme-dark, body[data-theme="dark"]) .carousel-box .box-wrap,
+:is(body.theme-dark, body[data-theme="dark"]) .sidebar-widget,
+:is(body.theme-dark, body[data-theme="dark"]) #page-content,
+:is(body.theme-dark, body[data-theme="dark"]) #product-sellers {
+  background-color: #161b25;
+  border-color: #2a3144;
+  box-shadow: 0 12px 35px rgba(0, 0, 0, 0.55);
+}
+
+:is(body.theme-dark, body[data-theme="dark"]) .card .card-title,
+:is(body.theme-dark, body[data-theme="dark"]) .card .product-price {
+  color: #f5f5f5;
+}
+
+:is(body.theme-dark, body[data-theme="dark"]) .btn.btn-cart {
+  background-color: var(--color-primary);
+  color: #0f1115;
+}
+
+:is(body.theme-dark, body[data-theme="dark"]) footer,
+:is(body.theme-dark, body[data-theme="dark"]) .footer-slogan,
+:is(body.theme-dark, body[data-theme="dark"]) .copyright {
+  background-color: #151924;
+  color: #d6d8e6;
+}
+
+:is(body.theme-dark, body[data-theme="dark"]) #logos-widget .widget-content {
+  background-color: #151924;
+}
+
+:is(body.theme-dark, body[data-theme="dark"]) #products-grid .card .product-box {
+  border-color: rgba(255, 255, 255, 0.08);
+}
+
+:is(body.theme-dark, body[data-theme="dark"]) #widget-sidebar .sidebar-widget {
+  background-color: #181e2c;
+  border-color: rgba(255, 255, 255, 0.07);
+}
+
+:is(body.theme-dark, body[data-theme="dark"]) #widget-sidebar h4.widget-title {
+  border-bottom-color: var(--color-primary);
+  color: #e5f8ff;
+}
+
+:is(body.theme-dark, body[data-theme="dark"]) #breadcrump {
+  border-bottom-color: rgba(255, 255, 255, 0.08);
+}
+
+:is(body.theme-dark, body[data-theme="dark"]) #breadcrump .breadcrumb-item a {
+  color: #9fa9c7;
+}
+
+:is(body.theme-dark, body[data-theme="dark"]) #product-sort span {
+  background-color: #202638;
+  color: #d5e4ff;
+}
+
+:is(body.theme-dark, body[data-theme="dark"]) #product-sort span.active {
+  background-color: var(--color-accent);
+  color: #fff;
+}
+
+:is(body.theme-dark, body[data-theme="dark"]) .category-search-form {
+  background-color: #1a1f2d;
+  border-color: #5a6bff;
+  box-shadow: 0 12px 30px rgba(0, 0, 0, 0.55);
+}
+
+:is(body.theme-dark, body[data-theme="dark"]) .search-input {
+  background-color: #111624;
+  color: #fefefe;
+  border-color: #394563;
+}
+
+:is(body.theme-dark, body[data-theme="dark"]) .search-btn {
+  background-color: #c7542b;
+  color: #fff;
+}
+
+:is(body.theme-dark, body[data-theme="dark"]) .sort-select {
+  background-color: #111624;
+  border-color: #4c5c8a;
+  color: #f5f5f5;
+}
+
+:is(body.theme-dark, body[data-theme="dark"]) .category-sidebar {
+  background-color: #1c2233;
+  border-color: #384560;
+  box-shadow: 0 16px 50px rgba(0, 0, 0, 0.65);
+}
+
+:is(body.theme-dark, body[data-theme="dark"]) .category-title {
+  color: #4ad4f4;
+  border-right-color: #4ad4f4;
+}
+
+:is(body.theme-dark, body[data-theme="dark"]) .category-list a {
+  color: #dfe9ff;
+}
+
+:is(body.theme-dark, body[data-theme="dark"]) .category-list a:hover {
+  background-color: #2a3146;
+  color: #ffc670;
+  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.5);
+}
+
+:is(body.theme-dark, body[data-theme="dark"]) .category-list a.active {
+  background-color: #007bff;
+  color: #fff;
+}
+
+:is(body.theme-dark, body[data-theme="dark"]) #product-single .box-wrap {
+  background-color: #151923;
+}
+
+:is(body.theme-dark, body[data-theme="dark"]) #product-single .product-seller,
+:is(body.theme-dark, body[data-theme="dark"]) #product-single .product-guarantee {
+  border-bottom-color: rgba(255, 255, 255, 0.08);
+}
+
+:is(body.theme-dark, body[data-theme="dark"]) #product-sellers {
+  border-color: rgba(255, 255, 255, 0.08);
+}
+
+:is(body.theme-dark, body[data-theme="dark"]) #product-sellers .row {
+  border-bottom-color: rgba(255, 255, 255, 0.07);
+}
+
+:is(body.theme-dark, body[data-theme="dark"]) #product-sellers button.btn.btn-cart {
+  background-color: transparent;
+  color: var(--color-primary);
+  border-color: var(--color-primary);
+}
+
+:is(body.theme-dark, body[data-theme="dark"]) #seller-widget .head-image {
+  background-color: #101626;
+}
+
+:is(body.theme-dark, body[data-theme="dark"]) #seller-widget .widget-title {
+  color: #8de4ff;
+  border-bottom-color: rgba(255, 255, 255, 0.08);
+}
+
+:is(body.theme-dark, body[data-theme="dark"]) #seller-widget .widget-title span {
+  color: #96a3c8;
+}
+
+:is(body.theme-dark, body[data-theme="dark"]) #seller-widget .market-link {
+  border-top-color: rgba(255, 255, 255, 0.08);
+  color: #e3ebff;
+}
+
+:is(body.theme-dark, body[data-theme="dark"]) #seller-widget .market-stat span {
+  color: var(--color-primary-strong);
+}
+
+:is(body.theme-dark, body[data-theme="dark"]) .side-cart-overlay {
+  background-color: rgba(9, 12, 21, 0.86);
+}
+
+:is(body.theme-dark, body[data-theme="dark"]) .side-cart {
+  background-color: #1d2232;
+  box-shadow: 20px 0 80px rgba(0, 0, 0, 0.6);
+}
+
+:is(body.theme-dark, body[data-theme="dark"]) .side-cart-header {
+  background-color: #101626;
+  border-bottom-color: #2f3a56;
+}
+
+:is(body.theme-dark, body[data-theme="dark"]) .side-cart .close-btn {
+  color: #ffd25f;
+}
+
+:is(body.theme-dark, body[data-theme="dark"]) .cart-item {
+  border-bottom-color: rgba(255, 255, 255, 0.05);
+}
+
+:is(body.theme-dark, body[data-theme="dark"]) .cart-item-name {
+  color: #f8f9ff;
+}
+
+:is(body.theme-dark, body[data-theme="dark"]) .cart-item-price {
+  color: #ffa5a5;
+}
+
+:is(body.theme-dark, body[data-theme="dark"]) .quantity-control {
+  border-color: #4a556f;
+}
+
+:is(body.theme-dark, body[data-theme="dark"]) .quantity-btn {
+  background: #2a3144;
+  border-color: #00ffbd;
+  color: #c6d4ff;
+}
+
+:is(body.theme-dark, body[data-theme="dark"]) .remove-item-btn {
+  color: #ff7676;
+}
+
+:is(body.theme-dark, body[data-theme="dark"]) .side-cart-footer {
+  background-color: #131827;
+  border-top-color: #2d384f;
+  box-shadow: 0 -2px 25px rgba(0, 0, 0, 0.6);
+}
+
+:is(body.theme-dark, body[data-theme="dark"]) .total-price-section {
+  color: #ffffff;
+}
+
+:is(body.theme-dark, body[data-theme="dark"]) .category-sidebar .bi-funnel {
+  color: #bdc7ef !important;
+}
+
+/* ناحیه حالت تاریک پایان یافت ✅ */
+
+:is(body.theme-dark, body[data-theme="dark"]) .product-comments,
+:is(body.theme-dark, body[data-theme="dark"]) .comments-wrapper,
+:is(body.theme-dark, body[data-theme="dark"]) .review-form,
+:is(body.theme-dark, body[data-theme="dark"]) .comment-card,
+:is(body.theme-dark, body[data-theme="dark"]) .comment-form,
+:is(body.theme-dark, body[data-theme="dark"]) #comments-form,
+:is(body.theme-dark, body[data-theme="dark"]) .card,
+:is(body.theme-dark, body[data-theme="dark"]) .card-body {
+  background-color: #141a28 !important;
+  color: #eef3ff !important;
+  border-color: rgba(255, 255, 255, 0.08) !important;
+  box-shadow: none;
+}
+
+:is(body.theme-dark, body[data-theme="dark"]) .card:not(.bg-transparent) {
+  background-color: #161d30 !important;
+}
+
+:is(body.theme-dark, body[data-theme="dark"]) .comment-card + .comment-card {
+  border-top: 1px solid rgba(255, 255, 255, 0.08) !important;
+}
+
+/* فیلدها و ورودی‌ها */
+:is(body.theme-dark, body[data-theme="dark"]) .review-form .form-control,
+:is(body.theme-dark, body[data-theme="dark"]) .review-form textarea,
+:is(body.theme-dark, body[data-theme="dark"]) .review-form input[type="text"],
+:is(body.theme-dark, body[data-theme="dark"]) .review-form input[type="email"],
+:is(body.theme-dark, body[data-theme="dark"]) .review-form select,
+:is(body.theme-dark, body[data-theme="dark"]) .comments-wrapper .form-control {
+  background-color: #0f1422 !important;
+  color: #f6f8ff !important;
+  border-color: #2c364f !important;
+}
+
+:is(body.theme-dark, body[data-theme="dark"]) .form-control::placeholder {
+  color: rgba(255, 255, 255, 0.55) !important;
+}
+
+/* دکمه ارسال نظر */
+:is(body.theme-dark, body[data-theme="dark"]) .review-form .btn,
+:is(body.theme-dark, body[data-theme="dark"]) .comments-wrapper button[type="submit"] {
+  background: linear-gradient(135deg, #1cc8d2, #0f9cff);
+  color: #0a1626;
+  border: none;
+}
+
+/* خطاها یا پیام‌ها */
+:is(body.theme-dark, body[data-theme="dark"]) .review-form .invalid-feedback,
+:is(body.theme-dark, body[data-theme="dark"]) .review-form .help-block,
+:is(body.theme-dark, body[data-theme="dark"]) .review-form .form-text {
+  color: #ffcf93 !important;
 }
 

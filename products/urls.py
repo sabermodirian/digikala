@@ -43,7 +43,16 @@ urlpatterns = [
    # path('<int:product_id>/comments/',create_comment, name='create_comment'),
       path("category/", CategoryListView.as_view(), name="category_list"),
       path("category/<slug:category_slug>/", CategoryListView.as_view(), name="category_list_slug"),
-]   
+    #  path("category/<slug:category_slug>/", ProductListView.as_view(), name="category_detail"),
+]
+
+'''
+      ' حواست باشه در پروژه ی استاد کمیجانی مربوط به 
+        فیلمهای آموزشی دانشکار اسامی و ویوی بخش کتگوری دسته بندی ها در URL به این شکل هستش 
+       path("category/<slug:category_slug>/", ProductListView.as_view(), name="category_detail"),
+     '''
+
+
 #  حالا به انگلیسی:
 """
 

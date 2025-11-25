@@ -1,118 +1,104 @@
 {% extends "base/base.html" %}
 {% load static %}
 
-{% block title %}{% if category %}{{ category.name }}{% else %}همه محصولات{% endif %}{% endblock %}
+{% block title %}
+  {% if category %}{{ category.name }}{% else %}همه محصولات{% endif %}
+{% endblock %}
 
 {% block main %}
 {# 🌟 کانتینر کلی صفحهٔ لیست محصولات #}
 <div class="container py-4">
   <div class="row g-4">
+    
+    <!-- 🔹 ستون سایدبار (دسته‌بندی‌ها) -->
     <div class="col-lg-3">
-      {# 🌈 سایدبار مخصوص دسته‌بندی‌ها و فیلتر سریع #}
-      <div class="card shadow-sm border-0">
-        <div class="card-body">
-          <div class="d-flex align-items-center justify-content-between mb-3">
-            <span class="fw-semibold">دسته‌بندی‌ها</span>
-            <i class="bi bi-funnel text-muted"></i>
-          </div>
-          <ul class="list-unstyled small mb-0">
-            {% for c in categories %}
-              <li class="mb-2">
-                {# 🧭 لینک هر دسته با namespace صحیح و حفظ search/sort #}
-            <a
-                  href="{% url 'products:category_list_slug' c.slug %}{% if request.GET.search or request.GET.sort %}?{% if request.GET.search %}search={{ request.GET.search }}{% endif %}{% if request.GET.search and request.GET.sort %}&{% endif %}{% if request.GET.sort %}sort={{ request.GET.sort }}{% endif %}{% endif %}"
-                  class="d-block text-decoration-none {% if category and c.slug == category.slug %}fw-bold text-dark{% else %}text-secondary{% endif %}">
-                  <i class="bi bi-chevron-left small me-1"></i>{{ c.name }}
-            </a>
-              </li>
-            {% empty %}
-
-              <li class="text-muted">هیچ دسته‌ای ثبت نشده است.</li> {# 🪴 پیام خالی بودن دسته‌ها #}
-            {% endfor %}
-          </ul>
-        </div>
-      </div>
+      {# ✨ اینجا فایل جدید سایدبار درختی را فراخوانی می‌کنیم #}
+      {% include "products/includes/category_sidebar_tree.html" %}
     </div>
 
+    <!-- 🔹 ستون اصلی (محصولات و جستجو) -->
     <div class="col-lg-9">
-      {# 💼 بخش اصلی نمایش محصولات + فرم سرچ و مرتب‌سازی #}
+      {# ... این بخش بدون تغییر باقی می‌ماند ... #}
       <div class="card shadow-sm border-0">
         <div class="card-body">
-          <header class="d-flex flex-column flex-md-row align-items-md-center justify-content-between gap-2 mb-3">
+          
+          {# 🏷️ هدر صفحه #}
+          <header class="d-flex flex-column flex-md-row align-items-md-center justify-content-between gap-2 mb-4">
             <div>
-              <h1 class="h5 mb-1">{% if category %}{{ category.name }}{% else %}همه محصولات{% endif %}</h1>
+              <h1 class="h5 mb-1 fw-bold text-primary">
+                  {% if category %}{{ category.name }}{% else %}همه محصولات{% endif %}
+              </h1>
               <p class="text-muted small mb-0">
                 {% if category %}
-                  {{ category.description|default:"لیست محصولات این دسته." }}
+                  {{ category.description|default:"نمایش محصولات مرتبط با این دسته‌بندی." }}
                 {% else %}
-                  تمام محصولات فعال فروشگاه در این صفحه قابل مشاهده است.
+                  لیست کامل محصولات موجود در فروشگاه.
                 {% endif %}
               </p>
             </div>
-            <span class="badge bg-light text-dark">{{ product_list|length }} محصول</span>
+            <span class="badge bg-light text-dark border">{{ product_list|length }} کالا</span>
           </header>
 
-          {# 🔍 فرم جست‌وجو + نگه‌داشتن sort به‌صورت hidden #}
-          <form method="get" action="" class="category-search-form d-flex gap-2 align-items-center">
-    <label class="form-label mb-0 text-nowrap" for="category-search-input">
-        جستجو در محصولات
-    </label>
-    <input
-        id="category-search-input"
-        class="form-control flex-grow-1"
-        type="text"
-        name="search"
-        value="{{ request.GET.search }}"
-        placeholder="نام کالا یا برند"
-              >
-              {% if current_sort %}
-                <input type="hidden" name="sort" value="{{ current_sort }}">
-              {% endif %}
-               <button class="btn search-submit-btn" type="submit" aria-label="جستجو">
-                                    جستجو
+          {# 🔍 فرم جست‌وجو و مرتب‌سازی شما #}
+          <form method="get" action="" class="category-search-form">
+              <label for="category-search-input" class="search-label">
+                  جستجوی دسته‌بندی:
+              </label>
+              <input type="text"
+                     id="category-search-input"
+                     name="search"
+                     class="search-input"
+                     placeholder="نام کالا، برند یا ویژگی..."
+                     value="{{ search_query }}">
+              <button type="submit" class="search-btn">
+                  <i class="bi bi-search me-1"></i>یافتن
               </button>
-            </div>
+              <select name="sort" class="sort-select form-select w-auto" onchange="this.form.submit()">
+                  <option value="newest" {% if current_sort == 'newest' %}selected{% endif %}>جدیدترین</option>
+                  <option value="min_price" {% if current_sort == 'min_price' %}selected{% endif %}>ارزان‌ترین</option>
+                  <option value="max_price" {% if current_sort == 'max_price' %}selected{% endif %}>گران‌ترین</option>
+              </select>
           </form>
 
-          {# 🎛️ کنترل مرتب‌سازی نتایج با حفظ انتخاب فعلی #}
-          <div class="d-flex align-items-center justify-content-end gap-2 mb-4 flex-wrap">
-            <small class="text-muted">نوع مرتب‌سازی:</small>
-            <select id="sort-select" class="form-select form-select-sm" name="sort">
-              <option value="newest" {% if current_sort == "newest" %}selected{% endif %}>جدیدترین</option>
-              <option value="cheapest" {% if current_sort == "cheapest" %}selected{% endif %}>ارزان‌ترین</option>
-              <option value="expensive" {% if current_sort == "expensive" %}selected{% endif %}>گران‌ترین</option>
-            </select>
-          </div>
-
-          {# 🛒 گرید کارت‌های محصول؛ هر کارت با partial product-card رندر می‌شود #}
-          <div class="row g-3">
+          {# 📦 گرید محصولات #}
+          <div id="product-grid" class="row g-3">
             {% for prdct in product_list %}
-              <div class="col-sm-6 col-lg-4">
+              <div class="col-6 col-lg-4 col-xl-3">
                 {% include "components/product-card.html" with product=prdct %}
               </div>
             {% empty %}
-              <div class="col-12">
-                <p class="text-muted text-center">هیچ محصولی در این دسته وجود ندارد.</p>
+              <div class="col-12 text-center py-5">
+                <div class="text-muted">
+                    <i class="bi bi-box-seam display-4 d-block mb-3"></i>
+                    <p>محصولی با این مشخصات یافت نشد.</p>
+                </div>
               </div>
             {% endfor %}
           </div>
+
+          {# 📄 صفحه‌بندی (Pagination) #}
+          {% if is_paginated %}
+          <nav class="mt-4 d-flex justify-content-center">
+            <ul class="pagination pagination-sm">
+                {% if page_obj.has_previous %}
+                <li class="page-item">
+                    <a class="page-link" href="?page={{ page_obj.previous_page_number }}&search={{ search_query }}&sort={{ current_sort }}">قبلی</a>
+                </li>
+                {% endif %}
+                <li class="page-item active">
+                    <span class="page-link">{{ page_obj.number }} از {{ page_obj.paginator.num_pages }}</span>
+                </li>
+                {% if page_obj.has_next %}
+                <li class="page-item">
+                    <a class="page-link" href="?page={{ page_obj.next_page_number }}&search={{ search_query }}&sort={{ current_sort }}">بعدی</a>
+                </li>
+                {% endif %}
+            </ul>
+          </nav>
+          {% endif %}
         </div>
       </div>
     </div>
   </div>
 </div>
-
-{# ⚙️ اسکریپت کوچک برای اعمال مرتب‌سازی بدون از دست دادن search #}
-<script>
-  document.addEventListener("DOMContentLoaded", function () {
-    const select = document.getElementById("sort-select");
-    if (!select) return;
-    select.addEventListener("change", function () {
-      const params = new URLSearchParams(window.location.search);
-      params.set("sort", this.value);
-      const query = params.toString();
-      window.location = query ? `${window.location.pathname}?${query}` : window.location.pathname;
-    });
-  });
-</script>
 {% endblock main %}

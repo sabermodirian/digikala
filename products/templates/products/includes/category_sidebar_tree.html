@@ -1,0 +1,22 @@
+<!-- products/templates/products/includes/category_sidebar_tree.html -->
+
+<aside class="category-sidebar">
+    <!-- 💡 دکمه خلاقانه برای تغییر تم (روشن/تاریک) با آیکون و متن داینامیک -->
+    <div class="theme-toggle-container">
+        <button id="theme-toggler" class="theme-btn">
+            <i class="bi bi-sun-fill" id="theme-icon"></i>
+            <span id="theme-text">حالت شب</span>
+        </button>
+    </div>
+    
+    <!-- ✒️ عنوان سایدبار -->
+    <h3 class="category-title">دسته‌بندی کالاها</h3>
+    
+    <!-- 🌳 شروع رندر درخت دسته‌بندی -->
+    <ul class="category-list">
+        {% for cat in categories_tree %}
+            {# فراخوانی تمپلیت بازگشتی برای هر دسته‌بندی سطح بالا #}
+            {% include "products/includes/category_node.html" with category=cat %}
+        {% endfor %}
+    </ul>
+</aside>

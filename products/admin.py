@@ -62,7 +62,10 @@ class ProductAdmin(admin.ModelAdmin):
 @admin.register(Category)
 class CategoryAdmin(admin.ModelAdmin):
     list_display = ('id', 'name','slug','parent')    
-    list_filter = ('category',)
+    #list_filter = ('category',) 
+    #  # ❌ خطا: فیلدی به نام 'category' در مدل وجود ندارد، باعث admin.E116 می‌شود.
+    list_filter = ('parent',)    # ✅ درست: از فیلد واقعی 'parent' برای فیلتر دسته‌ها استفاده می‌کند.
+
     search_fields = ('name', 'description')
     ordering = ('id',)
     

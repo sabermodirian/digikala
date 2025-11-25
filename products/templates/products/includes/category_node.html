@@ -1,0 +1,18 @@
+<!-- products/templates/products/includes/category_node.html -->
+
+<li>
+    {# لینک اصلی دسته‌بندی #}
+    <a href="{{ category.get_absolute_url }}" 
+       class="category-link {% if category.slug == view.kwargs.category_slug %}active{% endif %}">
+        {{ category.name }}
+    </a>
+    
+    {# 🔁 اگر این دسته‌بندی فرزند داشت، یک لیست تودرتو ایجاد و این تمپلیت را بازگشتی فراخوانی کن #}
+    {% if category.children.all %}
+        <ul class="subcategory-list">
+            {% for child in category.children.all %}
+                {% include "products/includes/category_node.html" with category=child %}
+            {% endfor %}
+        </ul>
+    {% endif %}
+</li>

@@ -173,16 +173,33 @@ class Category(models.Model):
     image = models.ImageField(_("Image"),upload_to='category_images',
                               null=True, blank=True)
     
-    parent = models.ForeignKey("self",verbose_name=_("Parent Category")
-                               ,on_delete=models.SET_NULL
-                               ,blank=True,null=True 
-                               )
+   
+    # ⭐️ کلیدی‌ترین فیلد برای ساختار درختی
+    # related_name='children' به ما اجازه می‌دهد تا به راحتی از یک والد به فرزندانش دسترسی پیدا کنیم.
+  
+    parent = models.ForeignKey(
+        "self",
+        verbose_name=_("Parent Category"),
+        on_delete=models.SET_NULL,
+        blank=True,
+        null=True,
+        related_name='children'  # <-- این نام برای دسترسی آسان به فرزندان است
+    )
     
     class Meta:
         verbose_name = _("Category")
         verbose_name_plural = _("Categories")
+
     def __str__(self):
         return f'{self.slug} ::: of Category ::: {self.name }'
+
+    def get_absolute_url(self):
+        """
+        یک URL استاندارد برای هر نمونه از دسته‌بندی برمی‌گرداند.
+        این متد برای لینک‌دهی تمیز در تمپلیت‌ها استفاده می‌شود.
+        """
+        return reverse('products:category_list_slug', args=[self.slug])
+
     
 class Comment(models.Model):
     #Product Comment

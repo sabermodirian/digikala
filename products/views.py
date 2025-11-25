@@ -1,11 +1,14 @@
 from django.shortcuts import render,get_object_or_404 , redirect,HttpResponseRedirect, HttpResponse
-from django.db.models import Max, Min, Q
+from django.db.models import Max, Min, Q, Prefetch  # Prefetch را اضافه کنید
 from.models import Product ,Comment, Category  # noqa: F401
 
 from products.utils import get_product_last_price_list_orm
 from products.forms import ProductCommentModelForm
 from django.views import View
 from django.views.generic import ListView
+from django.utils.decorators import method_decorator
+from django.views.decorators.cache import cache_page
+
 
 from django.contrib import messages
 # Create your views here.
@@ -185,24 +188,46 @@ def home(request):
 
 
 # products/views.py
+'''class ProductListView(ListView):
+ یادت باشه  نام قبلی این کلاس در پروژه ی کمیجانی
+ '''
+
+"""
+🧠 کش کردن (Caching) ویوی دسته‌بندی محصولات به مدت ۱۵ دقیقه
+---------------------------------------------------------
+این دکوراتور باعث می‌شود کل خروجی View (CategoryListView) به‌صورت خودکار 
+در حافظه‌ی کش ذخیره شود. تا ۱۵ دقیقه بعد از اولین درخواست، بدون اجرای دوباره‌ی
+کوئری‌های دیتابیس، پاسخ مستقیماً از Cache برگردانده می‌شود.
+
+Benefits:
+- Reduces database load significantly.
+- Increases response speed for search/sort pages.
+
+Note:
+Every unique URL parameter combination (e.g., ?search=x&sort=y) 
+creates a separate cache entry.
+"""
+@method_decorator(cache_page(60 * 15), name="dispatch")
 class CategoryListView(ListView):
     """
-    لیست محصولات (بر اساس دسته اختیاری) با امکان جستجو و مرتب‌سازی.
-    اگر اسلاگی داده نشود، تمام محصولات فعال نمایش داده می‌شوند.
+    نمایش لیست محصولات با قابلیت فیلتر دسته‌بندی، جستجو و مرتب‌سازی.
+    Product list view with category filtering, search, and sorting capabilities.
     """
     model = Product
     template_name = "products/category_list.html"
-    context_object_name = "product_list"  # قبلاً "category_products" بود
+    context_object_name = "product_list"
     paginate_by = 6
 
     def get_category(self):
         """
-        اسلاگ را از مسیر یا پارامتر GET می‌خواند؛
-        در صورت نبود اسلاگ مقدار None وگرنه شیء دسته را برمی‌گرداند.
+        🔍 بازیابی دسته‌بندی بر اساس اسلاگ (از URL یا Query Parameter).
+        Retrives the category object based on the slug, handling trimming and cleaning.
         """
+        # استفاده از کش داخلی برای جلوگیری از کوئری تکراری در یک درخواست
         if hasattr(self, "_category_cache"):
             return self._category_cache
 
+        # دریافت اسلاگ از مسیر URL یا پارامتر GET
         slug_from_path = self.kwargs.get("category_slug")
         slug_from_query = self.request.GET.get("category_slug")
         resolved_slug = slug_from_path or slug_from_query
@@ -211,72 +236,94 @@ class CategoryListView(ListView):
             self._category_cache = None
             return None
 
-        self._category_cache = get_object_or_404(
-            Category,
-            slug=resolved_slug,
-        )
+        # 🛠️ مهم: حذف فاصله‌های اضافی که باعث خطای 404 می‌شدند
+        cleaned_slug = resolved_slug.strip()
+
+        self._category_cache = get_object_or_404(Category, slug=cleaned_slug)
         return self._category_cache
 
     def get_queryset(self):
         """
-        محصولات فعال را می‌آورد، اگر دسته‌ای انتخاب شده باشد بر همان محدود می‌کند،
-        سپس بر اساس عبارت جستجو و گزینه‌ی مرتب‌سازی نتایج را بازآرایی می‌کند.
+        ⚙️ ساخت کوئری نهایی محصولات (فیلتر فعال بودن، دسته، جستجو و مرتب‌سازی).
+        Constructs the final queryset with filters and annotations.
         """
+        qs = Product.objects.filter(is_active=True)
+        
+        # 1. فیلتر بر اساس دسته (اگر وجود داشته باشد)
         category = self.get_category()
-        queryset = (
-            Product.objects.filter(is_active=True)
-            .select_related("category", "brand")
-            .prefetch_related("seller_prices", "sellers")
-        )
         if category:
-            queryset = queryset.filter(category=category)
+            qs = qs.filter(category=category)
 
+        # 2. جستجو (Search)
+        # .strip() اینجا هم اضافه شد تا جستجوهای " متن " درست کار کنند
         search_query = self.request.GET.get("search", "").strip()
         if search_query:
-            queryset = queryset.filter(
-                Q(name__icontains=search_query)
-                | Q(en_name__icontains=search_query)
-                | Q(description__icontains=search_query)
-                | Q(brand__name__icontains=search_query)
-                | Q(category__name__icontains=search_query)
+            qs = qs.filter(
+                Q(name__icontains=search_query) |
+                # Q(english_name__icontains=search_query) |  # ❌ این خط غلط است
+                Q(en_name__icontains=search_query) |  # ✅ این خط اصلاح شدQ(english_name__icontains=search_query) |
+                Q(description__icontains=search_query) |
+                Q(brand__name__icontains=search_query)
             )
 
+        # 3. مرتب‌سازی (Sorting)
         sort_option = self.request.GET.get("sort", "newest")
-        if sort_option == "cheapest":
-            queryset = queryset.annotate(
-                min_price=Min("seller_prices__price")
-            ).order_by("min_price", "-seller_prices__create_at", "-id")
-        elif sort_option == "expensive":
-            queryset = queryset.annotate(
-                max_price=Max("seller_prices__price")
-            ).order_by("-max_price", "-seller_prices__create_at", "-id")
-        else:
-            queryset = queryset.order_by(
-                "-seller_prices__create_at",
-                "-id",
-            )
+        
+        # محاسبه کمترین و بیشترین قیمت برای استفاده در مرتب‌سازی
+        qs = qs.annotate(
+            min_price=Min("seller_prices__price"),
+            max_price=Max("seller_prices__price")
+        )
 
-        return queryset
+        if sort_option == "min_price":
+            qs = qs.order_by("min_price")
+        elif sort_option == "max_price":
+            qs = qs.order_by("-max_price")
+        else:
+            # پیش‌فرض: جدیدترین‌ها (بر اساس تاریخ ایجاد قیمت فروشنده یا محصول)
+            qs = qs.order_by("-id") # یا -created_at اگر دارید
+
+        return qs
 
     def get_context_data(self, **kwargs):
         """
-        داده‌های کمکی مانند لیست دسته‌ها، عبارت جستجو و گزینه‌ی مرتب‌سازی را
-        به قالب تزریق می‌کند تا وضعیت جاری کاربر حفظ شود.
+        📦 ارسال داده‌های کمکی به قالب (برای حفظ وضعیت فرم‌ها و سایدبار).
+        Adds extra context like categories list, current search query, and sort option.
+        """
+        """
+        🚀 بازنویسی شده: ارسال داده‌های بهینه برای ساختار درختی و حفظ وضعیت فرم‌ها.
+        
+        تغییرات کلیدی:
+        - `categories_tree`: به جای ارسال لیست خطی دسته‌بندی‌ها، یک ساختار درختی بهینه
+          با `prefetch_related` ارسال می‌شود. این کار تمام فرزندان و نوه‌ها را در
+          یک کوئری بهینه فراخوانی کرده و از مشکل N+1 جلوگیری می‌کند.
         """
         context = super().get_context_data(**kwargs)
-        category = self.get_category()
-        sort_option = self.request.GET.get("sort", "newest")
-        context.update(
-            {
-                "categories": Category.objects.all(),
-                "category": category,                # برای قالب فعلی
-                "selected_category": category,       # اگر جاهای دیگر هنوز از آن استفاده کنند
-                "search_query": self.request.GET.get("search", "").strip(),
-                "current_sort": sort_option,         # فرم مرتب‌سازی
-                "sort_option": sort_option,          # سازگاری با کد قبلی
-            }
+        
+        # فراخوانی بهینه دسته‌بندی‌های سطح بالا (والد ندارند) به همراه تمام فرزندانشان
+        top_level_categories = Category.objects.filter(parent__isnull=True).prefetch_related(
+            Prefetch(
+                'children',
+                queryset=Category.objects.prefetch_related('children') # برای لود کردن نوه‌ها
+            )
         )
+        
+        context.update({
+            "categories_tree": top_level_categories, # <--- جایگزین "categories" شد
+            "category": self.get_category(),
+            "search_query": self.request.GET.get("search", "").strip(),
+            "current_sort": self.request.GET.get("sort", "newest")
+        })
         return context
+
+        '''
+        🚀 بازنویسی شده: ارسال داده‌های بهینه برای ساختار درختی و حفظ وضعیت فرم‌ها    
+                                                    . نکته مهم:
+        در فایل context_processors.py شما همچنان کار می‌کند، 
+        اما در این صفحه ما از آن استفاده نمیکنیم بلکه از
+         categories_tree که در ویو ساختیم استفاده می‌کنیم 
+        چون بهینه است.
+        '''
 
 
 
