@@ -42,7 +42,7 @@ urlpatterns = [
     # route for adding a comment of a specific product
    # path('<int:product_id>/comments/',create_comment, name='create_comment'),
       path("category/", CategoryListView.as_view(), name="category_list"),
-      path("category/<slug:category_slug>/", CategoryListView.as_view(), name="category_list_slug"),
+      path("category/<slug:category_slug>/", CategoryListView.as_view(), name="category_list_slug")
     #  path("category/<slug:category_slug>/", ProductListView.as_view(), name="category_detail"),
 ]
 
@@ -51,6 +51,14 @@ urlpatterns = [
         فیلمهای آموزشی دانشکار اسامی و ویوی بخش کتگوری دسته بندی ها در URL به این شکل هستش 
        path("category/<slug:category_slug>/", ProductListView.as_view(), name="category_detail"),
      '''
+"""# 1️⃣ لیست همه محصولات (بدون فیلتر دسته‌بندی)
+path("category/", CategoryListView.as_view(), name="category_list")
+# URL: /products/category/
+
+# 2️⃣ لیست محصولات یک دسته خاص
+path("category/<slug:category_slug>/", CategoryListView.as_view(), name="category_list_slug")
+# URL: /products/category/LapTop_UltraBook/
+"""
 
 
 #  حالا به انگلیسی:

@@ -1382,12 +1382,25 @@ custom-control-input:focus:not(:checked) ~ .custom-control-label::before {
 }
 
 /* --- 🌑 حالت تیره خودکار (Auto Dark Mode) --- */
-@media (prefers-color-scheme: dark) {
+/* @media (prefers-color-scheme: dark) {
   .category-sidebar {
     background-color: #2a2a2a;
     border: 1px solid #444;
     box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
-  }
+  } */
+
+/* 
+  تبعیت فقط از data-theme و بی‌اثر کردن OS
+برای اینکه فقط دکمهٔ Dark Mode خودت کنترل‌کننده باشد (نه سیستم): 
+*/
+  body[data-theme="dark"] .category-sidebar {
+    background: #2a2a2a !important;
+}
+
+body[data-theme="light"] .category-sidebar {
+    background: #ffffff !important;
+}
+
 
   .category-title {
     color: #00b0ff;
@@ -1413,7 +1426,7 @@ custom-control-input:focus:not(:checked) ~ .custom-control-label::before {
   .category-sidebar .bi-funnel {
     color: #aaa !important;
   }
-}
+
 
 /* =========================================
    🌙 Manual Dark Theme | تم تاریک دستی
@@ -1776,7 +1789,7 @@ body[data-theme="dark"] .comments-wrapper hr {
   color: #bdc7ef !important;
 }
 
-/* ناحیه حالت تاریک پایان یافت ✅ */
+
 
 :is(body.theme-dark, body[data-theme="dark"]) .product-comments,
 :is(body.theme-dark, body[data-theme="dark"]) .comments-wrapper,
@@ -1831,3 +1844,4 @@ body[data-theme="dark"] .comments-wrapper hr {
   color: #ffcf93 !important;
 }
 
+/* ناحیه حالت تاریک پایان یافت ✅ */

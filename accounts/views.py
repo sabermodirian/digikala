@@ -7,7 +7,11 @@ from django.contrib.auth.decorators import login_required , permission_required 
 from django.contrib.auth.forms import AuthenticationForm
 from django.contrib.auth.views import LoginView
 from django.http import HttpResponseForbidden  # noqa: F401
-# from django.contrib.auth.views import LoginView 
+from django.views.generic import ListView , DetailView , CreateView,\
+    UpdateView , DeleteView  # noqa: F401
+
+from django.contrib.auth.mixins import LoginRequiredMixin
+from django.urls import reverse_lazy
 
 # Create your views here.
 
@@ -15,6 +19,23 @@ class MyLogInView(LoginView):
     template_name = 'accounts/login_view.html' #class base view
     authentication_form = MyAuthenticationForm
 
+class UserUpdateView(LoginRequiredMixin,UpdateView):#cbv for update User Account 
+    model = User
+    fields = [ 'first_name' , 'last_name' ,'mobile']
+    queryset = User.objects.all()
+    template_name = 'accounts/user_info.html'
+    success_url = reverse_lazy('accounts:user_info')    
+    login_url = reverse_lazy("accounts:login_view")  # اختیاری، اگر مسیر login خاصی داری
+
+
+    def get_object(self, queryset=None):
+         """  
+        Return the object the view is displaying.
+         این متد برای مدیریت کاربران است و بجای اینکه آبجکت  pk or slug 
+       رابه بدهیم و خودش آبجکتش را پیدا کند 
+       این متد آورراید شده و آبجکت مورد نظر را از کاربر میگیرد و استفاده میکند
+               """
+         return self.request.user
 
 
 def login_view(request):

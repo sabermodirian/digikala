@@ -9,9 +9,6 @@ from django.conf import settings
 
 # Create your models here.
 
-
-
-
 class Brand(models.Model):
     name = models.CharField(_("Name"),max_length=150)
     en_name = models.CharField(_("En Name"),max_length=150)
@@ -30,6 +27,15 @@ class ProductQuerySet(models.QuerySet):
             min_price=Coalesce(Min("seller_prices__price"), 0),
             max_price=Coalesce(Max("seller_prices__price"), 0),
         )
+
+# class ProductQuerySet(models.QuerySet):
+#     def active(self):
+#         return self.filter(is_active=True)
+
+        objects = ProductQuerySet.as_manager()  # noqa: F841
+        """Custom manager for Product model.
+        این یک مدیر کوستوم است که برای مدل Product استفاده می‌شود.
+        """
 
 class Product(models.Model):   
     
@@ -74,17 +80,21 @@ class Product(models.Model):
 
     @property
     def sellers_last_price(self):
-        return SellerProductPrice.raw(
-
-            """ SELECT * FROM products_sellerproductprice
+        return SellerProductPrice.objects.raw(
+            """
+             SELECT * FROM products_sellerproductprice
              WHERE product_id = %(id)s
              group by seller_id
              having Max(update_at) 
-             """,
+            """,
             {'id': self.id}
         )
     
-    
+    @property
+    def default_product_seller(self):
+        if self.sellers_last_price:
+            return self.sellers_last_price[0]
+        return None                                    
     
     @property
     def default_image(self):
@@ -107,6 +117,7 @@ class Product(models.Model):
         while current_category.parent is not None:
             current_category = current_category.parent
             categories_lst.append(current_category)
+            categories_lst.reverse()
         return categories_lst
         """
         ما در حال بررسی تابع categories_list هستیم که در یک کلاس تعریف شده است. این تابع برای بدست آوردن لیستی از دسته‌ها از دسته فعلی تا ریشه (بالاترین والد) استفاده می‌شود. در ادامه به تفصیل و با جزئیات بیشتر این تابع را بررسی می‌کنیم و مثال فارسی ارائه می‌دهیم.
@@ -138,11 +149,18 @@ current_category را به والد آن به‌روزرسانی می‌کنیم
     def __str__(self):
         return f'{self.id}:{self.name }' 
 
+    def get_absolute_url(self):
+        return reverse("product_detail", kwargs={"pk": self.pk})
 
-    objects = ProductQuerySet.as_manager()
-    """Custom manager for Product model.
-    این یک مدیر کوستوم است که برای مدل Product استفاده می‌شود.
-    """
+# class ProductQuerySet(models.QuerySet):
+#     def active(self):
+#         return self.filter(is_active=True)
+
+    # objects = ProductQuerySet.as_manager()
+    # """Custom manager for Product model.
+    # این یک مدیر کوستوم است که برای مدل Product استفاده می‌شود.
+    # """
+
 
     @property
     def cheapest_price(self):

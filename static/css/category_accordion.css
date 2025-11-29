@@ -21,9 +21,9 @@
 }
 
 .category-link:hover {
-  background: linear-gradient(to right, #ea6530, #05bae22d);
-  color: #3765e2;
-  box-shadow: inset 0 -1px 0 rgba(6, 177, 181, 0.25);
+  background: linear-gradient(to right, #ea6530, hsla(198, 96%, 45%, 0.743));
+  color: #0d43d5;
+  box-shadow: inset 0 -1px 0 rgba(230, 225, 87, 0.923);
 }
 
 .category-link.open {
@@ -58,7 +58,7 @@
 
 
 .subcategory-link:hover {
-  background: linear-gradient(to right, #e0f9ff, #f4fdff);
+  background: linear-gradient(to right, #ebebe5, #cc1ddf);
   color: #3765e2;
   box-shadow: inset 0 -1px 0 rgba(6, 177, 181, 0.25);
 }

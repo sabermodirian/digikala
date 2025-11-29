@@ -5,7 +5,8 @@ from.models import Product ,Comment, Category  # noqa: F401
 from products.utils import get_product_last_price_list_orm
 from products.forms import ProductCommentModelForm
 from django.views import View
-from django.views.generic import ListView
+from django.views.generic import ListView , DetailView , CreateView,\
+    UpdateView , DeleteView  # noqa: F401
 from django.utils.decorators import method_decorator
 from django.views.decorators.cache import cache_page
 
@@ -23,8 +24,16 @@ def product_list_view(request):
                   template_name='products/product-list.html'
                   ,context=context)
 
+class ProductDetailView(DetailView): #CBV for product detail view
+    model = Product
+    queryset = Product.objects.exclude(is_active=False)
+    template_name = 'products/product-detail.html'
 
-class ProductClassBaseView(View):
+
+    def get(self, request, product_id, *args, **kwargs):
+        return render(request, 'products/product-detail.html')
+
+class ProductClassBaseView(View): #CBV ضعیف تقریبا شبیه فانکشن بیس ویو عمل میکند و خیلی امکانات جدید و خاصی به ما نمی دهد
     """نمایش جزئیات محصول و مدیریت کامنت‌ها"""
     
     form_class = ProductCommentModelForm
@@ -119,7 +128,7 @@ class ProductClassBaseView(View):
         return render(request, self.template_name, context)
    
     
-def product_detail_view(request, product_id):
+def product_detail_view(request, product_id): #FBV for product detail view
     
     p = get_object_or_404(Product.objects.select_related(
         'category').prefetch_related('prdct_comments') , id=product_id)
@@ -242,7 +251,7 @@ class CategoryListView(ListView):
         self._category_cache = get_object_or_404(Category, slug=cleaned_slug)
         return self._category_cache
 
-    def get_queryset(self):
+    def get_queryset(self):  # override _queryset=qs
         """
         ⚙️ ساخت کوئری نهایی محصولات (فیلتر فعال بودن، دسته، جستجو و مرتب‌سازی).
         Constructs the final queryset with filters and annotations.
@@ -301,7 +310,8 @@ class CategoryListView(ListView):
         context = super().get_context_data(**kwargs)
         
         # فراخوانی بهینه دسته‌بندی‌های سطح بالا (والد ندارند) به همراه تمام فرزندانشان
-        top_level_categories = Category.objects.filter(parent__isnull=True).prefetch_related(
+        top_level_categories = Category.objects.filter(
+            parent__isnull=True).prefetch_related(
             Prefetch(
                 'children',
                 queryset=Category.objects.prefetch_related('children') # برای لود کردن نوه‌ها
@@ -317,14 +327,14 @@ class CategoryListView(ListView):
         return context
 
         '''
-        🚀 بازنویسی شده: ارسال داده‌های بهینه برای ساختار درختی و حفظ وضعیت فرم‌ها    
+        🚀 بازنویسی شده:
+         ارسال داده‌های بهینه برای ساختار درختی و حفظ وضعیت فرم‌ها:    
                                                     . نکته مهم:
         در فایل context_processors.py شما همچنان کار می‌کند، 
         اما در این صفحه ما از آن استفاده نمیکنیم بلکه از
          categories_tree که در ویو ساختیم استفاده می‌کنیم 
         چون بهینه است.
         '''
-
 
 
     

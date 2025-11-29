@@ -38,7 +38,8 @@ def get_product_last_price_list_orm(product_id):
     # و سپس با order_by('-update_at') آخرین‌ها را در ابتدا قرار می‌دهیم و در نهایت فقط یک بار برای هر seller_id انتخاب می‌کنیم
     
     # یک راه حل که از `annotate` و `filter` های مرتبط استفاده می‌کند:
-    latest_prices = SellerProductPrice.objects.filter(product_id=product_id).values('seller_id').annotate(
+    latest_prices = SellerProductPrice.objects.filter(
+        product_id=product_id).values('seller_id').annotate(
         max_update_at=Max('update_at'),
         # برای بازیابی کل رکورد، نیاز به یک ساب‌کوری یا روش دیگری داریم
         # که به طور مستقیم با ORM کمی پیچیده‌تر است.
@@ -47,7 +48,8 @@ def get_product_last_price_list_orm(product_id):
     ).values('latest_record_id') # فقط id های مربوط به جدیدترین قیمت‌ها را می‌گیریم
 
     # حالا با استفاده از این id ها، رکوردهای کامل را بازیابی می‌کنیم
-    return SellerProductPrice.objects.filter(id__in=latest_prices)
+    return SellerProductPrice.objects.filter(
+        id__in=latest_prices)
 """
 توضیح کد:
 

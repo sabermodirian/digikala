@@ -5,6 +5,7 @@
 {% endblock page_title %}
 
 {% block content %}
+{{form.as_p}}
    
               <div><h5>نام: <name >{{request.user.first_name}} </name></h5></div>
               <div><h5>نام خانوادگی: <lastname >{{request.user.last_name}} </lastname></h5></div>
