@@ -19,6 +19,15 @@ class Brand(models.Model):
         return f'{self.id}:{self.name } {self.en_name} {self.slug}'
 
 
+class MyQuerySet(models.QuerySet):
+    def deleted(self):
+        return self.update(is_active=False)
+
+class NoDeleteManager(models.Manager):
+    def get_queryset(self):
+        return MyQuerySet(self.model, using=self._db)
+
+
 class ProductQuerySet(models.QuerySet):
     def with_price_bounds(self):
         """Annotate each product with min_price/max_price taken from SellerProductPrice.

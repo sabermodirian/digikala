@@ -30,16 +30,20 @@ ALLOWED_HOSTS = []
 
 # Application definition
 
-INSTALLED_APPS = [
+SYSTEM_APPS = [
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-    'accounts',
-    'products',
-    'sellers',
+]
+
+DEVELOPED_APPS = [
+    'accounts.apps.AccountsConfig',
+    'products.apps.ProductsConfig',
+    'sellers.apps.SellersConfig',
+    'dashboard.apps.DashboardConfig',
 ]
 
 MIDDLEWARE = [
@@ -52,6 +56,8 @@ MIDDLEWARE = [
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
 ]
 
+THIRD_PARTY_APPS = []
+INSTALLED_APPS = SYSTEM_APPS + DEVELOPED_APPS + THIRD_PARTY_APPS
 ROOT_URLCONF = 'digikala.urls'
 LOGIN_URL = '/accounts/login'
 
