@@ -352,7 +352,8 @@ class SellerProductPrice(models.Model):
         on_delete=models.CASCADE)
 
 
-    price = models.PositiveIntegerField(_("Price"))    #PositiveIntegerField(_("Price")) 
+    price = models.PositiveIntegerField(_("Price")) 
+    discount = models.PositiveIntegerField(_("Discount"),default=100)   #PositiveIntegerField(_("Price")) 
     create_at = models.DateTimeField(_("First Creation")
                                      ,auto_now=False 
                                      ,auto_now_add=True) 

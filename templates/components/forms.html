@@ -8,15 +8,23 @@
         {{ field.errors }}
     </div>
 {% endfor %}
+
+{# Include the inline forms #}
 {% for inline in form.inlines %}
     <div class='card mt-2'>
         <div class="card-body">
+            -
+            <h4>{{ inline.prefix }}</h4>
+            ---------------------------------------------------
             {% for field in inline %}
+            
                 <div class="form-group">
-                    {{ field.label_tag }} {{ field }}
+                    {{ field.label_tag }}{{ field }} 
+                      <-!  {# {{ field.as_p}} #}-->
                     {{ field.errors }}
                 </div>
             {% endfor %}
         </div>
     </div>
+
 {% endfor %}
