@@ -1,6 +1,7 @@
 from django.urls import path
 #from . import views
-from .views import product_list_view, product_detail_view ,CategoryListView , ProductClassBaseView # noqa: F401
+from .views import product_list_view, product_detail_view,\
+ CategoryListView , ProductClassBaseView , api_response # noqa: F401
 
 
 app_name = 'products'
@@ -30,7 +31,7 @@ urlpatterns = [
     # Route for product list filtered by category
 
     path('category/<int:category_id>/', product_list_view, name='product_list'),
-
+    path('api/', api_response, name='api-response'),
     # مسیر جزئیات یک محصول خاص
     # Route for details of a specific product
     

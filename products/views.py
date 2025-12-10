@@ -10,7 +10,8 @@ from django.views.generic import ListView , DetailView , CreateView,\
 from django.utils.decorators import method_decorator
 from django.views.decorators.cache import cache_page
 
-
+from django.http import JsonResponse  # noqa: F401
+import json
 from django.contrib import messages
 # Create your views here.
 
@@ -336,7 +337,10 @@ class CategoryListView(ListView):
         چون بهینه است.
         '''
 
-
+def api_response(request): # ''' این ویو برای تست API است '''
+    rspns = json.dumps({"message" : "Hello from API response for my digikala testing"})
+    # return JsonResponse({"message" :"Hello from API"}) 
+    return HttpResponse(content=rspns, content_type="application/json")
     
 def brand_view(request, brand_slug):#ناقص است
     
