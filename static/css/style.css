@@ -1844,4 +1844,64 @@ body[data-theme="dark"] .comments-wrapper hr {
   color: #ffcf93 !important;
 }
 
+/* ==== Dark-ready Comment Form Inputs ==== */
+.comment-form input[type="text"],
+.comment-form input[type="email"],
+.comment-form input[type="number"],
+.comment-form input[type="url"],
+.comment-form input[type="search"],
+.comment-form textarea,
+.comment-form select {
+  background-color: #f9f9ff;
+  color: #171c2b;
+  border: 1px solid #ccd1e1;
+  border-radius: 8px;
+  padding: 10px 14px;
+  width: 100%;
+  transition: border 0.2s ease, box-shadow 0.2s ease;
+}
+
+.comment-form textarea {
+  min-height: 200px;
+  resize: vertical;
+}
+
+.comment-form input:focus,
+.comment-form textarea:focus,
+.comment-form select:focus {
+  border-color: var(--color-primary);
+  box-shadow: 0 0 0 2px rgba(6, 177, 181, 0.2);
+  outline: none;
+}
+
+.comment-form ::placeholder {
+  color: #8f94aa;
+  opacity: 1;
+}
+
+/* دارک‌مود فرم‌ها */
+:is(body.theme-dark, body[data-theme="dark"]) .comment-form input[type="text"],
+:is(body.theme-dark, body[data-theme="dark"]) .comment-form input[type="email"],
+:is(body.theme-dark, body[data-theme="dark"]) .comment-form input[type="number"],
+:is(body.theme-dark, body[data-theme="dark"]) .comment-form input[type="url"],
+:is(body.theme-dark, body[data-theme="dark"]) .comment-form input[type="search"],
+:is(body.theme-dark, body[data-theme="dark"]) .comment-form textarea,
+:is(body.theme-dark, body[data-theme="dark"]) .comment-form select {
+  background-color: #0f1422;
+  color: #f6f8ff;
+  border-color: #2c364f;
+}
+
+:is(body.theme-dark, body[data-theme="dark"]) .comment-form ::placeholder {
+  color: rgba(255, 255, 255, 0.55);
+}
+
+:is(body.theme-dark, body[data-theme="dark"]) .comment-form input:focus,
+:is(body.theme-dark, body[data-theme="dark"]) .comment-form textarea:focus,
+:is(body.theme-dark, body[data-theme="dark"]) .comment-form select:focus {
+  border-color: #5f7cff;
+  box-shadow: 0 0 0 2px rgba(95, 124, 255, 0.25);
+}
+
+
 /* ناحیه حالت تاریک پایان یافت ✅ */

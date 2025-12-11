@@ -49,26 +49,26 @@ class ProductCommentModelForm(forms.ModelForm):
         model = Comment 
         fields = "__all__" #['user_email' , 'title' , 'text' , 'rate' , 'product_id']  all fields
        
-        widgets = {
-            'user_email': forms.EmailInput(attrs={'class': 'form-control',
-            'placeholder': 'لطفا ایمیل خود را وارد کنید'
-            ,  'style': 'background-color: lightyellow;'}),
+        # widgets = {
+        #     'user_email': forms.EmailInput(attrs={'class': 'form-control',
+        #     'placeholder': 'لطفا ایمیل خود را وارد کنید'
+        #     ,  'style': 'background-color: lightyellow;'}),
 
-            'title': forms.TextInput(attrs={'class': 'form-control',
-            'placeholder': 'لطفا عنوان نظر خود را وارد کنید'
-            ,  'style': 'background-color: lightyellow;'}),
+        #     'title': forms.TextInput(attrs={'class': 'form-control',
+        #     'placeholder': 'لطفا عنوان نظر خود را وارد کنید'
+        #     ,  'style': 'background-color: lightyellow;'}),
 
-            'text': forms.Textarea(attrs={'class': 'form-control',
-            'placeholder': 'لطفا متن نظر خود را وارد کنید',
-            'style': 'background-color: lightyellow;'}),
+        #     'text': forms.Textarea(attrs={'class': 'form-control',
+        #     'placeholder': 'لطفا متن نظر خود را وارد کنید',
+        #     'style': 'background-color: lightyellow;'}),
 
-            'rate': forms.NumberInput(attrs={'class': 'form-control',
-            'placeholder': 'لطفا امتیاز خود را وارد کنید',
-            'style': 'background-color: lightyellow;'}),
+        #     'rate': forms.NumberInput(attrs={'class': 'form-control',
+        #     'placeholder': 'لطفا امتیاز خود را وارد کنید',
+        #     'style': 'background-color: lightyellow;'}),
 
-            'product': forms.HiddenInput(),
+        #     'product': forms.HiddenInput(),
 
-        }
+        # }
     def save(self , commit=True):
 
         return super().save(commit=commit)

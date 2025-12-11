@@ -11,7 +11,7 @@ from django.utils.decorators import method_decorator
 from django.views.decorators.cache import cache_page
 
 from django.http import JsonResponse  # noqa: F401
-import json
+import json  # noqa: F401
 from django.contrib import messages
 # Create your views here.
 
@@ -131,8 +131,10 @@ class ProductClassBaseView(View): #CBV ضعیف تقریبا شبیه فانکش
     
 def product_detail_view(request, product_id): #FBV for product detail view
     
+    # p = get_object_or_404(Product.objects.select_related(
+    #     'category').prefetch_related('prdct_comments') , id=product_id)
     p = get_object_or_404(Product.objects.select_related(
-        'category').prefetch_related('prdct_comments') , id=product_id)
+        'category'), id=product_id) # بدون prefetch    
         
     """نکته: select_related برای فارین کی ها (FK) و
     prefetch_related برای manytomany ها یا fkهای که reverse هستن 
@@ -148,7 +150,7 @@ def product_detail_view(request, product_id): #FBV for product detail view
     default_product_seller = seller_prices.first()
 
     # اضافه کردن کامنت‌ها
-    prdct_comments = p.prdct_comments.all()
+    # prdct_comments = p.prdct_comments.all()  # با استفاده از دستورات ORM
 
     if request.method == "GET":
         comment_form = ProductCommentModelForm(initial={'product':p})
@@ -165,10 +167,10 @@ def product_detail_view(request, product_id): #FBV for product detail view
         'product': p,
         'seller_prices': seller_prices, # p.seller_last_prices
         'default_product_seller': default_product_seller,
-        'prdct_comments':prdct_comments,
+        # 'prdct_comments':prdct_comments,
         
         # اگر نیاز داری شمارش کامنت هم تو تمپلیت استفاده کنی:
-        'comment_counts': prdct_comments.count() ,#if hasattr(p, 'comments') else 0,
+        # 'comment_counts': prdct_comments.count() ,#if hasattr(p, 'comments') else 0,
         'comment_form': comment_form
     }
 
@@ -337,11 +339,35 @@ class CategoryListView(ListView):
         چون بهینه است.
         '''
 
-def api_response(request): # ''' این ویو برای تست API است '''
-    rspns = json.dumps({"message" : "Hello from API response for my digikala testing"})
+def comment_api_response(request,product_id): # ''' این ویو برای تست API است '''
+    cmmnts=Comment.objects.filter(product=product_id)
+    cmnt_lst=list(cmmnts.values('product','product_id','rate','text','title','user','user_email','user_id'))    
+    
+    rspns = json.dumps({"message" : "Hello from API response for my digikala testing",
+                        "result":cmnt_lst,
+                        "count":cmmnts.count(),
+                        
+                        }, ensure_ascii=False)
     # return JsonResponse({"message" :"Hello from API"}) 
     return HttpResponse(content=rspns, content_type="application/json")
+
+
+# def comment_api_response(request, product_id):
+#     comments_qs = Comment.objects.filter(product_id=product_id)
+#     comments_data = list(
+#         comments_qs.values(
+#             'product', 'product_id', 'rate', 'text', 'title', 'user', 'user_email', 'user_id',
+#         )
+#     )
+
+#     payload = {
+#         "message": "Hello from API response for my digikala testing",
+#         "count": len(comments_data),
+#         "results": comments_data,
+#     }
+#     return JsonResponse(payload, json_dumps_params={"ensure_ascii": False})
     
+
 def brand_view(request, brand_slug):#ناقص است
     
     return render(request, 'products/brand.html')

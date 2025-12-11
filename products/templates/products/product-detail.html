@@ -119,19 +119,19 @@
     <div id="product-comments" class="col-12">
       <div class="row card">
         <div class="col-12">
-          <form method="post">
+         <form method="post" class="comment-form" novalidate>
             {% csrf_token %}
             {{ comment_form.as_div }}
             <button type="submit" class="btn btn-primary">ارسال کامنت</button>
-          </form>
+        </form>
 
-          {% for comment in prdct_comments %}
+          {% comment %} {% for comment in prdct_comments %}
             <div class="col-12">  
               <h5>{{ comment.title }}</h5>
               <span>{{ comment.user.email }}</span>
               <p>{{ comment.text }}</p>
             </div>
-          {% endfor %}
+          {% endfor %} {% endcomment %}
         </div>  
       </div>
     </div>
