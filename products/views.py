@@ -2,20 +2,26 @@ from django.shortcuts import render,get_object_or_404 , redirect,HttpResponseRed
 from django.db.models import Max, Min, Q, Prefetch  # Prefetch را اضافه کنید
 from.models import Product ,Comment, Category  # noqa: F401
 
-from products.utils import get_product_last_price_list_orm
+from products.utils import get_product_last_price_list_orm , to_dict  # noqa: F401
 from products.forms import ProductCommentModelForm
 from django.views import View
 from django.views.generic import ListView , DetailView , CreateView,\
     UpdateView , DeleteView  # noqa: F401
 from django.utils.decorators import method_decorator
 from django.views.decorators.cache import cache_page
+from django.http import JsonResponse # یا Response اگه DRF داریfrom .models import Comment  # noqa: F401
 
-from django.http import JsonResponse  # noqa: F401
 import json  # noqa: F401
 from django.contrib import messages
+from django.views.decorators.csrf import csrf_exempt
+from rest_framework.decorators import api_view  
+from rest_framework.response import Response
+from rest_framework import status
+from .serializers import CommentSerializer , CommentModelSerializer  # noqa: F401
+
 # Create your views here.
 
-###
+
 
 def product_list_view(request):
     #categories = Category.objects.all()
@@ -338,7 +344,7 @@ class CategoryListView(ListView):
          categories_tree که در ویو ساختیم استفاده می‌کنیم 
         چون بهینه است.
         '''
-
+@csrf_exempt
 def comment_api_response(request,product_id): # ''' این ویو برای تست API است '''
     cmmnts=Comment.objects.filter(product=product_id)
     cmnt_lst=list(cmmnts.values('product','product_id','rate','text','title','user','user_email','user_id'))    
@@ -352,21 +358,61 @@ def comment_api_response(request,product_id): # ''' این ویو برای تس�
     return HttpResponse(content=rspns, content_type="application/json")
 
 
-# def comment_api_response(request, product_id):
-#     comments_qs = Comment.objects.filter(product_id=product_id)
-#     comments_data = list(
-#         comments_qs.values(
-#             'product', 'product_id', 'rate', 'text', 'title', 'user', 'user_email', 'user_id',
-#         )
-#     )
 
-#     payload = {
-#         "message": "Hello from API response for my digikala testing",
-#         "count": len(comments_data),
-#         "results": comments_data,
-#     }
-#     return JsonResponse(payload, json_dumps_params={"ensure_ascii": False})
+# @csrf_exempt
+@api_view(['POST','GET'])
+def comment_api_response_drf(request, product_id):
+    '''  این ویو برای تست API است   '''
+     # اول محصول رو پیدا کنیم که اگه نبود، 404 بدیم
+    try:
+        product = Product.objects.get(id=product_id)
+    except Product.DoesNotExist:
+        return Response({"error": "محصولی با این شناسه یافت نشد."}, status=status.HTTP_404_NOT_FOUND)
     
+    if request.method=='GET':
+        cmmnts_qs = Comment.objects.filter(product_id=product_id).select_related(
+            'user'
+        )
+        
+        # # 2. پاس دادن تک‌تک دیکشنری‌ها به تابع utils
+        # # formatted_data = [comment_dict_formatter(cmnt) for cmnt in cmmnts_qs]
+        # cmnt_lst = [to_dict(cmnt) for cmnt in cmmnts_qs]    
+        # context = {
+        #     "message" : "Hello from API in DRF for my digikala DRF(APIView) testing",
+        #     "result":cmnt_lst,
+        #     "count":cmmnts_qs.count(),
+        # }
+        # # return JsonResponse(formatted_data, safe=False, json_dumps_params={"ensure_ascii": False})
+
+        # return Response(data=context, status=status.HTTP_200_OK)
+        comment = CommentModelSerializer(instance=cmmnts_qs, many=True)
+        return Response(data=comment.data, status=status.HTTP_200_OK)
+
+    elif request.method == 'POST':
+        # 1. داده‌های ورودی رو بده به سریالایزر
+        serializer = CommentModelSerializer(data=request.data)
+        
+        # 2. اعتبارسنجی کن (اگه داده‌ها اشتباه باشن، خودش 400 برمی‌گردونه!)
+        serializer.is_valid(raise_exception=True)
+        
+        # 3. کامنت جدید رو ذخیره کن (خودش همه کارا رو میکنه)
+        #    یوزر و محصول رو هم خودمون بهش اضافه می‌کنیم
+        serializer.save(user=request.user, product=product)
+        
+        # 4. یه جواب خوشگل به کاربر برگردون
+        return Response(serializer.data,status=status.HTTP_201_CREATED)
+    return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)    
+        # form = ProductCommentModelForm(request.POST)
+        # if form.is_valid():
+        #     cmnt_obj = form.save(commit=False)
+        #     cmnt_obj.product = get_object_or_404(Product, id=product_id)
+        #     cmnt_obj.user = request.user
+        #     cmnt_obj.save()
+        #     return Response(data=context, status=status.HTTP_201_CREATED)
+        # else:
+        #     return Response(data=form.errors, status=status.HTTP_400_BAD_REQUEST)   
+
+
 
 def brand_view(request, brand_slug):#ناقص است
     

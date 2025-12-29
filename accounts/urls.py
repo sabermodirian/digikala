@@ -1,4 +1,4 @@
-from django.urls import path  # noqa: F401
+from django.urls import path  , include  # noqa: F401
 #from . import views
 from .views import login_view , MyLogInView , user_register_view ,\
  user_info_view, logout_view, user_comments_view,get_users_list , UserUpdateView  # noqa: F401
@@ -19,4 +19,5 @@ urlpatterns = [
      path('profile/comments',user_comments_view , name="user_comments_view"),
      path('logout/',logout_view, name='user_logout_view'),
      path('users-list/',get_users_list, name='users_list'),
+     path('/', include('rest_framework.urls')),
 ] 

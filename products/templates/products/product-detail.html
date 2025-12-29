@@ -125,13 +125,13 @@
             <button type="submit" class="btn btn-primary">ارسال کامنت</button>
         </form>
 
-          {% comment %} {% for comment in prdct_comments %}
+           {% comment %} {% for comment in prdct_comments %}
             <div class="col-12">  
               <h5>{{ comment.title }}</h5>
               <span>{{ comment.user.email }}</span>
               <p>{{ comment.text }}</p>
             </div>
-          {% endfor %} {% endcomment %}
+          {% endfor %}  {% endcomment %}
         </div>  
       </div>
     </div>
@@ -143,4 +143,31 @@
 {% block jsscript %}
   <!-- ⚠️ بخش اسکریپت قدیمی مربوط به onclick را حذف کردیم -->
   <!-- تمام منطق افزودن به سبد خرید حالا در static/js/cart.js پیاده‌سازی شده -->
+
+   <script>
+    const form = document.getElementById('comment_form')
+    form.addEventListener('submit',async function(event){
+      event.preventDefault()
+      const form_data = new FormData(event.target)
+      const js_data= Object.fromEntries(form_data.entries())
+      const res = await fetch("{% url 'products:comment_api'  product_id=product.id  %}" , {
+        headers: {
+          "X-CSRFToken": "{{csrf_token}}",
+          'Accept': 'application/json',
+          'Content-Type': 'application/json;charset=UTF-8'
+          
+        },
+        credentials: "same-origin",
+        method:"POST",
+        body: JSON.stringify(js_data)
+      })
+      const data = await res.json()
+      const root = document.getElementById('comment-list')
+      root.innerHTML += (`<div class="col-12">
+        <div>${data.title}</div> 
+        <div>${data.text}<div> 
+        </div>`)
+    })
+      
+  </script>
 {% endblock jsscript %}

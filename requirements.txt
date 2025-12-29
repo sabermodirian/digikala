@@ -1,23 +1,28 @@
 Django==4.2.1
 pillow==11.3.0
+pip==25.3
+djangorestframework==3.16.1
+django-filter==25.1
+markdown==3.10
 
 
-**********************************************
-step by step:
-sudo apt update
-sudo apt install python3 python3-pip
 
-python3 -m venv venv
-pip install django==4.2.1
-django-admin startproject digikala .
-git init
-git add
-create .gitignor file 
-git commit 
-create requirements.txt file 
-write needing data pakage and steps structures in requirements.txt
-git add requirements.txt
-git commit -m requirements.txt
-git add .
-git commit -m 'init project' on branch main
+# **********************************************
+# step by step:
+# sudo apt update
+# sudo apt install python3 python3-pip
+
+# python3 -m venv venv
+# pip install django==4.2.1
+# django-admin startproject digikala .
+# git init
+# git add
+# create .gitignor file 
+# git commit 
+# create requirements.txt file 
+# write needing data pakage and steps structures in requirements.txt
+# git add requirements.txt
+# git commit -m requirements.txt
+# git add .
+# git commit -m 'init project' on branch main
 

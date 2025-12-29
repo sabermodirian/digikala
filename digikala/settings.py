@@ -29,8 +29,8 @@ ALLOWED_HOSTS = []
 
 
 # Application definition
-
-SYSTEM_APPS = [
+''' اپ های خود جنگو'''
+SYSTEM_APPS = [  
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
@@ -39,12 +39,25 @@ SYSTEM_APPS = [
     'django.contrib.staticfiles',
 ]
 
+''' اپ هایی که  خودم تو پروژه ی  جنگوییم نوشتم و ساختم و ایجاد کردمو اضافه کردم '''
 DEVELOPED_APPS = [
     'accounts.apps.AccountsConfig',
     'products.apps.ProductsConfig',
     'sellers.apps.SellersConfig',
     'dashboard.apps.DashboardConfig',
 ]
+
+''' اپ هایی که برای خود جنگو هستش و من فقط اضافشون کردم '''
+THIRD_PARTY_APPS = [
+    "rest_framework",
+    ]
+    
+'''همه ی اپ های  جنگو '''
+INSTALLED_APPS = SYSTEM_APPS + DEVELOPED_APPS + THIRD_PARTY_APPS
+ROOT_URLCONF = 'digikala.urls'
+LOGIN_URL = '/accounts/login'
+
+AUTH_USER_MODEL = "accounts.User"
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
@@ -56,12 +69,7 @@ MIDDLEWARE = [
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
 ]
 
-THIRD_PARTY_APPS = []
-INSTALLED_APPS = SYSTEM_APPS + DEVELOPED_APPS + THIRD_PARTY_APPS
-ROOT_URLCONF = 'digikala.urls'
-LOGIN_URL = '/accounts/login'
 
-AUTH_USER_MODEL = "accounts.User"
 
 TEMPLATES = [
     {

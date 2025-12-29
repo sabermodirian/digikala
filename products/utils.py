@@ -65,3 +65,26 @@ SellerProductPrice.objects.filter(id__in=latest_prices): در نهایت، با 
 
 استفاده از Max('id') در کنار Max('update_at') یک فرض است که اگر update_at معیار اصلی باشد و id صرفاً کلید اصلی افزایشی باشد، ممکن است همیشه دقیق نباشد. اگر هدف شما دقیقاً پیدا کردن رکوردی است که update_at آن بیشترین مقدار را دارد، استفاده از Subquery یا Window Functions (در صورت پشتیبانی دیتابیس) ممکن است راه‌حل دقیق‌تری باشد، اما این روش با annotate و values که در بالا آورده شد، یک راه حل رایج و قابل قبول است.
 """
+
+
+# products/utils.py
+
+# products/utils.py
+
+def to_dict(instance):
+    """
+    این تابع یک آبجکت (Instance) تکی رو میگیره و دیکشنری میده.
+    """
+    if instance is None:
+        return None
+
+    return {
+        "id": instance.id,
+        "product_id": instance.product_id,
+        "user_id": instance.user_id,
+        "body": instance.text,      # فرض بر اینه اسم فیلدت text هست
+        "title": getattr(instance, 'title', ""), 
+        "rate": getattr(instance, 'rate', 0),
+        # چون select_related زدی، این خط بهینه کار میکنه
+        "author_email": instance.user.email if instance.user else "N/A",
+    }
