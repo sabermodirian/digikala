@@ -58,10 +58,9 @@ class User(AbstractBaseUser, PermissionsMixin):  # noqa: F811
     """
     An abstract base class implementing a fully featured User model with
     admin-compliant permissions.
-
+*************************************************************************
     Username and password are required. Other fields are optional.
     """
-
    
     first_name = models.CharField(_("first name"), max_length=150, blank=True)
     last_name = models.CharField(_("last name"), max_length=150, blank=True)
