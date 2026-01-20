@@ -1,6 +1,6 @@
 from .serializers import UserRegisterSerializer,UserInfoSerializer,UserChangePasswordSerializer
 
-from ...models import User
+from ...models import User  # noqa: F401
 # from accounts.api.v1.models import User معادل خط بالا
 
 from rest_framework.response import Response
@@ -17,7 +17,7 @@ def user_register(request):
 
 @api_view(["POST","GET"])
 @permission_classes(IsAuthenticated)
-def user_update(request):
+def user_info(request):
     user = request.user
     if request.method =="GET":
         serializer = UserInfoSerializer(instance=user ,data=request.data)

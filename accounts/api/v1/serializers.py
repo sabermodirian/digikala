@@ -1,5 +1,5 @@
-from accounts.api.v1.models import User
-# from ...models import User #== معادل خط بالا
+# from accounts.api.v1.models import User
+from ...models import User #== معادل خط بالا
 
 from rest_framework import serializers
 

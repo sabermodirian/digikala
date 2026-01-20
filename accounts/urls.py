@@ -4,6 +4,8 @@ from .views import login_view , MyLogInView , user_register_view ,\
  user_info_view, logout_view, user_comments_view,get_users_list , UserUpdateView  # noqa: F401
 # from django.contrib.auth import views as auth_views
 
+from .api.v1.api import user_change_password ,user_register,user_info # معدل خط پایینی
+# from  digikala.api import user_change_password ,user_register,user_info 
 
 app_name = 'accounts'
 
@@ -19,5 +21,8 @@ urlpatterns = [
      path('profile/comments',user_comments_view , name="user_comments_view"),
      path('logout/',logout_view, name='user_logout_view'),
      path('users-list/',get_users_list, name='users_list'),
-     path('/', include('rest_framework.urls')),
+    #  path('/', include('rest_framework.urls')),
+     path('api/change_password/', user_change_password, name='api-change_password'),
+     path('api/register/', user_register, name='api-register'),
+     path('api/user_info/', user_info, name='api-user_info'),
 ] 
