@@ -14,10 +14,10 @@ from django.http import JsonResponse # یا Response اگه DRF داریfrom .mo
 import json  # noqa: F401
 from django.contrib import messages
 from django.views.decorators.csrf import csrf_exempt
-from rest_framework.decorators import api_view  
-from rest_framework.response import Response
-from rest_framework import status
-from .serializers import  CommentModelSerializer  
+from rest_framework.decorators import api_view  # noqa: F401
+from rest_framework.response import Response  # noqa: F401
+from rest_framework import status  # noqa: F401
+from .api.v1.serializers import  CommentModelSerializer  
 
 # Create your views here.
 

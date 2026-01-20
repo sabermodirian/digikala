@@ -1,14 +1,15 @@
+# from products.api.v1.models import User
+from ...models import Product , Comment , Brand  # noqa: F401 #== معادل خط بالا
+
 from rest_framework import serializers
-from .models import Product , Comment  # noqa: F401
  
 # from django.contrib.auth.models import User  
 from django.contrib.auth import get_user_model
 
 User = get_user_model() # این خط خودش میفهمه یوزر الان کیه (accounts.User)
 
-
-# class CommentSerializer(serializers.Serializer):  
-#     """ serializer برای نمایش کامنت ها استفاده میشه از این کلاس """
+# # class CommentSerializer(serializers.Serializer):  
+#    """ serializer برای نمایش کامنت ها استفاده میشه از این کلاس """
 #       # این فیلدها رو فقط برای نمایش می‌ذاریم (Read Only)
 #     id = serializers.IntegerField(read_only=True)
     
@@ -53,7 +54,6 @@ User = get_user_model() # این خط خودش میفهمه یوزر الان ک
 #         return instance
 
 
-
 class CommentModelSerializer(serializers.ModelSerializer):
     '''
     این کلاس برای نمایش کامنت ها استفاده میشه از این کلاس بطریق مدلسریالایزر
@@ -88,5 +88,16 @@ class CommentModelSerializer(serializers.ModelSerializer):
         # حالا کامنت رو می‌سازیم
         return Comment.objects.create(**validated_data)
 
-   
-    
+
+class BrandSerializer(serializers.ModelSerializer):
+
+    class Meta:
+        model = Brand
+        fields = "__all__" 
+
+
+class PruductSerializer(serializers.ModelSerializer):
+
+    class Meta:
+        medel = Product
+        fields = "__all__"
