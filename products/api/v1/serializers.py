@@ -8,7 +8,7 @@ from django.contrib.auth import get_user_model
 
 User = get_user_model() # این خط خودش میفهمه یوزر الان کیه (accounts.User)
 
-# # class CommentSerializer(serializers.Serializer):  
+#  class CommentSerializer(serializers.Serializer):  
 #    """ serializer برای نمایش کامنت ها استفاده میشه از این کلاس """
 #       # این فیلدها رو فقط برای نمایش می‌ذاریم (Read Only)
 #     id = serializers.IntegerField(read_only=True)
