@@ -3,6 +3,8 @@ from django.urls import path
 from .views import product_list_view, CategoryListView , ProductClassBaseView \
   , comment_api_response , comment_api_response_drf  # noqa: F401
 
+from .api.v1.api import ProductDetail , ProductList # معدل خط پایینی
+# from  digikala.api import ProductDetail , ProductList
 
 app_name = 'products'
 
@@ -43,8 +45,14 @@ urlpatterns = [
     # route for adding a comment of a specific product
    # path('<int:product_id>/comments/',create_comment, name='create_comment'),
       path("category/", CategoryListView.as_view(), name="category_list"),
-      path("category/<slug:category_slug>/", CategoryListView.as_view(), name="category_list_slug")
+      path("category/<slug:category_slug>/", CategoryListView.as_view(), name="category_list_slug"),
     #  path("category/<slug:category_slug>/", ProductListView.as_view(), name="category_detail"),
+    
+    # مسیر مخصوس یرای  لیستهای محصول در فاز  apiview
+      path("api/products",ProductList.as_view(), name='api-product-list'),
+    #مسیر مخصوس برای جزییات هر محصول در فاز apiview
+      path("api/products/<int:pk>",ProductDetail.as_view(), name='api-product-details'),
+
 ]
 
 '''

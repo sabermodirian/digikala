@@ -96,7 +96,7 @@ class BrandSerializer(serializers.ModelSerializer):
         fields = "__all__" 
 
 
-class PruductSerializer(serializers.ModelSerializer):
+class ProductSerializer(serializers.ModelSerializer):
 
     class Meta:
         medel = Product
