@@ -5,12 +5,13 @@ from rest_framework.response import Response
 from django.http import Http404
 from rest_framework import status
 from rest_framework.pagination import PageNumberPagination
-
+from rest_framework.permissions import IsAuthenticated , IsAdminUser ,IsAuthenticatedOrReadOnly  # noqa: F401
+from .permissions import IsAdminOrReadOnly
 
 
 class ProductList(APIView):
     ''' List all products , or create a new Product '''
-    
+    permission_classes = [IsAdminOrReadOnly]
     # 1. این خط کلید ماجراست! 🔑
     # با این خط به DRF می‌فهمونیم که این کلاس قراره صفحه‌بندی داشته باشه
     pagination_class = PageNumberPagination
@@ -52,6 +53,8 @@ class ProductList(APIView):
          
 class ProductDetail(APIView):
     '''Retrieve , Update or Delete a product instance '''
+    permission_classes = [IsAdminOrReadOnly]
+
     def get_object(self,pk):
         ''']جون در همهی توابع این کلاس به یک ID یا شماره ای تز نمونه های یک محصول نیازداریم
         پس یک تابع جداگانه ای برای تشخیص و گرفتن آیدی هر محصول  '''
