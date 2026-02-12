@@ -49,7 +49,7 @@ urlpatterns = [
     #  path("category/<slug:category_slug>/", ProductListView.as_view(), name="category_detail"),
     
     # مسیر مخصوس یرای  لیستهای محصول در فاز  apiview
-      path("api/products",ProductList.as_view(), name='api-product-list'),
+      path("api/products/",ProductList.as_view(), name='api-product-list'),
     #مسیر مخصوس برای جزییات هر محصول در فاز apiview
       path("api/products/<int:pk>",ProductDetail.as_view(), name='api-product-details'),
 

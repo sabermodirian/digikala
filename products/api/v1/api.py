@@ -4,19 +4,44 @@ from rest_framework.views import APIView
 from rest_framework.response import Response
 from django.http import Http404
 from rest_framework import status
-
-
+from rest_framework.pagination import PageNumberPagination
 
 
 
 class ProductList(APIView):
-    ''' List all products , or craete a new Product '''
-    def get(self,request,format=None):
+    ''' List all products , or create a new Product '''
+    
+    # 1. این خط کلید ماجراست! 🔑
+    # با این خط به DRF می‌فهمونیم که این کلاس قراره صفحه‌بندی داشته باشه
+    pagination_class = PageNumberPagination
+
+    def get(self, request, format=None):
         ''' یک تابع برای خواندن و گرفتن داده و نمایش آنها'''
-        query = Product.objects.all()
-        serializer = ProductSerializer(instance=query, many=True)
+        queryset = Product.objects.all()
+
+        # 2. ساختن نمونه از کلاسی که بالا تعریف کردیم
+        self.paginator = self.pagination_class()
+        
+        # تنظیمات دلخواه (می‌تونی اینا رو توی settings.py هم ببری)
+        self.paginator.page_size = 10
+
+        # 3. نکته مهم: پاس دادن 'view=self' 🎯
+        # این باعث میشه پجینیتور بفهمه صاحبش کیه و دکمه‌ها رو درست بسازه
+        result_page = self.paginator.paginate_queryset(queryset, request, view=self)
+
+        # اگر صفحه‌بندی انجام شد (یعنی result_page خالی نبود)
+        if result_page is not None:
+            serializer = ProductSerializer(result_page, many=True)
+            # 4. برگرداندن ریسپانس مخصوص (شامل دکمه‌ها و لینک‌ها)
+            return self.paginator.get_paginated_response(serializer.data)
+
+        # حالت fallback (اگر صفحه‌بندی کار نکرد، کل دیتا رو بده - که معمولاً پیش نمیاد)
+        serializer = ProductSerializer(queryset, many=True)
 #TODO نکته: همیشه data را isvalid میکنیم  نه instance را: -->پس نتیجه مگیریم که instance نیازی به ولیدیشن ندارد
+
         return Response(serializer.data)
+
+
 
     def post(self,request, format=None):
         ''' یک تابع برای ایجاد و تولید داده آنها'''

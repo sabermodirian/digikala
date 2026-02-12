@@ -6,6 +6,8 @@ from rest_framework import serializers
 # from django.contrib.auth.models import User  
 from django.contrib.auth import get_user_model
 
+
+
 User = get_user_model() # این خط خودش میفهمه یوزر الان کیه (accounts.User)
 
 #  class CommentSerializer(serializers.Serializer):  
@@ -99,5 +101,5 @@ class BrandSerializer(serializers.ModelSerializer):
 class ProductSerializer(serializers.ModelSerializer):
 
     class Meta:
-        medel = Product
+        model = Product
         fields = "__all__"
