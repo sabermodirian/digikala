@@ -1,7 +1,9 @@
 # from products.api.v1.models import User
-from ...models import Product , Comment , Brand  # noqa: F401 #== معادل خط بالا
+from ...models import Product , Comment , Brand , Category  # noqa: F401 #== معادل خط بالا
 
 from rest_framework import serializers
+
+from sellers.api.v1.serializers import SellerSerializer
  
 # from django.contrib.auth.models import User  
 from django.contrib.auth import get_user_model
@@ -93,12 +95,35 @@ class CommentModelSerializer(serializers.ModelSerializer):
 
 class BrandSerializer(serializers.ModelSerializer):
 
+
     class Meta:
         model = Brand
         fields = "__all__" 
 
 
+class CategorySerializer(serializers.ModelSerializer):
+    
+    class Meta:
+        model = Category
+        fields = "__all__" 
+
+
+      
 class ProductSerializer(serializers.ModelSerializer):
+    brand = BrandSerializer(read_only=True)
+    # brand_details = BrandSerializer(source='brand',read_only=True)
+    ''' با استفاده از خط بالا کل اطلاعات و جزییات مربوط به brand
+    هر محصول در ساختار جیسونی api برای همان محصول نمایش داده میشود '''
+
+    category = CategorySerializer(read_only=True)
+    # category_details = CategorySerializer(source='category' read_only=True)
+    ''' با استفاده از خط بالا کل اطلاعات و جزییات مربوط به category
+    هر محصول در ساختار جیسونی api برای همان محصول نمایش داده میشود '''
+
+    # seller = SellerSerializer(read_only=True)
+    seller = SellerSerializer(source='sellers',many=True, read_only=True)
+    ''' با استفاده از خط بالا کل اطلاعات و جزییات مربوط به seller
+    هر محصول در ساختار جیسونی api برای همان محصول نمایش داده میشود '''
 
     class Meta:
         model = Product

@@ -18,7 +18,7 @@ class ProductList(APIView):
 
     def get(self, request, format=None):
         ''' یک تابع برای خواندن و گرفتن داده و نمایش آنها'''
-        queryset = Product.objects.all()
+        queryset = Product.objects.all().select_related('brand','category')
 
         # 2. ساختن نمونه از کلاسی که بالا تعریف کردیم
         self.paginator = self.pagination_class()
@@ -60,7 +60,7 @@ class ProductDetail(APIView):
         پس یک تابع جداگانه ای برای تشخیص و گرفتن آیدی هر محصول  '''
          
         try:
-            return Product.objects.get(pk=pk)
+            return Product.objects.select_related('brand','category').get(pk=pk)
         except Product.DoesNotExist:
             raise Http404
 
