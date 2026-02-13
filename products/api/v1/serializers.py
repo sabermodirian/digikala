@@ -1,5 +1,5 @@
 # from products.api.v1.models import User
-from ...models import Product , Comment , Brand , Category  # noqa: F401 #== معادل خط بالا
+from ...models import Product , Comment , Brand , Category , SellerProductPrice # noqa: F401 #== معادل خط بالا
 
 from rest_framework import serializers
 
@@ -107,7 +107,11 @@ class CategorySerializer(serializers.ModelSerializer):
         model = Category
         fields = "__all__" 
 
-
+class ProductPriceSerializer(serializers.ModelSerializer):
+    
+    class Meta:
+        model = SellerProductPrice
+        fields = "__all__"
       
 class ProductSerializer(serializers.ModelSerializer):
     brand = BrandSerializer(read_only=True)
@@ -124,6 +128,26 @@ class ProductSerializer(serializers.ModelSerializer):
     seller = SellerSerializer(source='sellers',many=True, read_only=True)
     ''' با استفاده از خط بالا کل اطلاعات و جزییات مربوط به seller
     هر محصول در ساختار جیسونی api برای همان محصول نمایش داده میشود '''
+
+#نکته بسیار مهم: اگر نام متغیر با نام خود فیلد در کلاس اصلی یکسان باشد 
+# به ست کردن و قرار دادن source نیازی نیست
+
+    product_price_details = ProductPriceSerializer(
+        source='seller_prices', many=True , read_only=True 
+        ) 
+    '''نکته مهم:
+  چون در مدل پروداکت این فیلد SellerProductPrice با عبارت seller_prices  
+   به کلاس(جدول(table)) Product در ارتباط(متصل) است یعنی
+  class SellerProductPrice(models.Model):
+    
+  product = models.ForeignKey("Product"
+                                ,verbose_name=_("Product"),
+                                related_name="seller_prices"    
+                                ,on_delete=models.CASCADE
+                                )
+  پس  در   product_price_details آرگومان source مربوط
+  به سریالایزر ProductPriceSerializer را source =   "seller_price     قرار میدهیم 
+    '''
 
     class Meta:
         model = Product
