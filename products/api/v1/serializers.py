@@ -108,6 +108,10 @@ class CategorySerializer(serializers.ModelSerializer):
         fields = "__all__" 
 
 class ProductPriceSerializer(serializers.ModelSerializer):
+
+    seller_details = SellerSerializer(source='seller', read_only=True)
+    ''' با استفاده از خط بالا کل اطلاعات و جزییات مربوط به seller
+    هر محصول در ساختار جیسونی api برای همان محصول نمایش داده میشود '''
     
     class Meta:
         model = SellerProductPrice
@@ -125,9 +129,9 @@ class ProductSerializer(serializers.ModelSerializer):
     هر محصول در ساختار جیسونی api برای همان محصول نمایش داده میشود '''
 
     # seller = SellerSerializer(read_only=True)
-    seller = SellerSerializer(source='sellers',many=True, read_only=True)
-    ''' با استفاده از خط بالا کل اطلاعات و جزییات مربوط به seller
-    هر محصول در ساختار جیسونی api برای همان محصول نمایش داده میشود '''
+    # seller = SellerSerializer(source='sellers',many=True, read_only=True)
+    # ''' با استفاده از خط بالا کل اطلاعات و جزییات مربوط به seller
+    # هر محصول در ساختار جیسونی api برای همان محصول نمایش داده میشود '''
 
 #نکته بسیار مهم: اگر نام متغیر با نام خود فیلد در کلاس اصلی یکسان باشد 
 # به ست کردن و قرار دادن source نیازی نیست
