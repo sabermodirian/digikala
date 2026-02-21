@@ -7,6 +7,7 @@ from rest_framework import status
 from rest_framework.pagination import PageNumberPagination
 from rest_framework.permissions import IsAuthenticated , IsAdminUser ,IsAuthenticatedOrReadOnly  # noqa: F401
 from .permissions import IsAdminOrReadOnly
+from rest_framework import generics
 
 
 class ProductList(APIView):
@@ -52,7 +53,7 @@ class ProductList(APIView):
             return Response(serializer.data)
          
 
-         
+
 class ProductDetail(APIView):
     '''Retrieve , Update or Delete a product instance '''
     permission_classes = [IsAdminOrReadOnly]
@@ -89,8 +90,22 @@ class ProductDetail(APIView):
         return Response(status=status.HTTP_204_NO_CONTENT)
     
         
-     
+# class ProductListGenericView(generics.ListAPIView):
+#     '''میباشد GET ALL  فقط دارای متد generics در مد  ListAPIViewاستفاده از '''
+         
+#     queryset = Product.objects.all()
+#     serializer_class = ProductListSerializer
+
+class ProductListGenericView(generics.ListCreateAPIView):
+  '''میباشد GET ,POST   دارای هر دو متد generics در مد  ListCreateAPIView استفاده از '''
+  queryset = Product.objects.all()
+  serializer_class = ProductListSerializer
          
 
+class ProductDetailGenericView(generics.RetrieveUpdateDestroyAPIView):
 
+    '''همهی حالات متدهای مختلف برای گرفتن و ویرایش و حذف جزییات اطلاعات برای یک محصول خاص را دارد  RetrieveUpdateDestroyAPIView استفاده از '''
 
+    serializer_class = ProductSerializer
+    queryset = Product.objects.all().select_related(
+        'brand','category').prefetch_related('sellers')

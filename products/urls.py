@@ -3,7 +3,9 @@ from django.urls import path
 from .views import product_list_view, CategoryListView , ProductClassBaseView \
   , comment_api_response , comment_api_response_drf  # noqa: F401
 
-from .api.v1.api import ProductDetail , ProductList # معدل خط پایینی
+from .api.v1.api import ProductDetail , ProductList ,ProductListGenericView ,\
+   ProductDetailGenericView # معدل خط پایینی  # noqa: F401
+ 
 # from  digikala.api import ProductDetail , ProductList
 
 app_name = 'products'
@@ -49,9 +51,12 @@ urlpatterns = [
     #  path("category/<slug:category_slug>/", ProductListView.as_view(), name="category_detail"),
     
     # مسیر مخصوس یرای  لیستهای محصول در فاز  apiview
-      path("api/products/",ProductList.as_view(), name='api-product-list'),
+      # path("api/products/",ProductList.as_view(), name='api-product-list'),
+      path("api/products/",ProductListGenericView.as_view(), name='api-product-list'),
+    
     #مسیر مخصوس برای جزییات هر محصول در فاز apiview
-      path("api/products/<int:pk>",ProductDetail.as_view(), name='api-product-details'),
+      # path("api/products/<int:pk>",ProductDetail.as_view(), name='api-product-details'),
+      path("api/products/<int:pk>",ProductDetailGenericView.as_view(), name='api-product-details'),
 
 ]
 
