@@ -128,8 +128,8 @@ class ProductSerializer(serializers.ModelSerializer):
     ''' با استفاده از خط بالا کل اطلاعات و جزییات مربوط به category
     هر محصول در ساختار جیسونی api برای همان محصول نمایش داده میشود '''
 
-    # seller = SellerSerializer(read_only=True)
-    # seller = SellerSerializer(source='sellers',many=True, read_only=True)
+    # seller_details = SellerSerializer(read_only=True)
+    # seller_details= SellerSerializer(source='sellers',many=True, read_only=True)
     # ''' با استفاده از خط بالا کل اطلاعات و جزییات مربوط به seller
     # هر محصول در ساختار جیسونی api برای همان محصول نمایش داده میشود '''
 
@@ -152,6 +152,14 @@ class ProductSerializer(serializers.ModelSerializer):
   پس  در   product_price_details آرگومان source مربوط
   به سریالایزر ProductPriceSerializer را source =   "seller_price     قرار میدهیم 
     '''
+
+    class Meta:
+        model = Product
+        fields = "__all__"
+
+
+class ProductListSerializer(serializers.ModelSerializer):
+   
 
     class Meta:
         model = Product

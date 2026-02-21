@@ -1,4 +1,4 @@
-from .serializers import ProductSerializer
+from .serializers import ProductSerializer , ProductListSerializer
 from ...models import Product
 from rest_framework.views import APIView
 from rest_framework.response import Response
@@ -32,12 +32,12 @@ class ProductList(APIView):
 
         # اگر صفحه‌بندی انجام شد (یعنی result_page خالی نبود)
         if result_page is not None:
-            serializer = ProductSerializer(result_page, many=True)
+            serializer = ProductListSerializer(result_page, many=True)
             # 4. برگرداندن ریسپانس مخصوص (شامل دکمه‌ها و لینک‌ها)
             return self.paginator.get_paginated_response(serializer.data)
 
         # حالت fallback (اگر صفحه‌بندی کار نکرد، کل دیتا رو بده - که معمولاً پیش نمیاد)
-        serializer = ProductSerializer(queryset, many=True)
+        serializer = ProductListSerializer(queryset, many=True)
 #TODO نکته: همیشه data را isvalid میکنیم  نه instance را: -->پس نتیجه مگیریم که instance نیازی به ولیدیشن ندارد
 
         return Response(serializer.data)
@@ -46,10 +46,12 @@ class ProductList(APIView):
 
     def post(self,request, format=None):
         ''' یک تابع برای ایجاد و تولید داده آنها'''
-        serializer = ProductSerializer(data=request.data) #چون میخایم دیتا را ایجاد بکنیم فقط data را بعنوان آرگومان میدیم
+        serializer = ProductListSerializer(data=request.data) #چون میخایم دیتا را ایجاد بکنیم فقط data را بعنوان آرگومان میدیم
         if serializer.is_valid(raise_exception=True):
             serializer.save()
             return Response(serializer.data)
+         
+
          
 class ProductDetail(APIView):
     '''Retrieve , Update or Delete a product instance '''
