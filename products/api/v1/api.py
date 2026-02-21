@@ -8,6 +8,7 @@ from rest_framework.pagination import PageNumberPagination
 from rest_framework.permissions import IsAuthenticated , IsAdminUser ,IsAuthenticatedOrReadOnly  # noqa: F401
 from .permissions import IsAdminOrReadOnly
 from rest_framework import generics
+from rest_framework.viewsets import ModelViewSet #کاملترین نوع view ها که همیه حالات جنگو را دربر میگیرد
 
 
 class ProductList(APIView):
@@ -106,6 +107,13 @@ class ProductDetailGenericView(generics.RetrieveUpdateDestroyAPIView):
 
     '''همهی حالات متدهای مختلف برای گرفتن و ویرایش و حذف جزییات اطلاعات برای یک محصول خاص را دارد  RetrieveUpdateDestroyAPIView استفاده از '''
 
+    serializer_class = ProductSerializer
+    queryset = Product.objects.all().select_related(
+        'brand','category').prefetch_related('sellers')
+
+class ProductModelVS(ModelViewSet):
+    ''' در بر گیرنده کامل همهی متدهای جنگو دریک کلاس میباشد ModelViewSet'''
+    
     serializer_class = ProductSerializer
     queryset = Product.objects.all().select_related(
         'brand','category').prefetch_related('sellers')

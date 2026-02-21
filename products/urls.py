@@ -4,9 +4,14 @@ from .views import product_list_view, CategoryListView , ProductClassBaseView \
   , comment_api_response , comment_api_response_drf  # noqa: F401
 
 from .api.v1.api import ProductDetail , ProductList ,ProductListGenericView ,\
-   ProductDetailGenericView # معدل خط پایینی  # noqa: F401
+   ProductDetailGenericView ,ProductModelVS # معدل خط پایینی  # noqa: F401
  
 # from  digikala.api import ProductDetail , ProductList
+
+from rest_framework import routers
+#  برای ساختن (routing) مسیر های متد 4گانه در ModelViewSet
+router = routers.SimpleRouter()
+router.register(r'products',ProductModelVS) # و سپس به انتهای کل مسرهامون urls اضافه ش میکنیم
 
 app_name = 'products'
 
@@ -52,13 +57,13 @@ urlpatterns = [
     
     # مسیر مخصوس یرای  لیستهای محصول در فاز  apiview
       # path("api/products/",ProductList.as_view(), name='api-product-list'),
-      path("api/products/",ProductListGenericView.as_view(), name='api-product-list'),
+      # path("api/products/",ProductListGenericView.as_view(), name='api-product-list'),
     
     #مسیر مخصوس برای جزییات هر محصول در فاز apiview
       # path("api/products/<int:pk>",ProductDetail.as_view(), name='api-product-details'),
-      path("api/products/<int:pk>",ProductDetailGenericView.as_view(), name='api-product-details'),
+      # path("api/products/<int:pk>",ProductDetailGenericView.as_view(), name='api-product-details'),
 
-]
+] + router.urls #   ProductModelVS   اضافه شده بخاطر   
 
 '''
       ' حواست باشه در پروژه ی استاد کمیجانی مربوط به 
