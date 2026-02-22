@@ -9,7 +9,7 @@ from rest_framework.permissions import IsAuthenticated , IsAdminUser ,IsAuthenti
 from .permissions import IsAdminOrReadOnly
 from rest_framework import generics
 from rest_framework.viewsets import ModelViewSet #کاملترین نوع view ها که همیه حالات جنگو را دربر میگیرد
-
+from rest_framework.decorators import action
 
 class ProductList(APIView):
     ''' List all products , or create a new Product '''
@@ -128,6 +128,15 @@ class ProductModelVS(ModelViewSet):
             return self.serializer_class # = return ProductListSerializer
         else:
             return ProductSerializer
+
+      #exstra action in viewset
+    @action(detail=True , methods=['post'])
+    def liked(self,request,pk):
+        prdct_obj:Product=self.get_object() 
+        # prdct_obj:Product ==> TYPE(prdct_obj) = Product
+        prdct_obj.liked_users.add(request.user)
+        serializer=self.get_serializer(instance=prdct_obj)
+        return Response(data=serializer.data, status=201)
 
     # def get_queryset(self):
     #     query = Product.objects.filter(owner = self.request.user)

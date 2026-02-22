@@ -155,7 +155,9 @@ class ProductSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Product
-        fields = "__all__"
+        fields = ['name','en_name','description','category'
+        ,'brand','sellers','product_price_details']
+        
 
 
 class ProductListSerializer(serializers.ModelSerializer):
@@ -163,4 +165,5 @@ class ProductListSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Product
-        fields = "__all__"
+        fields = ['name','en_name','description','category'
+        ,'brand','sellers']

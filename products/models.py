@@ -82,7 +82,11 @@ class Product(models.Model):
     مثال: اگر چند فروشنده برای یک محصول قیمت‌ها و ویژگی‌های متفاوت داشته باشند،
     این مدل واسط می‌تواند آن داده‌ها را نگه‌داری کند.
     """
+    objects =NoDeleteManager()
 
+    liked_users = models.ManyToManyField( # برای لایک کردن محصولات مورد نظر توسط کاربر فعلی
+        settings.AUTH_USER_MODEL ,blank=True,related_name="liked_prdct"
+         )
 
     class Meta:
         verbose_name = _("Product")
