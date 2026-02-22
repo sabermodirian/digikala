@@ -112,8 +112,26 @@ class ProductDetailGenericView(generics.RetrieveUpdateDestroyAPIView):
         'brand','category').prefetch_related('sellers')
 
 class ProductModelVS(ModelViewSet):
-    ''' در بر گیرنده کامل همهی متدهای جنگو دریک کلاس میباشد ModelViewSet'''
+    '''(CRUD کامل) در بر گیرنده کامل همهی متدهای جنگو دریک کلاس میباشد ModelViewSet'''
     
-    serializer_class = ProductSerializer
-    queryset = Product.objects.all().select_related(
-        'brand','category').prefetch_related('sellers')
+    # serializer_class = ProductSerializer
+    # queryset = Product.objects.all().select_related(
+    #     'brand','category').prefetch_related('sellers')
+
+    serializer_class = ProductListSerializer  #اتریبیوت serializer_class
+    queryset = Product.objects.all()    #اتریبیوت queryset
+    
+    def get_serializer_class(self):
+    # رو میخونه و پاس میده وقتیکه به فانکشنش برای  CBV مشابه هر اتریبیوتی در 
+    # کردن نیاز هستش override یک فانکشنی وجود داره که این اتریبیوت 
+        if self.action == 'List' or self.action == 'create':
+            return self.serializer_class # = return ProductListSerializer
+        else:
+            return ProductSerializer
+
+    # def get_queryset(self):
+    #     query = Product.objects.filter(owner = self.request.user)
+    #     return query #فقط محصولات مربوط به کاربر فعلی را نمایش بده
+    
+
+
